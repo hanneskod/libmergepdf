@@ -13,7 +13,11 @@
 namespace libmergepdf;
 
 /*
-    * break out pages to a separate class
+NOTE: under construction, class is broken
+
+TODO
+break out pages to a separate class
+
 */
 
 
