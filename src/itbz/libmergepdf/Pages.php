@@ -73,75 +73,12 @@ class Pages
 
 
     /**
-     * Parse $pages to array of individual page numbers. Individual pages or
-     * ranges may be specified. CSV.
-     * @throws Exceptin If page ranges are malformed.
-     * @param string $pages
-     * @return array
-     * /
-    private static function parsePages($pages){
-        assert('is_string($pages)');
-        
-        $pages = str_replace(' ', '', $pages);
-        $arPages = array();
-        
-        foreach( explode(',', $pages) as $exp ){
-            if ( empty($exp) ) continue;
-            $arExp = explode('-', $exp);
-            $expLen = count($arExp);
-            assert('is_numeric($arExp[0])');
-
-            //parse range
-            if ( $expLen == 2 ) {
-                assert('is_numeric($arExp[1])');
-                
-                $iStart = intval($arExp[0]);
-                $iEnd = intval($arExp[1]);
-                
-                if ( $iStart < $iEnd ) {
-                    while ( $iStart <= $iEnd ) {
-                        $arPages[] = $iStart;
-                        $iStart++;
-                    }
-                } else {
-                    while ( $iEnd <= $iStart ) {
-                        $arPages[] = $iStart;
-                        $iStart--;
-                    }
-                }
-                
-
-            //single page
-            } elseif ( $expLen == 1 ) {
-                $arPages[] = intval($arExp[0]);
-            
-            //argument formatting error
-            } else {
-                throw new \InvalidArgumentException("Page range syntax error for expression '$exp'.");
-            }
-        }
-        
-        return $arPages;
-    }*/
-
-
-    /**
      * Get array of integer page numbers
      * @return array
      */
     public function getPages()
     {
         return $this->pages;
-    }
-
-
-    /**
-     * Check if no pages are specified
-     * @return bool
-     */
-    public function isEmpty()
-    {
-        return empty($this->pages);
     }
 
 }
