@@ -10,13 +10,14 @@
  * @author Hannes Forsgård <hannes.forsgard@gmail.com>
  * @package libmergepdf
  */
-namespace libmergepdf;
+namespace itbz\libmergepdf;
+use FPDI;
 
 /*
 NOTE: under construction, class is broken
 
 TODO
-break out pages to a separate class
+write tests
 
 */
 
@@ -35,97 +36,104 @@ class Merger
 {
 
     /**
-     * Array of files to be merged. Values for each files are filename
-     * pages unparsed pages string and a boolean value indicating if
-     * the file should be deleted after merging is complete.
+     * Array of files to be merged. Values for each files are filename,
+     * Pages object and a boolean value indicating if the file should be
+     * deleted after merging is complete.
      * @var array $files
      */
     private $files = array();
 
 
     /**
-     * Include FPDF and FPDI. Optionally specify a path. If used path should
-     * work as $pathToFPDF/fpdf/fpdf.php and $pathToFPDF/fpdi/fpdi.php.
-     * Always use trailing slash.
-     * @param string $pathToFPDF NOTE always use trailing slash.
-     */
-    public function __construct($pathToFPDF=''){
-        assert('is_string($pathToFPDF)');
-        require_once("{$pathToFPDF}fpdf/fpdf.php");
-        require_once("{$pathToFPDF}fpdi/fpdi.php");
-    }
-    
-
-    /**
-     * Add a PDF for inclusion. Pages should be formatted as 1,3,6 or 12-16 or combined.
-     * Note that your PDFs are merged in the order that you provide them, same as the pages.
-     * If you put pages 12-14 before 1-5 then 12-15 will be placed first in the output.
+     * Add raw PDF from string
+     *
+     * Note that your PDFs are merged in the order that you add them
+     *
      * @param string $pdf
-     * @param string $pages
+     * @param Pages $pages
      * @return void
+     * @throws Exception if unable to create temporary file
      */
-    public function add($pdf, $pages='') {
+    public function addRaw($pdf, Pages $pages = NULL)
+    {
         assert('is_string($pdf)');
-        assert('is_string($pages)');
 
-        //Write pdf to temporary file
-        $tmpDir = sys_get_temp_dir();
-        $tmpName = tempnam($tmpDir, "phpdf_");
-        if ( file_put_contents($tmpName, $pdf) === false ) {
-            trigger_error("Unable to write to sys_get_temp_dir.", E_USER_ERROR);
+        // Create temporary file
+        $fname = tempnam(sys_get_temp_dir(), "libmergepdf");
+        if (file_put_contents($fname, $pdf) === FALSE) {
+            $msg = "Unable to create temporary file";
+            throw new Exception($msg);
         }
         
-        $this->addFile($tmpName, $pages, true);
+        $this->addFromFile($fname, $pages, TRUE);
     }
 
     
     /**
-     * Add a PDF for inclusion from a filesystem path. Se add() for a description
-     * of the $pages format.
+     * Add PDF from filesystem pat
+     *
+     * Note that your PDFs are merged in the order that you add them
+     *
      * @param string $fname
-     * @param string $pages
-     * @param bool $deleteAfterMerge Boolean value indicating if
-     * the file should be deleted after merging is complete.
+     * @param Pages $pages
+     * @param bool $cleanup Boolean indicating if file should be deleted when
+     * merging is complete.
      * @return void
+     * @throws Exception if $fname is not a valid file
      */
-    public function addFile($fname, $pages='', $deleteAfterMerge=false){
-        assert('is_readable($fname)');
-        assert('is_string($pages)');
-        assert('is_bool($deleteAfterMerge)');
-        $this->files[] = array($fname, $pages, $deleteAfterMerge);
+    public function addFromFile($fname, Pages $pages = NULL, $cleanup = FALSE)
+    {
+        assert('is_string($fname)');
+        assert('is_bool($cleanup)');
+
+        if (!is_file($fname) || !is_readable($fname)) {
+            $msg = "'$fname' is not a valid file";
+            throw new Exception($msg);
+        }
+
+        if (!$pages) {
+            $pages = new Pages();
+        }
+
+        $this->files[] = array($fname, $pages, $cleanup);
     }
 
 
 
     /**
-     * Merges your provided PDFs and outputs to specified location.
-     * @uses FPDI
-     * @throws RangeException if a specified page does not exist
+     * Merges your provided PDFs and get raw string
      * @return string
+     * @throws Exception if no PDFs were added
+     * @throws Exception if a specified page does not exist
      */
-    public function get(){
-        assert('!empty($this->files)');
-        $fpdi = new \FPDI;
+    public function merge()
+    {
+        if (empty($this->files)) {
+            $msg = "Unable to merge, no PDFs added";
+            throw new Exception($msg);
+        }
+
+        $fpdi = new FPDI();
         
-        foreach ( $this->files as $arFile ) {
-            list($fname, $pages, $deleteAfterMerge) = $arFile;
-            
+        foreach ( $this->files as $fileData ) {
+            list($fname, $pages, $cleanup) = $fileData;
+            $pages = $pages->getPages();
             $iPageCount = $fpdi->setSourceFile($fname);
             
-            //add all pages
-            if ( empty($pages) ) {
-                for ( $i=1; $i<=$iPageCount; $i++) {
+            if (empty($pages)) {
+                // Add all pages
+                for ($i=1; $i<=$iPageCount; $i++) {
                     $template = $fpdi->importPage($i);
                     $size = $fpdi->getTemplateSize($template);
                     $fpdi->AddPage('P', array($size['w'], $size['h']));
                     $fpdi->useTemplate($template);
                 }
-            
-            //add selected pages
             } else {
-                foreach ( self::parsePages($pages) as $page ) {
-                    if( !$template = $fpdi->importPage($page) ) {
-                        throw new \RangeException("Could not load page '$page' from '$fname'. Check that the page exists.");
+                // Add specified pages
+                foreach ($pages as $page) {
+                    if (!$template = $fpdi->importPage($page)) {
+                        $msg = "Could not load page '$page' from '$fname'.";
+                        throw new Exception($msg);
                     }
                     $size = $fpdi->getTemplateSize($template);
                     $fpdi->AddPage('P', array($size['w'], $size['h']));
@@ -133,68 +141,14 @@ class Merger
                 }
             }
             
-            if ( $deleteAfterMerge ) {
+            if ( $cleanup ) {
                 unlink($fname);
             }
         }
         
-        //Reset files array
         $this->files = array();
         
         return $fpdi->Output('', 'S');
-    }
-
-
-    /**
-     * Parse $pages to array of individual page numbers. Individual pages or
-     * ranges may be specified. CSV.
-     * @throws \InvalidArgumentException If page ranges are malformed.
-     * @param string $pages
-     * @return array
-     */
-    private static function parsePages($pages){
-        assert('is_string($pages)');
-        
-        $pages = str_replace(' ', '', $pages);
-        $arPages = array();
-        
-        foreach( explode(',', $pages) as $exp ){
-            if ( empty($exp) ) continue;
-            $arExp = explode('-', $exp);
-            $expLen = count($arExp);
-            assert('is_numeric($arExp[0]) /* $pages correct? */');
-
-            //parse range
-            if ( $expLen == 2 ) {
-                assert('is_numeric($arExp[1]) /* $pages correct? */');
-                
-                $iStart = intval($arExp[0]);
-                $iEnd = intval($arExp[1]);
-                
-                if ( $iStart < $iEnd ) {
-                    while ( $iStart <= $iEnd ) {
-                        $arPages[] = $iStart;
-                        $iStart++;
-                    }
-                } else {
-                    while ( $iEnd <= $iStart ) {
-                        $arPages[] = $iStart;
-                        $iStart--;
-                    }
-                }
-                
-
-            //single page
-            } elseif ( $expLen == 1 ) {
-                $arPages[] = intval($arExp[0]);
-            
-            //argument formatting error
-            } else {
-                throw new \InvalidArgumentException("Page range syntax error for expression '$exp'.");
-            }
-        }
-        
-        return $arPages;
     }
     
 }
