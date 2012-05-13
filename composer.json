@@ -13,53 +13,11 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "fpdf/fpdf": "*",
-        "fpdf/fpdf_tpl": "*",
-        "fpdi/fpdi": "*"
+        "itbz/fpdi": "1.4.*"
     },
     "autoload": {
         "psr-0": {
             "itbz\\libmergepdf": "src/"
-        },
-        "classmap": [
-            "vendor/fpdf/fpdf",
-            "vendor/fpdf/fpdf_tpl/src",
-            "vendor/fpdi/fpdi"
-        ]
-    },
-    "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "fpdf/fpdf",
-                "version": "1.7.0",
-                "dist": {
-                    "url": "http://www.fpdf.org/en/dl.php?v=17&f=zip",
-                    "type": "zip"
-                }
-            }
-        },
-        {
-            "type": "package",
-            "package": {
-                "name": "fpdf/fpdf_tpl",
-                "version": "1.2.0",
-                "dist": {
-                    "url": "https://github.com/lsolesen/fpdf-tpl/zipball/master",
-                    "type": "zip"
-                }
-            }
-        },
-        {
-            "type": "package",
-            "package": {
-                "name": "fpdi/fpdi",
-                "version": "1.4.2",
-                "dist": {
-                    "url": "http://www.setasign.de/supra/kon2_dl/39034/FPDI-1.4.2.zip",
-                    "type": "zip"
-                }
-            }
         }
-    ]
+    }
 }

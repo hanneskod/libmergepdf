@@ -11,15 +11,8 @@
  * @package libmergepdf
  */
 namespace itbz\libmergepdf;
-use FPDI;
-
-/*
-NOTE: under construction, class is broken
-
-TODO
-write tests
-
-*/
+use fpdi\FPDI;
+use RuntimeException;
 
 
 /**
@@ -59,8 +52,8 @@ class Merger
         assert('is_string($pdf)');
 
         // Create temporary file
-        $fname = tempnam(sys_get_temp_dir(), "libmergepdf");
-        if (file_put_contents($fname, $pdf) === FALSE) {
+        $fname = $this->getTempFname();
+        if (@file_put_contents($fname, $pdf) === FALSE) {
             $msg = "Unable to create temporary file";
             throw new Exception($msg);
         }
@@ -113,42 +106,57 @@ class Merger
             throw new Exception($msg);
         }
 
-        $fpdi = new FPDI();
-        
-        foreach ( $this->files as $fileData ) {
-            list($fname, $pages, $cleanup) = $fileData;
-            $pages = $pages->getPages();
-            $iPageCount = $fpdi->setSourceFile($fname);
+        try {
+
+            $fpdi = new FPDI();
             
-            if (empty($pages)) {
-                // Add all pages
-                for ($i=1; $i<=$iPageCount; $i++) {
-                    $template = $fpdi->importPage($i);
-                    $size = $fpdi->getTemplateSize($template);
-                    $fpdi->AddPage('P', array($size['w'], $size['h']));
-                    $fpdi->useTemplate($template);
-                }
-            } else {
-                // Add specified pages
-                foreach ($pages as $page) {
-                    if (!$template = $fpdi->importPage($page)) {
-                        $msg = "Could not load page '$page' from '$fname'.";
-                        throw new Exception($msg);
+            foreach ( $this->files as $fileData ) {
+                list($fname, $pages, $cleanup) = $fileData;
+                $pages = $pages->getPages();
+                $iPageCount = $fpdi->setSourceFile($fname);
+                
+                if (empty($pages)) {
+                    // Add all pages
+                    for ($i=1; $i<=$iPageCount; $i++) {
+                        $template = $fpdi->importPage($i);
+                        $size = $fpdi->getTemplateSize($template);
+                        $fpdi->AddPage('P', array($size['w'], $size['h']));
+                        $fpdi->useTemplate($template);
                     }
-                    $size = $fpdi->getTemplateSize($template);
-                    $fpdi->AddPage('P', array($size['w'], $size['h']));
-                    $fpdi->useTemplate($template);
+                } else {
+                    // Add specified pages
+                    foreach ($pages as $page) {
+                        $template = $fpdi->importPage($page);
+                        $size = $fpdi->getTemplateSize($template);
+                        $fpdi->AddPage('P', array($size['w'], $size['h']));
+                        $fpdi->useTemplate($template);
+                    }
+                }
+            
+                if ( $cleanup ) {
+                    unlink($fname);
                 }
             }
-            
-            if ( $cleanup ) {
-                unlink($fname);
-            }
+        
+            $this->files = array();
+        
+            return $fpdi->Output('', 'S');
+
+        } catch (RuntimeException $e) {
+            // FPDI always throws RuntimeExceptions...
+            $msg = "FPDI: " . $e->getMessage();
+            throw new Exception($msg, 0, $e);
         }
-        
-        $this->files = array();
-        
-        return $fpdi->Output('', 'S');
+    }
+
+
+    /**
+     * Create temporary file and return name
+     * @return string
+     */
+    protected function getTempFname()
+    {
+        return tempnam(sys_get_temp_dir(), "libmergepdf");
     }
     
 }
