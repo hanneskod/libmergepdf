@@ -17,12 +17,6 @@ use RuntimeException;
 
 /**
  * Merge existing pdfs into one
- *
- * Uses FPDI 1.3.1 from Setasign and FPDF 1.6 by Olivier Plathey with the
- * FPDF_TPL 1.1.3 extension by Setasign. Merger has all the limitations of the
- * FPDI package: it cannot import dynamic content such as form fields, links or
- * page annotations (anything not a part of the page content stream).
- *
  * @package libmergepdf 
  */
 class Merger
@@ -63,7 +57,7 @@ class Merger
 
     
     /**
-     * Add PDF from filesystem pat
+     * Add PDF from filesystem path
      *
      * Note that your PDFs are merged in the order that you add them
      *
