@@ -22,9 +22,9 @@ class Pages
 
     /**
      * Array of integer page numbers
-     * @var array $pages
+     * @var array $_pages
      */
-    private $pages;
+    private $_pages;
 
 
     /**
@@ -42,24 +42,24 @@ class Pages
         assert('is_string($pageNumbers)');
 
         $pageNumbers = str_replace(' ', '', $pageNumbers);
-        $this->pages = array();
+        $this->_pages = array();
 
         foreach (explode(',', $pageNumbers) as $part) {
             if (empty($part)) {
                 continue;
             } elseif (ctype_digit($part)) {
-                $this->pages[] = intval($part);
+                $this->_pages[] = intval($part);
             } elseif (preg_match("/^\d+-\d+/", $part)) {
                 // Get pages from range
                 list($start, $end) = explode('-', $part);
                 if ( $start < $end ) {
                     while ( $start <= $end ) {
-                        $this->pages[] = $start;
+                        $this->_pages[] = $start;
                         $start++;
                     }
                 } else {
                     while ( $end <= $start ) {
-                        $this->pages[] = $start;
+                        $this->_pages[] = $start;
                         $start--;
                     }
                 }
@@ -78,7 +78,7 @@ class Pages
      */
     public function getPages()
     {
-        return $this->pages;
+        return $this->_pages;
     }
 
 }

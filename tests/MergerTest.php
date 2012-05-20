@@ -88,15 +88,15 @@ class MergerTest extends PHPUnit_Framework_TestCase
     function testMerge()
     {
         $m = new Merger();
-        $a = file_get_contents(__DIR__ . "/../data/A.pdf");
+        $a = file_get_contents(__DIR__ . "/data/A.pdf");
         $m->addRaw($a);
         $m->addRaw($a);
-        $m->addFromFile(__DIR__ . "/../data/B.pdf");
+        $m->addFromFile(__DIR__ . "/data/B.pdf");
         $aab = $m->merge();
-        file_put_contents(__DIR__ . "/../data/AAB.pdf", $aab);
+        file_put_contents(__DIR__ . "/data/AAB.pdf", $aab);
         
         $m->addRaw($aab, new Pages('3-1'));
-        file_put_contents(__DIR__ . "/../data/BAA.pdf", $m->merge());
+        file_put_contents(__DIR__ . "/data/BAA.pdf", $m->merge());
     }
 
 }

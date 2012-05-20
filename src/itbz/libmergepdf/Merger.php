@@ -26,9 +26,9 @@ class Merger
      * Array of files to be merged. Values for each files are filename,
      * Pages object and a boolean value indicating if the file should be
      * deleted after merging is complete.
-     * @var array $files
+     * @var array $_files
      */
-    private $files = array();
+    private $_files = array();
 
 
     /**
@@ -82,7 +82,7 @@ class Merger
             $pages = new Pages();
         }
 
-        $this->files[] = array($fname, $pages, $cleanup);
+        $this->_files[] = array($fname, $pages, $cleanup);
     }
 
 
@@ -95,7 +95,7 @@ class Merger
      */
     public function merge()
     {
-        if (empty($this->files)) {
+        if (empty($this->_files)) {
             $msg = "Unable to merge, no PDFs added";
             throw new Exception($msg);
         }
@@ -104,7 +104,7 @@ class Merger
 
             $fpdi = new FPDI();
             
-            foreach ( $this->files as $fileData ) {
+            foreach ( $this->_files as $fileData ) {
                 list($fname, $pages, $cleanup) = $fileData;
                 $pages = $pages->getPages();
                 $iPageCount = $fpdi->setSourceFile($fname);
@@ -132,7 +132,7 @@ class Merger
                 }
             }
         
-            $this->files = array();
+            $this->_files = array();
         
             return $fpdi->Output('', 'S');
 

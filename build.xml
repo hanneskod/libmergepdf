@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="mreg" basedir="." default="build">
+    <property name="APP_ROOT" value="${project.basedir}" />
+    <property name="SRC_DIR" value="${APP_ROOT}/src" />
+    <property name="TEST_DIR" value="${APP_ROOT}/tests" />
+    <property name="CODE_STANDARD" value="Zend" />
+
+    <fileset dir="${SRC_DIR}" id="sourceCode">
+        <include name="**/*.php" />
+    </fileset>
+
+    <fileset dir="${TEST_DIR}" id="testCode">
+        <include name="**/*Test*.php"/>
+        <exclude name="**/Abstract*.php"/>
+    </fileset>
+
+
+    <target name="build" depends="test,codesniffer,messdetector,copydetector">
+    </target>
+
+
+    <target name="codesniffer">
+        <phpcodesniffer
+            standard="${CODE_STANDARD}"
+            showWarnings="true"
+            encoding="utf8"
+            haltonerror="true"
+            haltonwarning="true"
+            format="full"
+            >
+            <fileset refid="sourceCode" />
+        </phpcodesniffer>
+    </target>
+
+
+    <target name="test" depends="getdependencies">
+        <phpunit
+            printsummary="true"
+            haltonfailure="true"
+            haltonerror="true"
+            haltonincomplete="true"
+            haltonskipped="true"
+            bootstrap="${APP_ROOT}/vendor/autoload.php"
+            >
+            <batchtest>
+                <fileset refid="testCode" />
+            </batchtest>
+        </phpunit>
+    </target>
+
+
+    <target name="copydetector">
+        <phpcpd>
+            <fileset refid="sourceCode" />
+       </phpcpd>
+    </target>
+
+
+    <target name="messdetector">
+        <phpmd>
+            <fileset refid="sourceCode" />
+        </phpmd>
+    </target>
+
+
+    <target name="getdependencies" depends="getcomposer">
+        <if>
+            <available file="${APP_ROOT}/vendor" />
+            <then>
+                <echo msg="Dependencies installed in vendor directory" />
+            </then>
+            <else>
+                <echo msg="Downloading dependencies using composer..." />
+                <exec
+                    command="php composer.phar install"
+                    dir="${APP_ROOT}"
+                    checkreturn="true"
+                    />
+            </else>
+        </if>
+    </target>
+
+
+    <target name="getcomposer">
+        <if>
+            <available file="${APP_ROOT}/composer.phar" />
+            <then>
+                <echo msg="Composer.phar installed" />
+            </then>
+            <else>
+                <echo msg="Downloading composer.phar..." />
+                <exec
+                    command="curl -s http://getcomposer.org/installer | php"
+                    dir="${APP_ROOT}"
+                    checkreturn="true"
+                    />
+            </else>
+        </if>
+    </target>
+
+</project>
