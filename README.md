@@ -7,17 +7,20 @@ PHP library for merging multiple PDFs
 ##Installation
 
 libmergepdf depends och FPDI and FPDF. Dependecies are handled with composer.
-To install cd into libmergepdf root dir. Get composer:
+To install cd into libmergepdf root dir. To install dependencies and rund tests
+using Phing:
+
+    $ phing test
+
+Or to run more analysis simple type:
+
+    $ phing
+
+To run tests without Phing:
 
     $ curl -s http://getcomposer.org/installer | php
-
-Install dependencies:
-
     $ php composer.phar install
-    
-If you have phpunit installed you can run unittests to check that all is ok
-
-    $ phpunit --bootstrap tests/bootstrap.php tests/libmergepdf/
+    $ phpunit --bootstrap vendor/autoload.php tests
 
 
 ##Installation using composer

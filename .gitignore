@@ -1,3 +1,5 @@
 vendor
 composer.phar
 composer.lock
+tests/data/AAB.pdf
+tests/data/BAA.pdf
