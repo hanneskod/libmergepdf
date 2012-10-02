@@ -11,13 +11,13 @@
             "email": "hannes.forsgard@gmail.com"
         }
     ],
-    "require": {
-        "php": ">=5.3.0",
-        "itbz/fpdi": "1.4.*"
-    },
     "autoload": {
         "psr-0": {
             "itbz\\libmergepdf": "src/"
         }
+    },
+    "require": {
+        "php": ">=5.3.0",
+        "itbz/fpdi": "1.4.*"
     }
 }
