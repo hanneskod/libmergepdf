@@ -39,4 +39,5 @@ Append the first ten pages of *bar.pdf* to *foo.pdf*:
 
 ##Notes for version 2.0
 
-As of version 2.0 FPDI must be injected when creating anew libmergepdf instance.
+As of version 2.0 FPDI must be injected when creating a new libmergepdf
+instance.
