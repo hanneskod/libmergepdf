@@ -1,76 +1,110 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="mreg" basedir="." default="build">
+<project name="mreg" basedir="." default="buildAll">
+    <property name="APP_NAME" value="libmergepdf" />
     <property name="APP_ROOT" value="${project.basedir}" />
     <property name="SRC_DIR" value="${APP_ROOT}/src" />
     <property name="TEST_DIR" value="${APP_ROOT}/tests" />
-    <property name="CODE_STANDARD" value="Zend" />
+    <property name="BUILD_DIR" value="${APP_ROOT}/build" />
+    <property name="CODE_STANDARD" value="PSR2" />
 
-    <fileset dir="${SRC_DIR}" id="sourceCode">
+    <fileset dir="${SRC_DIR}" id="filesetSource">
         <include name="**/*.php" />
     </fileset>
 
-    <fileset dir="${TEST_DIR}" id="testCode">
-        <include name="**/*Test*.php"/>
-        <exclude name="**/Abstract*.php"/>
+    <fileset dir="${TEST_DIR}" id="filesetTests">
+        <include name="**/*.php" />
     </fileset>
 
-
-    <target name="build" depends="test,codesniffer,messdetector,copydetector">
+    <target name="help">
+        <echo msg="${APP_NAME} automated build file"/>
+        <echo msg="======================================="/>
+        <echo msg="test         run unittests"/>
+        <echo msg="sniff        run php code sniffer"/>
+        <echo msg="phpcpd       run php copy detector"/>
+        <echo msg="phpmd        run php mess detector"/>
+        <echo msg="pdepend      run php depend"/>
+        <echo msg="document     generate api documentation"/>
     </target>
 
+    <target name="buildAll" depends="test,sniff,phpcpd,phpmd,pdepend,document">
+    </target>
 
-    <target name="codesniffer">
+    <target name="test" depends="getdependencies,createBuildDir">
+        <exec
+            command="phpunit --coverage-html ${BUILD_DIR}/test-coverage --coverage-text=${BUILD_DIR}/test-coverage.txt"
+            dir="${TEST_DIR}"
+            checkreturn="true"
+            passthru="true"
+            />
+    </target>
+
+    <target name="sniff" depends="createBuildDir">
         <phpcodesniffer
             standard="${CODE_STANDARD}"
             showWarnings="true"
             encoding="utf8"
-            haltonerror="true"
-            haltonwarning="true"
-            format="full"
+            haltonerror="false"
+            haltonwarning="false"
+            docGenerator="HTML"
+            docFile="${BUILD_DIR}/phpcs/rules.html"
             >
-            <fileset refid="sourceCode" />
+            <fileset refid="filesetSource"/>
+            <fileset refid="filesetTests"/>
+            <formatter type="full" outfile="${BUILD_DIR}/phpcs/sniff.txt"/>
         </phpcodesniffer>
     </target>
 
-
-    <target name="test" depends="getdependencies">
-        <phpunit
-            printsummary="true"
-            haltonfailure="true"
-            haltonerror="true"
-            haltonincomplete="true"
-            haltonskipped="true"
-            bootstrap="${APP_ROOT}/vendor/autoload.php"
-            >
-            <batchtest>
-                <fileset refid="testCode" />
-            </batchtest>
-        </phpunit>
-    </target>
-
-
-    <target name="copydetector">
+    <target name="phpcpd" depends="createBuildDir">
         <phpcpd>
-            <fileset refid="sourceCode" />
+            <fileset refid="filesetSource"/>
+            <fileset refid="filesetTests"/>
+            <formatter type="default" outfile="${BUILD_DIR}/phpcpd.txt"/>
        </phpcpd>
     </target>
 
-
-    <target name="messdetector">
+    <target name="phpmd" depends="createBuildDir">
         <phpmd>
-            <fileset refid="sourceCode" />
+            <fileset refid="filesetSource"/>
+            <fileset refid="filesetTests"/>
+            <formatter type="html" outfile="${BUILD_DIR}/phpmd.html"/>
         </phpmd>
     </target>
 
+    <target name="pdepend" depends="createBuildDir">
+        <phpdepend>
+            <fileset refid="filesetSource"/>
+            <logger type="jdepend-chart" outfile="${BUILD_DIR}/pdepend/jdepend.svg"/>
+            <logger type="overview-pyramid" outfile="${BUILD_DIR}/pdepend/pyramid.svg"/>
+            <logger type="summary-xml" outfile="${BUILD_DIR}/pdepend/summary.xml"/>
+        </phpdepend>
+    </target>
+
+    <target name="document" depends="createBuildDir">
+        <exec
+            command="phpdoc --title ${APP_NAME} -d ${SRC_DIR} -t ${BUILD_DIR}/apidocs"
+            dir="${APP_ROOT}"
+            passthru="true"
+            />
+        <exec
+            command="chmod -R 777 apidocs"
+            dir="${BUILD_DIR}"
+            />
+    </target>
+
+    <target name="createBuildDir">
+        <mkdir dir="${BUILD_DIR}"/>
+        <mkdir dir="${BUILD_DIR}/phpcs"/>
+        <mkdir dir="${BUILD_DIR}/pdepend"/>
+    </target>
 
     <target name="getdependencies" depends="getcomposer">
         <if>
-            <available file="${APP_ROOT}/vendor" />
+            <available file="${APP_ROOT}/vendor"/>
             <then>
-                <echo msg="Dependencies installed in vendor directory" />
+                <echo msg="Dependencies installed in vendor directory"/>
             </then>
             <else>
-                <echo msg="Downloading dependencies using composer..." />
+                <echo msg="Downloading dependencies using composer..."/>
                 <exec
                     command="php composer.phar install"
                     dir="${APP_ROOT}"
@@ -80,15 +114,14 @@
         </if>
     </target>
 
-
     <target name="getcomposer">
         <if>
-            <available file="${APP_ROOT}/composer.phar" />
+            <available file="${APP_ROOT}/composer.phar"/>
             <then>
-                <echo msg="Composer.phar installed" />
+                <echo msg="Composer.phar installed"/>
             </then>
             <else>
-                <echo msg="Downloading composer.phar..." />
+                <echo msg="Downloading composer.phar..."/>
                 <exec
                     command="curl -s http://getcomposer.org/installer | php"
                     dir="${APP_ROOT}"
