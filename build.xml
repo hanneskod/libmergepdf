@@ -106,7 +106,7 @@
             <else>
                 <echo msg="Downloading dependencies using composer..."/>
                 <exec
-                    command="php composer.phar install"
+                    command="php composer.phar install --dev"
                     dir="${APP_ROOT}"
                     checkreturn="true"
                     />
