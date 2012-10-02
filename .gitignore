@@ -4,5 +4,5 @@ composer.phar
 composer.lock
 libmergepdf.sublime-project
 libmergepdf.sublime-workspace
-tests/data/AAB.pdf
-tests/data/BAA.pdf
+tests/unit/data/AAB.pdf
+tests/unit/data/BAA.pdf
