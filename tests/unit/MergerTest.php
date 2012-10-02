@@ -1,102 +1,95 @@
 <?php
-/**
- * This file is part of the libmergepdf package
- *
- * Copyright (c) 2012 Hannes Forsgård
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- *
- * @author Hannes Forsgård <hannes.forsgard@gmail.com>
- * @package libmergepdf
- * @subpackage Tests
- */
 namespace itbz\libmergepdf;
-use PHPUnit_Framework_TestCase;
 
+use fpdi\FPDI;
 
-
-/**
- * Test class that create unvalid temporary file names
- * @package libmergepdf
- * @subpackage Tests
- */
-class MergerUnvalidTempName extends Merger
+class MergerTest extends \PHPUnit_Framework_TestCase
 {
-
-    protected function getTempFname()
-    {
-        return __DIR__ . 'nonexisting' . DIRECTORY_SEPARATOR . 'filename';
-    }
-
-}
-
-
-/**
- * Test the Merger class
- * @package libmergepdf
- * @subpackage Tests
- */
-class MergerTest extends PHPUnit_Framework_TestCase
-{
-
     /**
      * @expectedException itbz\libmergepdf\Exception
      */
-    function testUnableToCreateTempFileError()
+    public function testUnableToCreateTempFileError()
     {
-        $m = new MergerUnvalidTempName();
+        $m = $this->getMock(
+            '\itbz\libmergepdf\Merger',
+            array('getTempFname'),
+            array(new FPDI)
+        );
+
+        $m->expects($this->once())
+            ->method('getTempFname')
+            ->will(
+                $this->returnValue(
+                    __DIR__ . 'nonexisting' . DIRECTORY_SEPARATOR . 'filename'
+                )
+            );
+
         $m->addRaw('');
     }
 
-
     /**
      * @expectedException itbz\libmergepdf\Exception
      */
-    function testUnvalicFileNameError()
+    public function testUnvalicFileNameError()
     {
-        $m = new Merger();
+        $m = new Merger(new FPDI);
         $m->addFromFile(__DIR__ . '/nonexistingfile');
     }
 
-
     /**
      * @expectedException itbz\libmergepdf\Exception
      */
-    function testNoPdfsAddedError()
+    public function testNoPdfsAddedError()
     {
-        $m = new Merger();
+        $m = new Merger(new FPDI);
         $m->merge();
     }
 
-
     /**
      * @expectedException itbz\libmergepdf\Exception
      */
-    function testInvalidPageError()
+    public function testInvalidPageError()
     {
-        $m = new Merger();
+        $m = new Merger(new FPDI);
         $m->addFromFile(__DIR__ . "/../data/A.pdf", new Pages('2'));
         $m->merge();
     }
-
 
     /**
      * From files data/A.pdf and data/B.pdf this should create
      * data/AAB.pdf and data/BAA.pdf
      */
-    function testMerge()
+    public function testMerge()
     {
-        $m = new Merger();
+        $m = new Merger(new FPDI);
         $a = file_get_contents(__DIR__ . "/data/A.pdf");
         $m->addRaw($a);
         $m->addRaw($a);
         $m->addFromFile(__DIR__ . "/data/B.pdf");
         $aab = $m->merge();
         file_put_contents(__DIR__ . "/data/AAB.pdf", $aab);
-        
+
         $m->addRaw($aab, new Pages('3-1'));
         file_put_contents(__DIR__ . "/data/BAA.pdf", $m->merge());
     }
 
+    /**
+     * @expectedException itbz\libmergepdf\Exception
+     */
+    public function testFpdiException()
+    {
+        $fpdi = $this->getMock(
+            '\fpdi\FPDI',
+            array('setSourceFile')
+        );
+
+        $fpdi->expects($this->once())
+            ->method('setSourceFile')
+            ->will($this->throwException(new \RuntimeException));
+
+        $m = new Merger($fpdi);
+        $a = file_get_contents(__DIR__ . "/data/A.pdf");
+        $m->addRaw($a);
+        $m->merge();
+    }
 }

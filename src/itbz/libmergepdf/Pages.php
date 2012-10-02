@@ -12,20 +12,19 @@
  */
 namespace itbz\libmergepdf;
 
-
 /**
  * Parse page numbers from string
+ * 
  * @package libmergepdf
  */
 class Pages
 {
-
     /**
      * Array of integer page numbers
-     * @var array $_pages
+     * 
+     * @var array
      */
-    private $_pages;
-
+    private $pages;
 
     /**
      * Parse page numbers from string
@@ -35,31 +34,32 @@ class Pages
      * before 1-5 then 12-14 will be placed first.
      *
      * @param string $pageNumbers
-     * @throw Exception if unable to parse page numbers
+     * 
+     * @throws Exception if unable to parse page numbers
      */
     public function __construct($pageNumbers = '')
     {
         assert('is_string($pageNumbers)');
 
         $pageNumbers = str_replace(' ', '', $pageNumbers);
-        $this->_pages = array();
+        $this->pages = array();
 
         foreach (explode(',', $pageNumbers) as $part) {
             if (empty($part)) {
                 continue;
             } elseif (ctype_digit($part)) {
-                $this->_pages[] = intval($part);
+                $this->pages[] = intval($part);
             } elseif (preg_match("/^\d+-\d+/", $part)) {
                 // Get pages from range
                 list($start, $end) = explode('-', $part);
                 if ( $start < $end ) {
                     while ( $start <= $end ) {
-                        $this->_pages[] = $start;
+                        $this->pages[] = $start;
                         $start++;
                     }
                 } else {
                     while ( $end <= $start ) {
-                        $this->_pages[] = $start;
+                        $this->pages[] = $start;
                         $start--;
                     }
                 }
@@ -68,17 +68,15 @@ class Pages
                 throw new Exception($msg);
             }
         }
-    
     }
-
 
     /**
      * Get array of integer page numbers
+     * 
      * @return array
      */
     public function getPages()
     {
-        return $this->_pages;
+        return $this->pages;
     }
-
 }

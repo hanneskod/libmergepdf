@@ -10,26 +10,45 @@
  * @author Hannes Forsgård <hannes.forsgard@gmail.com>
  * @package libmergepdf
  */
+
 namespace itbz\libmergepdf;
+
 use fpdi\FPDI;
 use RuntimeException;
 
-
 /**
  * Merge existing pdfs into one
+ * 
  * @package libmergepdf 
  */
 class Merger
 {
+    /**
+     * Array of files to be merged.
+     * 
+     * Values for each files are filename, Pages object and a boolean value
+     * indicating if the file should be deleted after merging is complete.
+     * 
+     * @var array
+     */
+    private $files = array();
 
     /**
-     * Array of files to be merged. Values for each files are filename,
-     * Pages object and a boolean value indicating if the file should be
-     * deleted after merging is complete.
-     * @var array $_files
+     * Fpdi object
+     * 
+     * @var FPDI
      */
-    private $_files = array();
+    private $fpdi;
 
+    /**
+     * Merge existing pdfs into one
+     * 
+     * @param FPDI $fpdi
+     */
+    public function __construct(FPDI $fpdi)
+    {
+        $this->fpdi = $fpdi;
+    }
 
     /**
      * Add raw PDF from string
@@ -38,24 +57,25 @@ class Merger
      *
      * @param string $pdf
      * @param Pages $pages
+     * 
      * @return void
+     * 
      * @throws Exception if unable to create temporary file
      */
-    public function addRaw($pdf, Pages $pages = NULL)
+    public function addRaw($pdf, Pages $pages = null)
     {
         assert('is_string($pdf)');
 
         // Create temporary file
         $fname = $this->getTempFname();
-        if (@file_put_contents($fname, $pdf) === FALSE) {
+        if (@file_put_contents($fname, $pdf) === false) {
             $msg = "Unable to create temporary file";
             throw new Exception($msg);
         }
-        
-        $this->addFromFile($fname, $pages, TRUE);
+
+        $this->addFromFile($fname, $pages, true);
     }
 
-    
     /**
      * Add PDF from filesystem path
      *
@@ -65,10 +85,12 @@ class Merger
      * @param Pages $pages
      * @param bool $cleanup Boolean indicating if file should be deleted when
      * merging is complete.
+     * 
      * @return void
+     * 
      * @throws Exception if $fname is not a valid file
      */
-    public function addFromFile($fname, Pages $pages = NULL, $cleanup = FALSE)
+    public function addFromFile($fname, Pages $pages = null, $cleanup = false)
     {
         assert('is_string($fname)');
         assert('is_bool($cleanup)');
@@ -82,33 +104,32 @@ class Merger
             $pages = new Pages();
         }
 
-        $this->_files[] = array($fname, $pages, $cleanup);
+        $this->files[] = array($fname, $pages, $cleanup);
     }
-
-
 
     /**
      * Merges your provided PDFs and get raw string
+     * 
      * @return string
+     * 
      * @throws Exception if no PDFs were added
      * @throws Exception if a specified page does not exist
      */
     public function merge()
     {
-        if (empty($this->_files)) {
+        if (empty($this->files)) {
             $msg = "Unable to merge, no PDFs added";
             throw new Exception($msg);
         }
 
         try {
+            $fpdi = clone $this->fpdi;
 
-            $fpdi = new FPDI();
-            
-            foreach ( $this->_files as $fileData ) {
+            foreach ($this->files as $fileData) {
                 list($fname, $pages, $cleanup) = $fileData;
                 $pages = $pages->getPages();
                 $iPageCount = $fpdi->setSourceFile($fname);
-                
+
                 if (empty($pages)) {
                     // Add all pages
                     for ($i=1; $i<=$iPageCount; $i++) {
@@ -126,14 +147,14 @@ class Merger
                         $fpdi->useTemplate($template);
                     }
                 }
-            
-                if ( $cleanup ) {
+
+                if ($cleanup) {
                     unlink($fname);
                 }
             }
-        
-            $this->_files = array();
-        
+
+            $this->files = array();
+
             return $fpdi->Output('', 'S');
 
         } catch (RuntimeException $e) {
@@ -143,14 +164,13 @@ class Merger
         }
     }
 
-
     /**
      * Create temporary file and return name
+     * 
      * @return string
      */
-    protected function getTempFname()
+    public function getTempFname()
     {
         return tempnam(sys_get_temp_dir(), "libmergepdf");
     }
-    
 }

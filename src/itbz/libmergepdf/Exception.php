@@ -12,9 +12,9 @@
  */
 namespace itbz\libmergepdf;
 
-
 /**
  * Base exception
+ *
  * @package libmergepdf
  */
 class Exception extends \Exception
