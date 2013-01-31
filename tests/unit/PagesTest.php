@@ -1,5 +1,5 @@
 <?php
-namespace itbz\libmergepdf;
+namespace iio\libmergepdf;
 
 class PagesTest extends \PHPUnit_Framework_TestCase
 {
@@ -26,7 +26,7 @@ class PagesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException itbz\libmergepdf\Exception
+     * @expectedException iio\libmergepdf\Exception
      */
     public function testInvalidString()
     {

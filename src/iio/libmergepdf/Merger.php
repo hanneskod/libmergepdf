@@ -11,7 +11,7 @@
  * @package libmergepdf
  */
 
-namespace itbz\libmergepdf;
+namespace iio\libmergepdf;
 
 use fpdi\FPDI;
 use RuntimeException;

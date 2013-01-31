@@ -109,6 +109,7 @@
                     command="php composer.phar install --dev"
                     dir="${APP_ROOT}"
                     checkreturn="true"
+                    passthru="true"
                     />
             </else>
         </if>
@@ -126,6 +127,7 @@
                     command="curl -s http://getcomposer.org/installer | php"
                     dir="${APP_ROOT}"
                     checkreturn="true"
+                    passthru="true"
                     />
             </else>
         </if>

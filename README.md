@@ -24,16 +24,16 @@ Or to run more analysis simple type:
 
 ##Installation using composer
 
-Simply add itbz/libmergepdf to your list of required libraries
+Simply add iio/libmergepdf to your list of required libraries
 
 
 ##Usage
 
 Append the first ten pages of *bar.pdf* to *foo.pdf*:
 
-    $m = new \itbz\libmergepdf\Merger(new \fpdi\FPDI);
+    $m = new \iio\libmergepdf\Merger(new \fpdi\FPDI);
     $m->addFromFile('foo.pdf');
-    $m->addFromFile('bar.pdf', new \itbz\libmergepdf\Pages('1-10'));
+    $m->addFromFile('bar.pdf', new \iio\libmergepdf\Pages('1-10'));
     file_put_contents('foobar.pdf', $m->merge());
 
 

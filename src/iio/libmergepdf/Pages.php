@@ -10,7 +10,7 @@
  * @author Hannes Forsgård <hannes.forsgard@gmail.com>
  * @package libmergepdf
  */
-namespace itbz\libmergepdf;
+namespace iio\libmergepdf;
 
 /**
  * Parse page numbers from string

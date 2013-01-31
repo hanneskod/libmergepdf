@@ -1,17 +1,17 @@
 <?php
-namespace itbz\libmergepdf;
+namespace iio\libmergepdf;
 
 use fpdi\FPDI;
 
 class MergerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @expectedException itbz\libmergepdf\Exception
+     * @expectedException iio\libmergepdf\Exception
      */
     public function testUnableToCreateTempFileError()
     {
         $m = $this->getMock(
-            '\itbz\libmergepdf\Merger',
+            '\iio\libmergepdf\Merger',
             array('getTempFname'),
             array(new FPDI)
         );
@@ -28,7 +28,7 @@ class MergerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException itbz\libmergepdf\Exception
+     * @expectedException iio\libmergepdf\Exception
      */
     public function testUnvalicFileNameError()
     {
@@ -37,7 +37,7 @@ class MergerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException itbz\libmergepdf\Exception
+     * @expectedException iio\libmergepdf\Exception
      */
     public function testNoPdfsAddedError()
     {
@@ -46,7 +46,7 @@ class MergerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException itbz\libmergepdf\Exception
+     * @expectedException iio\libmergepdf\Exception
      */
     public function testInvalidPageError()
     {
@@ -74,7 +74,7 @@ class MergerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException itbz\libmergepdf\Exception
+     * @expectedException iio\libmergepdf\Exception
      */
     public function testFpdiException()
     {
