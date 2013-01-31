@@ -6,36 +6,32 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @author Hannes Forsgård <hannes.forsgard@gmail.com>
- * @package libmergepdf
  */
+
 namespace iio\libmergepdf;
 
 /**
  * Parse page numbers from string
  * 
+ * @author  Hannes Forsgård <hannes.forsgard@gmail.com>
  * @package libmergepdf
  */
 class Pages
 {
     /**
-     * Array of integer page numbers
-     * 
-     * @var array
+     * @var array Array of integer page numbers
      */
     private $pages;
 
     /**
-     * Parse page numbers from string
+     * Constructor
      *
      * Pages should be formatted as 1,3,6 or 12-16 or combined. Note that pages
      * are merged in the order that you provide them. If you put pages 12-14
      * before 1-5 then 12-14 will be placed first.
      *
-     * @param string $pageNumbers
-     * 
-     * @throws Exception if unable to parse page numbers
+     * @param  string    $pageNumbers
+     * @throws Exception If unable to parse page numbers
      */
     public function __construct($pageNumbers = '')
     {

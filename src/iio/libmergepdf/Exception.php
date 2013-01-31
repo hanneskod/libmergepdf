@@ -6,15 +6,14 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @author Hannes Forsgård <hannes.forsgard@gmail.com>
- * @package libmergepdf
  */
+
 namespace iio\libmergepdf;
 
 /**
  * Base exception
  *
+ * @author  Hannes Forsgård <hannes.forsgard@gmail.com>
  * @package libmergepdf
  */
 class Exception extends \Exception

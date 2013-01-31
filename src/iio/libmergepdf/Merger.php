@@ -6,9 +6,6 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @author Hannes Forsgård <hannes.forsgard@gmail.com>
- * @package libmergepdf
  */
 
 namespace iio\libmergepdf;
@@ -19,6 +16,7 @@ use RuntimeException;
 /**
  * Merge existing pdfs into one
  * 
+ * @author  Hannes Forsgård <hannes.forsgard@gmail.com>
  * @package libmergepdf 
  */
 class Merger
@@ -34,14 +32,12 @@ class Merger
     private $files = array();
 
     /**
-     * Fpdi object
-     * 
-     * @var FPDI
+     * @var FPDI Fpdi object
      */
     private $fpdi;
 
     /**
-     * Merge existing pdfs into one
+     * Constructor
      * 
      * @param FPDI $fpdi
      */
@@ -55,11 +51,9 @@ class Merger
      *
      * Note that your PDFs are merged in the order that you add them
      *
-     * @param string $pdf
-     * @param Pages $pages
-     * 
+     * @param  string    $pdf
+     * @param  Pages     $pages
      * @return void
-     * 
      * @throws Exception if unable to create temporary file
      */
     public function addRaw($pdf, Pages $pages = null)
@@ -81,14 +75,11 @@ class Merger
      *
      * Note that your PDFs are merged in the order that you add them
      *
-     * @param string $fname
-     * @param Pages $pages
-     * @param bool $cleanup Boolean indicating if file should be deleted when
-     * merging is complete.
-     * 
+     * @param  string    $fname
+     * @param  Pages     $pages
+     * @param  bool      $cleanup Flag if file should be deleted after merging
      * @return void
-     * 
-     * @throws Exception if $fname is not a valid file
+     * @throws Exception If $fname is not a valid file
      */
     public function addFromFile($fname, Pages $pages = null, $cleanup = false)
     {
@@ -111,9 +102,8 @@ class Merger
      * Merges your provided PDFs and get raw string
      * 
      * @return string
-     * 
-     * @throws Exception if no PDFs were added
-     * @throws Exception if a specified page does not exist
+     * @throws Exception If no PDFs were added
+     * @throws Exception If a specified page does not exist
      */
     public function merge()
     {
