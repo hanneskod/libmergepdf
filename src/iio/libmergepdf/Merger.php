@@ -125,7 +125,8 @@ class Merger
                     for ($i=1; $i<=$iPageCount; $i++) {
                         $template = $fpdi->importPage($i);
                         $size = $fpdi->getTemplateSize($template);
-                        $fpdi->AddPage('P', array($size['w'], $size['h']));
+                        $orientation = ($size['w'] > $size['h']) ? 'L' : 'P';
+                        $fpdi->AddPage($orientation, array($size['w'], $size['h']));
                         $fpdi->useTemplate($template);
                     }
                 } else {
@@ -133,7 +134,8 @@ class Merger
                     foreach ($pages as $page) {
                         $template = $fpdi->importPage($page);
                         $size = $fpdi->getTemplateSize($template);
-                        $fpdi->AddPage('P', array($size['w'], $size['h']));
+                        $orientation = ($size['w'] > $size['h']) ? 'L' : 'P';
+                        $fpdi->AddPage($orientation, array($size['w'], $size['h']));
                         $fpdi->useTemplate($template);
                     }
                 }
