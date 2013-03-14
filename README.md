@@ -37,7 +37,9 @@ Append the first ten pages of *bar.pdf* to *foo.pdf*:
     file_put_contents('foobar.pdf', $m->merge());
 
 
-##Notes for version 2.0
+##Changelog
 
-As of version 2.0 FPDI must be injected when creating a new libmergepdf
+2.1.1 Now allows merging of Landscape and Portrait pages (thanks to willoller)
+
+2.0 As of version 2.0 FPDI must be injected when creating a new libmergepdf
 instance.
