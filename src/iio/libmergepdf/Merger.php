@@ -120,24 +120,18 @@ class Merger
                 $pages = $pages->getPages();
                 $iPageCount = $fpdi->setSourceFile($fname);
 
+                // If no pages are specified, add all pages
                 if (empty($pages)) {
-                    // Add all pages
-                    for ($i=1; $i<=$iPageCount; $i++) {
-                        $template = $fpdi->importPage($i);
-                        $size = $fpdi->getTemplateSize($template);
-                        $orientation = ($size['w'] > $size['h']) ? 'L' : 'P';
-                        $fpdi->AddPage($orientation, array($size['w'], $size['h']));
-                        $fpdi->useTemplate($template);
-                    }
-                } else {
-                    // Add specified pages
-                    foreach ($pages as $page) {
-                        $template = $fpdi->importPage($page);
-                        $size = $fpdi->getTemplateSize($template);
-                        $orientation = ($size['w'] > $size['h']) ? 'L' : 'P';
-                        $fpdi->AddPage($orientation, array($size['w'], $size['h']));
-                        $fpdi->useTemplate($template);
-                    }
+                    $pages = range(1, $iPageCount);
+                }
+                
+                // Add specified pages
+                foreach ($pages as $page) {
+                    $template = $fpdi->importPage($page);
+                    $size = $fpdi->getTemplateSize($template);
+                    $orientation = ($size['w'] > $size['h']) ? 'L' : 'P';
+                    $fpdi->AddPage($orientation, array($size['w'], $size['h']));
+                    $fpdi->useTemplate($template);
                 }
 
                 if ($cleanup) {
