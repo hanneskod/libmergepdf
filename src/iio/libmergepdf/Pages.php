@@ -48,17 +48,7 @@ class Pages
             } elseif (preg_match("/^\d+-\d+/", $part)) {
                 // Get pages from range
                 list($start, $end) = explode('-', $part);
-                if ( $start < $end ) {
-                    while ( $start <= $end ) {
-                        $this->pages[] = $start;
-                        $start++;
-                    }
-                } else {
-                    while ( $end <= $start ) {
-                        $this->pages[] = $start;
-                        $start--;
-                    }
-                }
+                $this->pages = array_merge($this->pages, range($start, $end));
             } else {
                 $msg = "Invalid page number(s) for '$part'";
                 throw new Exception($msg);
