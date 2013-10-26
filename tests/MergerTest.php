@@ -1,8 +1,6 @@
 <?php
 namespace iio\libmergepdf;
 
-use fpdi\FPDI;
-
 class MergerTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -10,10 +8,12 @@ class MergerTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnableToCreateTempFileError()
     {
+        $fpdi = $this->getMock('\fpdi\FPDI');
+
         $m = $this->getMock(
             '\iio\libmergepdf\Merger',
             array('getTempFname'),
-            array(new FPDI)
+            array($fpdi)
         );
 
         $m->expects($this->once())
@@ -30,9 +30,10 @@ class MergerTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException iio\libmergepdf\Exception
      */
-    public function testUnvalicFileNameError()
+    public function testUnvalidFileNameError()
     {
-        $m = new Merger(new FPDI);
+        $fpdi = $this->getMock('\fpdi\FPDI');
+        $m = new Merger($fpdi);
         $m->addFromFile(__DIR__ . '/nonexistingfile');
     }
 
@@ -41,8 +42,41 @@ class MergerTest extends \PHPUnit_Framework_TestCase
      */
     public function testNoPdfsAddedError()
     {
-        $m = new Merger(new FPDI);
+        $fpdi = $this->getMock('\fpdi\FPDI');
+        $m = new Merger($fpdi);
         $m->merge();
+    }
+
+    public function testMerge()
+    {
+        $fpdi = $this->getMock(
+            '\fpdi\FPDI',
+            array(
+                'setSourceFile',
+                'importPage',
+                'getTemplateSize',
+                'AddPage',
+                'useTemplate',
+                'Output'
+            )
+        );
+
+        $fpdi->expects($this->at(2))
+            ->method('importPage')
+            ->will($this->returnValue(2));
+
+        $fpdi->expects($this->at(4))
+            ->method('getTemplateSize')
+            ->will($this->returnValue(array(10,20)));
+
+        $fpdi->expects($this->once())
+            ->method('Output')
+            ->will($this->returnValue('merged'));
+
+        $m = new Merger($fpdi);
+        $m->addRaw('');
+        $m->addRaw('');
+        $this->assertEquals('merged', $m->merge());
     }
 
     /**
@@ -50,27 +84,18 @@ class MergerTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidPageError()
     {
-        $m = new Merger(new FPDI);
-        $m->addFromFile(__DIR__ . "/../data/A.pdf", new Pages('2'));
+        $fpdi = $this->getMock(
+            '\fpdi\FPDI',
+            array('importPage', 'setSourceFile')
+        );
+
+        $fpdi->expects($this->once())
+            ->method('importPage')
+            ->will($this->throwException(new \RuntimeException));
+
+        $m = new Merger($fpdi);
+        $m->addRaw('', new Pages('2'));
         $m->merge();
-    }
-
-    /**
-     * From files data/A.pdf and data/B.pdf this should create
-     * data/AAB.pdf and data/BAA.pdf
-     */
-    public function testMerge()
-    {
-        $m = new Merger(new FPDI);
-        $a = file_get_contents(__DIR__ . "/data/A.pdf");
-        $m->addRaw($a);
-        $m->addRaw($a);
-        $m->addFromFile(__DIR__ . "/data/B.pdf");
-        $aab = $m->merge();
-        file_put_contents(__DIR__ . "/data/AAB.pdf", $aab);
-
-        $m->addRaw($aab, new Pages('3-1'));
-        file_put_contents(__DIR__ . "/data/BAA.pdf", $m->merge());
     }
 
     /**
@@ -88,8 +113,7 @@ class MergerTest extends \PHPUnit_Framework_TestCase
             ->will($this->throwException(new \RuntimeException));
 
         $m = new Merger($fpdi);
-        $a = file_get_contents(__DIR__ . "/data/A.pdf");
-        $m->addRaw($a);
+        $m->addRaw('');
         $m->merge();
     }
 }
