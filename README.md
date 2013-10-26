@@ -50,7 +50,9 @@ information try
 
 ##Changelog
 
-2.1.1 Now allows merging of Landscape and Portrait pages (thanks to willoller)
+2.2.0 Pages now support addPage() and addRange().
+
+2.1.1 Now allows merging of Landscape and Portrait pages (thanks to @willoller).
 
 2.0 As of version 2.0 FPDI must be injected when creating a new libmergepdf
 instance.
