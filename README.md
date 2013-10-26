@@ -1,30 +1,12 @@
 libmergepdf
 ===========
 
-PHP library for merging multiple PDFs
-
-
-##Installation
-
-libmergepdf depends on FPDI. Dependecies are handled with composer.
-To install cd into libmergepdf root dir and type:
-
-    $ curl -s http://getcomposer.org/installer | php
-    $ php composer.phar install
-
-
-To install dependencies and rund tests using Phing:
-
-    $ phing test
-
-Or to run more analysis simple type:
-
-    $ phing
+PHP library for merging multiple PDFs using fpdi/FPDI.
 
 
 ##Installation using composer
 
-Simply add iio/libmergepdf to your list of required libraries
+Simply add `iio/libmergepdf` to your list of required libraries.
 
 
 ##Usage
@@ -35,6 +17,29 @@ Append the first ten pages of *bar.pdf* to *foo.pdf*:
     $m->addFromFile('foo.pdf');
     $m->addFromFile('bar.pdf', new \iio\libmergepdf\Pages('1-10'));
     file_put_contents('foobar.pdf', $m->merge());
+
+
+##Run tests
+
+Execute unit tests by typing `phpunit`. The unis tests requires FPDI to be
+installed using composer.
+
+	$ curl -sS https://getcomposer.org/installer | php
+    $ php composer.phar install
+    $ phpunit
+
+
+#CI
+
+Installing dependencies, running tests and other code analysis tools can be
+handled using `phing`. Type
+
+    $ phing
+
+to run CI tests. Then point your browser to `build/index.html`. For more
+information try
+
+    $ phing help
 
 
 ##Changelog

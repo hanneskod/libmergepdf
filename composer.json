@@ -1,7 +1,7 @@
 {
     "name": "iio/libmergepdf",
     "description": "Library for merging multiple PDFs",
-    "keywords": ["pdf"],
+    "keywords": ["pdf", "merge", "concatenate"],
     "homepage": "https://github.com/iio/libmergepdf",
     "type": "library",
     "license": "MIT",

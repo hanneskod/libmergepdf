@@ -32,7 +32,7 @@
     <target name="test" depends="getdependencies,createBuildDir">
         <exec
             command="phpunit --coverage-html ${BUILD_DIR}/test-coverage --coverage-text=${BUILD_DIR}/test-coverage.txt"
-            dir="${TEST_DIR}"
+            dir="${APP_ROOT}"
             checkreturn="true"
             passthru="true"
             />
@@ -43,7 +43,7 @@
             standard="${CODE_STANDARD}"
             showWarnings="true"
             encoding="utf8"
-            haltonerror="false"
+            haltonerror="true"
             haltonwarning="false"
             docGenerator="HTML"
             docFile="${BUILD_DIR}/phpcs/rules.html"
@@ -51,6 +51,8 @@
             <fileset refid="filesetSource"/>
             <fileset refid="filesetTests"/>
             <formatter type="full" outfile="${BUILD_DIR}/phpcs/sniff.txt"/>
+            <formatter type="summary" outfile="${BUILD_DIR}/phpcs/sniff-summary.txt"/>
+            <formatter type="full" usefile="false"/>
         </phpcodesniffer>
     </target>
 
@@ -95,6 +97,18 @@
         <mkdir dir="${BUILD_DIR}"/>
         <mkdir dir="${BUILD_DIR}/phpcs"/>
         <mkdir dir="${BUILD_DIR}/pdepend"/>
+        <if>
+            <not>
+                 <available file="${BUILD_DIR}/index.html"/>
+            </not>
+            <then>
+                <exec
+                    command="wget https://raw.github.com/iio/php-skeleton/0.1.0/index.html"
+                    dir="${BUILD_DIR}"
+                    passthru="true"
+                    />
+            </then>
+        </if>
     </target>
 
     <target name="getdependencies" depends="getcomposer">
