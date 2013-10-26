@@ -2,7 +2,7 @@
 /**
  * This file is part of the libmergepdf package
  *
- * Copyright (c) 2012 Hannes Forsgård
+ * Copyright (c) 2012-13 Hannes Forsgård
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,8 +16,7 @@ use RuntimeException;
 /**
  * Merge existing pdfs into one
  * 
- * @author  Hannes Forsgård <hannes.forsgard@gmail.com>
- * @package libmergepdf 
+ * @author Hannes Forsgård <hannes.forsgard@fripost.org>
  */
 class Merger
 {

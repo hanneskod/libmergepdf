@@ -13,8 +13,7 @@ namespace iio\libmergepdf;
 /**
  * Base exception
  *
- * @author  Hannes Forsgård <hannes.forsgard@gmail.com>
- * @package libmergepdf
+ * @author Hannes Forsgård <hannes.forsgard@fripost.org>
  */
 class Exception extends \Exception
 {
