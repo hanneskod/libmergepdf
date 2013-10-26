@@ -1,7 +1,9 @@
 libmergepdf
 ===========
 
-PHP library for merging multiple PDFs using fpdi/FPDI.
+[![Build Status](https://travis-ci.org/iio/libmergepdf.png?branch=master)](https://travis-ci.org/iio/libmergepdf)
+
+PHP library for merging multiple PDFs using [fpdi/FPDI](https://github.com/iio/fpdi).
 
 
 ##Installation using composer
@@ -13,9 +15,13 @@ Simply add `iio/libmergepdf` to your list of required libraries.
 
 Append the first ten pages of *bar.pdf* to *foo.pdf*:
 
-    $m = new \iio\libmergepdf\Merger(new \fpdi\FPDI);
+	use iio\libmergepdf\Merger;
+	use iio\libmergepdf\Pages;
+	use fpdi\FPDI;
+
+    $m = new Merger(new FPDI);
     $m->addFromFile('foo.pdf');
-    $m->addFromFile('bar.pdf', new \iio\libmergepdf\Pages('1-10'));
+    $m->addFromFile('bar.pdf', new Pages('1-10'));
     file_put_contents('foobar.pdf', $m->merge());
 
 
