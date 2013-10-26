@@ -2,7 +2,7 @@
 /**
  * This file is part of the libmergepdf package
  *
- * Copyright (c) 2012 Hannes Forsgård
+ * Copyright (c) 2012-13 Hannes Forsgård
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,15 +13,14 @@ namespace iio\libmergepdf;
 /**
  * Parse page numbers from string
  * 
- * @author  Hannes Forsgård <hannes.forsgard@gmail.com>
- * @package libmergepdf
+ * @author Hannes Forsgård <hannes.forsgard@fripost.org>
  */
 class Pages
 {
     /**
      * @var array Array of integer page numbers
      */
-    private $pages;
+    private $pages = array();
 
     /**
      * Constructor
@@ -30,30 +29,53 @@ class Pages
      * are merged in the order that you provide them. If you put pages 12-14
      * before 1-5 then 12-14 will be placed first.
      *
-     * @param  string    $pageNumbers
+     * @param  string    $expressionString
      * @throws Exception If unable to parse page numbers
      */
-    public function __construct($pageNumbers = '')
+    public function __construct($expressionString = '')
     {
-        assert('is_string($pageNumbers)');
+        $expressions = explode(
+            ',',
+            str_replace(' ', '', $expressionString)
+        );
 
-        $pageNumbers = str_replace(' ', '', $pageNumbers);
-        $this->pages = array();
-
-        foreach (explode(',', $pageNumbers) as $part) {
-            if (empty($part)) {
+        foreach ($expressions as $expr) {
+            if (empty($expr)) {
                 continue;
-            } elseif (ctype_digit($part)) {
-                $this->pages[] = intval($part);
-            } elseif (preg_match("/^\d+-\d+/", $part)) {
-                // Get pages from range
-                list($start, $end) = explode('-', $part);
-                $this->pages = array_merge($this->pages, range($start, $end));
+            } elseif (ctype_digit($expr)) {
+                $this->addPage($expr);
+            } elseif (preg_match("/^(\d+)-(\d+)/", $expr, $matches)) {
+                $this->addRange($matches[1], $matches[2]);
             } else {
-                $msg = "Invalid page number(s) for '$part'";
-                throw new Exception($msg);
+                throw new Exception("Invalid page number(s) for expression '$expr'");
             }
         }
+    }
+
+    /**
+     * Add page to collection
+     *
+     * @param  int|string $page
+     * @return void
+     */
+    public function addPage($page)
+    {
+        assert('is_numeric($page)');
+        $this->pages[] = intval($page);
+    }
+
+    /**
+     * Add range of pages
+     *
+     * @param  int|string $start
+     * @param  int|string $end
+     * @return void
+     */
+    public function addRange($start, $end)
+    {
+        assert('is_numeric($start)');
+        assert('is_numeric($end)');
+        $this->pages = array_merge($this->pages, range($start, $end));
     }
 
     /**
