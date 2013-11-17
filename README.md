@@ -17,9 +17,8 @@ Append the first ten pages of *bar.pdf* to *foo.pdf*:
 
 	use iio\libmergepdf\Merger;
 	use iio\libmergepdf\Pages;
-	use fpdi\FPDI;
 
-    $m = new Merger(new FPDI);
+    $m = new Merger();
     $m->addFromFile('foo.pdf');
     $m->addFromFile('bar.pdf', new Pages('1-10'));
     file_put_contents('foobar.pdf', $m->merge());
@@ -49,6 +48,8 @@ information try
 
 
 ##Changelog
+
+2.3.0 Injecting FPDI is now optional
 
 2.2.0 Pages now support addPage() and addRange().
 

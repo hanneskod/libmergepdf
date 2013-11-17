@@ -8,12 +8,9 @@ class MergerTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnableToCreateTempFileError()
     {
-        $fpdi = $this->getMock('\fpdi\FPDI');
-
         $m = $this->getMock(
             '\iio\libmergepdf\Merger',
-            array('getTempFname'),
-            array($fpdi)
+            array('getTempFname')
         );
 
         $m->expects($this->once())
@@ -32,8 +29,7 @@ class MergerTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnvalidFileNameError()
     {
-        $fpdi = $this->getMock('\fpdi\FPDI');
-        $m = new Merger($fpdi);
+        $m = new Merger();
         $m->addFromFile(__DIR__ . '/nonexistingfile');
     }
 
@@ -42,8 +38,7 @@ class MergerTest extends \PHPUnit_Framework_TestCase
      */
     public function testNoPdfsAddedError()
     {
-        $fpdi = $this->getMock('\fpdi\FPDI');
-        $m = new Merger($fpdi);
+        $m = new Merger();
         $m->merge();
     }
 

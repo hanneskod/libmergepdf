@@ -40,9 +40,9 @@ class Merger
      * 
      * @param FPDI $fpdi
      */
-    public function __construct(FPDI $fpdi)
+    public function __construct(FPDI $fpdi = null)
     {
-        $this->fpdi = $fpdi;
+        $this->fpdi = $fpdi ?: new FPDI;
     }
 
     /**
