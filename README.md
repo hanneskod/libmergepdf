@@ -23,7 +23,7 @@ Append the first ten pages of *bar.pdf* to *foo.pdf*:
     $m->addFromFile('bar.pdf', new Pages('1-10'));
     file_put_contents('foobar.pdf', $m->merge());
 
-Buld add files from an iterator (for example using
+Bulk add files from an iterator (for example using
 [symfony finder](http://symfony.com/doc/current/components/finder.html)):
 
     use iio\libmergepdf\Merger;
