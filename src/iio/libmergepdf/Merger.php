@@ -12,6 +12,7 @@ namespace iio\libmergepdf;
 
 use fpdi\FPDI;
 use RuntimeException;
+use Traversable;
 
 /**
  * Merge existing pdfs into one
@@ -62,8 +63,7 @@ class Merger
         // Create temporary file
         $fname = $this->getTempFname();
         if (@file_put_contents($fname, $pdf) === false) {
-            $msg = "Unable to create temporary file";
-            throw new Exception($msg);
+            throw new Exception("Unable to create temporary file");
         }
 
         $this->addFromFile($fname, $pages, true);
@@ -86,8 +86,7 @@ class Merger
         assert('is_bool($cleanup)');
 
         if (!is_file($fname) || !is_readable($fname)) {
-            $msg = "'$fname' is not a valid file";
-            throw new Exception($msg);
+            throw new Exception("'$fname' is not a valid file");
         }
 
         if (!$pages) {
@@ -95,6 +94,24 @@ class Merger
         }
 
         $this->files[] = array($fname, $pages, $cleanup);
+    }
+
+    /**
+     * Add files using iterator
+     *
+     * @param  array|Traversable $iterator
+     * @return void
+     * @throws Exception If $iterator is not valid
+     */
+    public function addIterator($iterator)
+    {
+        if (!is_array($iterator) && !$iterator instanceof Traversable) {
+            throw new Exception("\$iterator must be traversable");
+        }
+
+        foreach ($iterator as $fname) {
+            $this->addFromFile($fname);
+        }
     }
 
     /**
@@ -107,8 +124,7 @@ class Merger
     public function merge()
     {
         if (empty($this->files)) {
-            $msg = "Unable to merge, no PDFs added";
-            throw new Exception($msg);
+            throw new Exception("Unable to merge, no PDFs added");
         }
 
         try {
@@ -143,9 +159,7 @@ class Merger
             return $fpdi->Output('', 'S');
 
         } catch (RuntimeException $e) {
-            // FPDI always throws RuntimeExceptions...
-            $msg = "FPDI: " . $e->getMessage();
-            throw new Exception($msg, 0, $e);
+            throw new Exception("FPDI: {$e->getMessage()}", 0, $e);
         }
     }
 

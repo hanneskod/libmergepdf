@@ -42,6 +42,28 @@ class MergerTest extends \PHPUnit_Framework_TestCase
         $m->merge();
     }
 
+    /**
+     * @expectedException iio\libmergepdf\Exception
+     */
+    public function testAddInvalidIterator()
+    {
+        $m = new Merger();
+        $m->addIterator(null);
+    }
+
+    public function testAddIterator()
+    {
+        $m = $this->getMock(
+            '\iio\libmergepdf\Merger',
+            array('addFromFile')
+        );
+
+        $m->expects($this->exactly(2))
+            ->method('addFromFile');
+
+        $m->addIterator(array('A', 'B'));
+    }
+
     public function testMerge()
     {
         $fpdi = $this->getMock(
