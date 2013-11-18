@@ -13,6 +13,7 @@ namespace iio\libmergepdf;
 use fpdi\FPDI;
 use RuntimeException;
 use Traversable;
+use Symfony\Component\Finder\Finder;
 
 /**
  * Merge existing pdfs into one
@@ -111,6 +112,19 @@ class Merger
 
         foreach ($iterator as $fname) {
             $this->addFromFile($fname);
+        }
+    }
+
+    /**
+     * Add files using symfony finder
+     *
+     * @param  Finder $finder
+     * @return void
+     */
+    public function addFinder(Finder $finder)
+    {
+        foreach ($finder as $fileInfo) {
+            $this->addFromFile($fileInfo->getRealpath());
         }
     }
 

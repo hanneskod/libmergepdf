@@ -64,6 +64,36 @@ class MergerTest extends \PHPUnit_Framework_TestCase
         $m->addIterator(array('A', 'B'));
     }
 
+    public function testAddFinder()
+    {
+        $m = $this->getMock(
+            '\iio\libmergepdf\Merger',
+            array('addFromFile')
+        );
+
+        $m->expects($this->exactly(2))
+            ->method('addFromFile')
+            ->with('foobar');
+
+        $finder = $this->getMockBuilder('\Symfony\Component\Finder\Finder')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $file = $this->getMockBuilder('\SplFileInfo')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $file->expects($this->exactly(2))
+            ->method('getRealpath')
+            ->will($this->returnValue('foobar'));
+
+        $finder->expects($this->once())
+            ->method('getIterator')
+            ->will($this->returnValue(new \ArrayIterator(array($file, $file))));
+
+        $m->addFinder($finder);
+    }
+
     public function testMerge()
     {
         $fpdi = $this->getMock(

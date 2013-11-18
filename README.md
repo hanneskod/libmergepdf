@@ -23,12 +23,25 @@ Append the first ten pages of *bar.pdf* to *foo.pdf*:
     $m->addFromFile('bar.pdf', new Pages('1-10'));
     file_put_contents('foobar.pdf', $m->merge());
 
-Bulk add files from an iterator (for example using
-[symfony finder](http://symfony.com/doc/current/components/finder.html)):
+Bulk add files from an iterator:
 
     use iio\libmergepdf\Merger;
     $m = new Merger();
     $m->addIterator(array('A.pdf', 'B.pdf'));
+    file_put_contents('AB.pdf', $m->merge());
+
+Bulk add files using [symfony finder](http://symfony.com/doc/current/components/finder.html):
+
+    use iio\libmergepdf\Merger;
+    use Symfony\Component\Finder\Finder;
+
+    $finder = new Finder();
+    $finder->files()->in(__DIR__)->name('*.pdf')->sortByName();
+
+    $m = new Merger();
+    $m->addFinder($finder);
+
+    file_put_contents('finder.pdf', $m->merge());
 
 
 ##Run tests
@@ -55,6 +68,8 @@ information try
 
 
 ##Changelog
+
+2.3.1 Added merger->addFinder().
 
 2.3.0 Injecting FPDI is now optional. Added merger->addIterator().
 
