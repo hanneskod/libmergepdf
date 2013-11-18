@@ -60,11 +60,8 @@ Continuous integration
 [![Code Coverage](https://scrutinizer-ci.com/g/iio/libmergepdf/badges/coverage.png?s=143380c26e7528896c006bdb57d4eceb4bb6579f)](https://scrutinizer-ci.com/g/iio/libmergepdf/)
 
 Installing dependencies, running tests and other code analysis tools can be
-handled using `phing`. To run CI tests type
-
-    $ phing
-
-Then point your browser to `build/index.html` to view the results.
+handled using `phing`. To run CI tests type `phing` from the project root
+directory, point your browser to `build/index.html` to view the results.
 
 
 Changelog
