@@ -1,8 +1,7 @@
-[![Latest Stable Version](https://poser.pugx.org/iio/libmergepdf/v/stable.png)](https://packagist.org/packages/iio/libmergepdf)
-[![Build Status](https://travis-ci.org/iio/libmergepdf.png?branch=master)](https://travis-ci.org/iio/libmergepdf)
-
 libmergepdf
 ===========
+[![Latest Stable Version](https://poser.pugx.org/iio/libmergepdf/v/stable.png)](https://packagist.org/packages/iio/libmergepdf)
+[![Build Status](https://travis-ci.org/iio/libmergepdf.png?branch=master)](https://travis-ci.org/iio/libmergepdf)
 
 PHP library for merging multiple PDFs using [fpdi/FPDI](https://github.com/iio/fpdi).
 
@@ -57,7 +56,7 @@ installed using composer.
 
 Continuous integration
 ----------------------
-[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/iio/libmergepdf/badges/quality-score.png?s=134e92b6447c4ddd29d12e6be84f7505b3228681)](https://scrutinizer-ci.com/g/iio/libmergepdf/
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/iio/libmergepdf/badges/quality-score.png?s=134e92b6447c4ddd29d12e6be84f7505b3228681)](https://scrutinizer-ci.com/g/iio/libmergepdf/)
 [![Code Coverage](https://scrutinizer-ci.com/g/iio/libmergepdf/badges/coverage.png?s=143380c26e7528896c006bdb57d4eceb4bb6579f)](https://scrutinizer-ci.com/g/iio/libmergepdf/)
 
 Installing dependencies, running tests and other code analysis tools can be

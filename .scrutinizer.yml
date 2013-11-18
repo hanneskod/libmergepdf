@@ -24,5 +24,4 @@ tools:
         filter:
             excluded_paths:
                 - 'vendor/*'
-    sensiolabs_security_checker: true
     php_analyzer: true
