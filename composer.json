@@ -4,7 +4,7 @@
     "keywords": ["pdf", "merge", "concatenate"],
     "homepage": "https://github.com/iio/libmergepdf",
     "type": "library",
-    "license": "MIT",
+    "license": "WTFPL",
     "authors": [
         {
             "name": "Hannes Forsgård",
@@ -12,8 +12,8 @@
         }
     ],
     "autoload": {
-        "psr-0": {
-            "iio\\libmergepdf": "src/"
+        "psr-4": {
+            "iio\\libmergepdf\\": "src/"
         }
     },
     "require": {
