@@ -90,7 +90,7 @@
             <available file="${BUILD_DIR}/index.html"/>
             <else>
                 <exec
-                    command="wget https://raw.github.com/iio/php-skeleton/0.1.1/index.html"
+                    command="wget https://raw.github.com/hanneskod/php-skeleton/0.1.1/index.html"
                     dir="${BUILD_DIR}"
                     passthru="true"
                     />
