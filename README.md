@@ -54,16 +54,6 @@ installed using composer.
     $ phpunit
 
 
-Continuous integration
-----------------------
-[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/iio/libmergepdf/badges/quality-score.png?s=134e92b6447c4ddd29d12e6be84f7505b3228681)](https://scrutinizer-ci.com/g/iio/libmergepdf/)
-[![Code Coverage](https://scrutinizer-ci.com/g/iio/libmergepdf/badges/coverage.png?s=143380c26e7528896c006bdb57d4eceb4bb6579f)](https://scrutinizer-ci.com/g/iio/libmergepdf/)
-
-Installing dependencies, running tests and other code analysis tools can be
-handled using `phing`. To run CI tests type `phing` from the project root
-directory, point your browser to `build/index.html` to view the results.
-
-
 Changelog
 ---------
 2.3.1 Added merger->addFinder().

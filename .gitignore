@@ -2,6 +2,3 @@ build
 vendor
 composer.phar
 composer.lock
-libmergepdf.sublime-project
-libmergepdf.sublime-workspace
-scrutinizer.phar

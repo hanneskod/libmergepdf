@@ -86,7 +86,6 @@
         <mkdir dir="${BUILD_DIR}"/>
         <mkdir dir="${BUILD_DIR}/phpcs"/>
         <mkdir dir="${BUILD_DIR}/pdepend"/>
-        <mkdir dir="${BUILD_DIR}/scrutinizer"/>
         <if>
             <available file="${BUILD_DIR}/index.html"/>
             <else>
@@ -132,29 +131,6 @@
             <else>
                 <exec
                     command="curl -s http://getcomposer.org/installer | php"
-                    dir="${APP_ROOT}"
-                    checkreturn="true"
-                    passthru="true"
-                    />
-            </else>
-        </if>
-    </target>
-
-    <target name="scrutinizer" depends="getscrutinizer,createBuildDir">
-        <exec
-            command="php scrutinizer.phar run . --format=json --output-file=${BUILD_DIR}/scrutinizer/json > ${BUILD_DIR}/scrutinizer/output"
-            dir="${APP_ROOT}"
-            checkreturn="true"
-            passthru="true"
-            />
-    </target>
-
-    <target name="getscrutinizer">
-        <if>
-            <available file="${APP_ROOT}/scrutinizer.phar"/>
-            <else>
-                <exec
-                    command="wget https://scrutinizer-ci.com/scrutinizer.phar"
                     dir="${APP_ROOT}"
                     checkreturn="true"
                     passthru="true"
