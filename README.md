@@ -1,22 +1,28 @@
 libmergepdf
 ===========
 [![Latest Stable Version](https://poser.pugx.org/iio/libmergepdf/v/stable.png)](https://packagist.org/packages/iio/libmergepdf)
-[![Build Status](https://travis-ci.org/iio/libmergepdf.png?branch=master)](https://travis-ci.org/iio/libmergepdf)
+[![Build Status](https://travis-ci.org/hanneskod/libmergepdf.svg?branch=master)](https://travis-ci.org/hanneskod/libmergepdf)
+[![Dependency Status](https://gemnasium.com/hanneskod/libmergepdf.svg)](https://gemnasium.com/hanneskod/libmergepdf)
+
 
 PHP library for merging multiple PDFs using [fpdi/FPDI](https://github.com/iio/fpdi).
 
 
 Installation using composer
 ---------------------------
-Simply add `iio/libmergepdf` to your list of required libraries.
+libmergepdf exists in the packagist repository as `iio/libmergepdf`. To you composer.json add
+
+    "require": {
+        "iio/libmergepdf": "2.*",
+    }
 
 
 Usage
 -----
 Append the first ten pages of *bar.pdf* to *foo.pdf*:
 
-	use iio\libmergepdf\Merger;
-	use iio\libmergepdf\Pages;
+    use iio\libmergepdf\Merger;
+    use iio\libmergepdf\Pages;
 
     $m = new Merger();
     $m->addFromFile('foo.pdf');
@@ -49,7 +55,7 @@ Run tests
 Execute unit tests by typing `phpunit`. The unis tests requires FPDI to be
 installed using composer.
 
-	$ curl -sS https://getcomposer.org/installer | php
+    $ curl -sS https://getcomposer.org/installer | php
     $ php composer.phar install
     $ phpunit
 
