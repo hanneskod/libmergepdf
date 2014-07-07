@@ -73,19 +73,13 @@ class MergerTest extends \PHPUnit_Framework_TestCase
 
         $m->expects($this->exactly(2))
             ->method('addFromFile')
-            ->with('foobar');
+            ->with(__FILE__);
 
         $finder = $this->getMockBuilder('\Symfony\Component\Finder\Finder')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $file = $this->getMockBuilder('\SplFileInfo')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $file->expects($this->exactly(2))
-            ->method('getRealpath')
-            ->will($this->returnValue('foobar'));
+        $file = new \SplFileInfo(__FILE__);
 
         $finder->expects($this->once())
             ->method('getIterator')
