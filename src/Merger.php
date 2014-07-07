@@ -140,6 +140,7 @@ class Merger
             throw new Exception("Unable to merge, no PDFs added");
         }
 
+        $fname = '';
         try {
             $fpdi = clone $this->fpdi;
 
@@ -172,7 +173,7 @@ class Merger
             return $fpdi->Output('', 'S');
 
         } catch (RuntimeException $e) {
-            throw new Exception("FPDI: {$e->getMessage()}", 0, $e);
+            throw new Exception("FPDI: '{$e->getMessage()}' in '$fname'", 0, $e);
         }
     }
 

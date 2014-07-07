@@ -140,7 +140,8 @@ class MergerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException iio\libmergepdf\Exception
+     * @expectedException        iio\libmergepdf\Exception
+     * @expectedExceptionMessage FPDI: 'message' in '
      */
     public function testFpdiException()
     {
@@ -151,7 +152,7 @@ class MergerTest extends \PHPUnit_Framework_TestCase
 
         $fpdi->expects($this->once())
             ->method('setSourceFile')
-            ->will($this->throwException(new \RuntimeException));
+            ->will($this->throwException(new \RuntimeException('message')));
 
         $m = new Merger($fpdi);
         $m->addRaw('');
