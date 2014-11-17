@@ -1,20 +1,15 @@
-libmergepdf
-===========
-[![Latest Stable Version](https://poser.pugx.org/iio/libmergepdf/v/stable.png)](https://packagist.org/packages/iio/libmergepdf)
-[![Build Status](https://travis-ci.org/hanneskod/libmergepdf.svg?branch=master)](https://travis-ci.org/hanneskod/libmergepdf)
-[![Dependency Status](https://gemnasium.com/hanneskod/libmergepdf.svg)](https://gemnasium.com/hanneskod/libmergepdf)
+# libmergepdf
 
+[![Packagist Version](https://img.shields.io/packagist/v/iio/libmergepdf.svg?style=flat-square)](https://packagist.org/packages/iio/libmergepdf)
+[![Build Status](https://img.shields.io/travis/hanneskod/libmergepdf/master.svg?style=flat-square)](https://travis-ci.org/hanneskod/libmergepdf)
+[![Quality Score](https://img.shields.io/scrutinizer/g/hanneskod/libmergepdf.svg?style=flat-square)](https://scrutinizer-ci.com/g/hanneskod/libmergepdf)
+[![Dependency Status](https://img.shields.io/gemnasium/hanneskod/libmergepdf.svg?style=flat-square)](https://gemnasium.com/hanneskod/libmergepdf)
 
-PHP library for merging multiple PDFs using [fpdi/FPDI](https://github.com/iio/fpdi).
+PHP library for merging multiple PDFs using [fpdi/FPDI](https://github.com/hanneskod/fpdi).
 
-
-Installation using composer
----------------------------
-libmergepdf exists in the packagist repository as `iio/libmergepdf`. To you composer.json add
-
-    "require": {
-        "iio/libmergepdf": "2.*",
-    }
+> Install using **[composer](http://getcomposer.org/)**. Exists as
+> **[iio/libmergepdf](https://packagist.org/packages/iio/libmergepdf)**
+> in the **[packagist](https://packagist.org/)** repository.
 
 
 Usage
@@ -67,8 +62,9 @@ installed using composer.
 
 Changelog
 ---------
-* 2.3.1 Added merger->addFinder().
-* 2.3.0 Injecting FPDI is now optional. Added merger->addIterator().
-* 2.2.0 Pages now support addPage() and addRange().
+* 2.4.0 Added `setTempDir()` to Merger.
+* 2.3.1 Added `addFinder()` to Merger.
+* 2.3.0 Injecting FPDI is now optional. Added `addIterator()` to Merger.
+* 2.2.0 Pages now support `addPage()` and `addRange()`.
 * 2.1.1 Now allows merging of Landscape and Portrait pages (thanks to @willoller).
 * 2.0 As of version 2.0 FPDI must be injected when creating a new libmergepdf instance.
