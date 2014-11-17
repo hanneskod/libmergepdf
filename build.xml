@@ -1,142 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="libmergepdf" basedir="." default="buildAll">
-    <property name="APP_NAME" value="libmergepdf" />
-    <property name="APP_ROOT" value="${project.basedir}" />
-    <property name="SRC_DIR" value="${APP_ROOT}/src" />
-    <property name="TEST_DIR" value="${APP_ROOT}/tests" />
-    <property name="BUILD_DIR" value="${APP_ROOT}/build" />
-    <property name="CODE_STANDARD" value="PSR2" />
+    <property name="TEMP_DIR" value="/tmp"/>
+    <property name="BUILD_BASE_URL" value="https://raw.github.com/hanneskod/pskeleton/master/build/tree.zip"/>
 
-    <fileset dir="${SRC_DIR}" id="filesetSource">
-        <include name="**/*.php" />
-    </fileset>
+    <if>
+        <available file="build" type="dir"/>
+        <else>
+            <exec command="wget -O ${TEMP_DIR}/btree.zip ${BUILD_BASE_URL}" dir="${project.basedir}"/>
+            <unzip file="${TEMP_DIR}/btree.zip" todir="${project.basedir}"/>
+            <delete file="${TEMP_DIR}/btree.zip" />
+        </else>
+    </if>
 
-    <fileset dir="${TEST_DIR}" id="filesetTests">
-        <include name="**/*.php" />
-    </fileset>
-
-    <target name="buildAll" depends="test,sniff,phpcpd,phpmd,pdepend,document">
-    </target>
-
-    <target name="test" depends="install,createBuildDir">
-        <exec
-            command="phpunit --coverage-html ${BUILD_DIR}/test-coverage --coverage-text=${BUILD_DIR}/test-coverage.txt"
-            dir="${APP_ROOT}"
-            checkreturn="true"
-            passthru="true"
-            />
-    </target>
-
-    <target name="sniff" depends="createBuildDir">
-        <phpcodesniffer
-            standard="${CODE_STANDARD}"
-            showWarnings="true"
-            encoding="utf8"
-            haltonerror="true"
-            haltonwarning="false"
-            docGenerator="HTML"
-            docFile="${BUILD_DIR}/phpcs/rules.html"
-            >
-            <fileset refid="filesetSource"/>
-            <fileset refid="filesetTests"/>
-            <formatter type="full" outfile="${BUILD_DIR}/phpcs/sniff.txt"/>
-            <formatter type="summary" outfile="${BUILD_DIR}/phpcs/sniff-summary.txt"/>
-            <formatter type="full" usefile="false"/>
-        </phpcodesniffer>
-    </target>
-
-    <target name="phpcpd" depends="createBuildDir">
-        <phpcpd>
-            <fileset refid="filesetSource"/>
-            <fileset refid="filesetTests"/>
-            <formatter type="default" outfile="${BUILD_DIR}/phpcpd.txt"/>
-       </phpcpd>
-    </target>
-
-    <target name="phpmd" depends="createBuildDir">
-        <phpmd>
-            <fileset refid="filesetSource"/>
-            <fileset refid="filesetTests"/>
-            <formatter type="html" outfile="${BUILD_DIR}/phpmd.html"/>
-        </phpmd>
-    </target>
-
-    <target name="pdepend" depends="createBuildDir">
-        <phpdepend>
-            <fileset refid="filesetSource"/>
-            <logger type="jdepend-chart" outfile="${BUILD_DIR}/pdepend/jdepend.svg"/>
-            <logger type="overview-pyramid" outfile="${BUILD_DIR}/pdepend/pyramid.svg"/>
-            <logger type="summary-xml" outfile="${BUILD_DIR}/pdepend/summary.xml"/>
-        </phpdepend>
-    </target>
-
-    <target name="document" depends="createBuildDir">
-        <exec
-            command="phpdoc --title '${APP_NAME}' -d ${SRC_DIR} -t ${BUILD_DIR}/apidocs --defaultpackagename='${APP_NAME}' --validate"
-            dir="${APP_ROOT}"
-            passthru="true"
-            />
-        <exec
-            command="chmod -R 777 apidocs"
-            dir="${BUILD_DIR}"
-            />
-    </target>
-
-    <target name="createBuildDir">
-        <mkdir dir="${BUILD_DIR}"/>
-        <mkdir dir="${BUILD_DIR}/phpcs"/>
-        <mkdir dir="${BUILD_DIR}/pdepend"/>
-        <if>
-            <available file="${BUILD_DIR}/index.html"/>
-            <else>
-                <exec
-                    command="wget https://raw.github.com/hanneskod/php-skeleton/0.1.1/index.html"
-                    dir="${BUILD_DIR}"
-                    passthru="true"
-                    />
-            </else>
-        </if>
-    </target>
-
-    <target name="update" depends="install">
-        <exec
-            command="php composer.phar self-update"
-            dir="${APP_ROOT}"
-            checkreturn="true"
-            />
-        <exec
-            command="php composer.phar update"
-            dir="${APP_ROOT}"
-            checkreturn="true"
-            />
-    </target>
-
-    <target name="install" depends="getcomposer">
-        <if>
-            <available file="${APP_ROOT}/vendor"/>
-            <else>
-                <exec
-                    command="php composer.phar install --dev"
-                    dir="${APP_ROOT}"
-                    checkreturn="true"
-                    passthru="true"
-                    />
-            </else>
-        </if>
-    </target>
-
-    <target name="getcomposer">
-        <if>
-            <available file="${APP_ROOT}/composer.phar"/>
-            <else>
-                <exec
-                    command="curl -s http://getcomposer.org/installer | php"
-                    dir="${APP_ROOT}"
-                    checkreturn="true"
-                    passthru="true"
-                    />
-            </else>
-        </if>
-    </target>
-
+    <import file="build/defaultbuild.xml"/>
 </project>

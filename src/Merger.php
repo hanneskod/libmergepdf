@@ -37,6 +37,11 @@ class Merger
     private $fpdi;
 
     /**
+     * @var string Directory path used for temporary files
+     */
+    private $tempDir;
+
+    /**
      * Constructor
      * 
      * @param FPDI $fpdi
@@ -184,6 +189,29 @@ class Merger
      */
     public function getTempFname()
     {
-        return tempnam(sys_get_temp_dir(), "libmergepdf");
+        return tempnam($this->getTempDir(), "libmergepdf");
+    }
+
+    /**
+     * Get directory path for temporary files
+     *
+     * Set path using setTempDir(), defaults to sys_get_temp_dir().
+     *
+     * @return string
+     */
+    public function getTempDir()
+    {
+        return $this->tempDir ?: sys_get_temp_dir();
+    }
+
+    /**
+     * Set directory path for temporary files
+     *
+     * @param  string $dirname
+     * @return void
+     */
+    public function setTempDir($dirname)
+    {
+        $this->tempDir = $dirname;
     }
 }

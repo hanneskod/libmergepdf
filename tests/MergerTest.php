@@ -158,4 +158,22 @@ class MergerTest extends \PHPUnit_Framework_TestCase
         $m->addRaw('');
         $m->merge();
     }
+
+    public function testSetGetTempDir()
+    {
+        $m = new Merger;
+
+        $this->assertSame(
+            sys_get_temp_dir(),
+            $m->getTempDir()
+        );
+
+        $newTempDir = "foobar";
+        $m->setTempDir($newTempDir);
+
+        $this->assertSame(
+            $newTempDir,
+            $m->getTempDir()
+        );
+    }
 }
