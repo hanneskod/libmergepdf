@@ -1,18 +1,9 @@
 <?php
-/**
- * This program is free software. It comes without any warranty, to
- * the extent permitted by applicable law. You can redistribute it
- * and/or modify it under the terms of the Do What The Fuck You Want
- * To Public License, Version 2, as published by Sam Hocevar. See
- * http://www.wtfpl.net/ for more details.
- */
 
 namespace iio\libmergepdf;
 
 /**
  * Parse page numbers from string
- * 
- * @author Hannes Forsgård <hannes.forsgard@fripost.org>
  */
 class Pages
 {
@@ -41,13 +32,16 @@ class Pages
         foreach ($expressions as $expr) {
             if (empty($expr)) {
                 continue;
-            } elseif (ctype_digit($expr)) {
-                $this->addPage($expr);
-            } elseif (preg_match("/^(\d+)-(\d+)/", $expr, $matches)) {
-                $this->addRange($matches[1], $matches[2]);
-            } else {
-                throw new Exception("Invalid page number(s) for expression '$expr'");
             }
+            if (ctype_digit($expr)) {
+                $this->addPage($expr);
+                continue;
+            }
+            if (preg_match("/^(\d+)-(\d+)/", $expr, $matches)) {
+                $this->addRange($matches[1], $matches[2]);
+                continue;
+            }
+            throw new Exception("Invalid page number(s) for expression '$expr'");
         }
     }
 
@@ -79,7 +73,7 @@ class Pages
 
     /**
      * Get array of integer page numbers
-     * 
+     *
      * @return array
      */
     public function getPages()

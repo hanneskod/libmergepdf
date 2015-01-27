@@ -1,4 +1,5 @@
 <?php
+
 namespace iio\libmergepdf;
 
 class PagesTest extends \PHPUnit_Framework_TestCase

@@ -1,11 +1,4 @@
 <?php
-/**
- * This program is free software. It comes without any warranty, to
- * the extent permitted by applicable law. You can redistribute it
- * and/or modify it under the terms of the Do What The Fuck You Want
- * To Public License, Version 2, as published by Sam Hocevar. See
- * http://www.wtfpl.net/ for more details.
- */
 
 namespace iio\libmergepdf;
 
@@ -16,17 +9,15 @@ use Symfony\Component\Finder\Finder;
 
 /**
  * Merge existing pdfs into one
- * 
- * @author Hannes Forsgård <hannes.forsgard@fripost.org>
  */
 class Merger
 {
     /**
      * Array of files to be merged.
-     * 
+     *
      * Values for each files are filename, Pages object and a boolean value
      * indicating if the file should be deleted after merging is complete.
-     * 
+     *
      * @var array
      */
     private $files = array();
@@ -43,7 +34,7 @@ class Merger
 
     /**
      * Constructor
-     * 
+     *
      * @param FPDI $fpdi
      */
     public function __construct(FPDI $fpdi = null)
@@ -79,8 +70,8 @@ class Merger
      *
      * Note that your PDFs are merged in the order that you add them
      *
-     * @param  string    $fname
-     * @param  Pages     $pages
+     * @param  string    $fname   Name of file to add
+     * @param  Pages     $pages   Pages to add from file
      * @param  bool      $cleanup Flag if file should be deleted after merging
      * @return void
      * @throws Exception If $fname is not a valid file
@@ -134,7 +125,7 @@ class Merger
 
     /**
      * Merges your provided PDFs and get raw string
-     * 
+     *
      * @return string
      * @throws Exception If no PDFs were added
      * @throws Exception If a specified page does not exist
@@ -184,7 +175,7 @@ class Merger
 
     /**
      * Create temporary file and return name
-     * 
+     *
      * @return string
      */
     public function getTempFname()
