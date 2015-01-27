@@ -5,12 +5,15 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/hanneskod/libmergepdf.svg?style=flat-square)](https://scrutinizer-ci.com/g/hanneskod/libmergepdf)
 [![Dependency Status](https://img.shields.io/gemnasium/hanneskod/libmergepdf.svg?style=flat-square)](https://gemnasium.com/hanneskod/libmergepdf)
 
-PHP library for merging multiple PDFs using [fpdi/FPDI](https://github.com/hanneskod/fpdi).
+PHP library for merging multiple PDFs using [fpdi/FPDI](https://github.com/hanneskod/fpdi)
 
-> Install using **[composer](http://getcomposer.org/)**. Exists as
-> **[iio/libmergepdf](https://packagist.org/packages/iio/libmergepdf)**
-> in the **[packagist](https://packagist.org/)** repository.
+Installation
+------------
+Install using [composer](http://getcomposer.org/). Exists as
+[iio/libmergepdf](https://packagist.org/packages/iio/libmergepdf)
+in the [packagist](https://packagist.org/) repository.
 
+    composer require iio/libmergepdf
 
 Usage
 -----
@@ -50,15 +53,13 @@ $m->addFinder($finder);
 file_put_contents('finder.pdf', $m->merge());
 ```
 
-Run tests
----------
-Execute unit tests by typing `phpunit`. The unis tests requires FPDI to be
-installed using composer.
+Testing
+-------
+Unit tests requires dependencies to be installed using composer:
 
     $ curl -sS https://getcomposer.org/installer | php
     $ php composer.phar install
     $ phpunit
-
 
 Changelog
 ---------
@@ -68,3 +69,9 @@ Changelog
 * 2.2.0 Pages now support `addPage()` and `addRange()`.
 * 2.1.1 Now allows merging of Landscape and Portrait pages (thanks to @willoller).
 * 2.0 As of version 2.0 FPDI must be injected when creating a new libmergepdf instance.
+
+Credits
+-------
+libmergepdf is covered under the [WTFPL](http://www.wtfpl.net/).
+
+@author Hannes Forsgård (hannes.forsgard@fripost.org)
