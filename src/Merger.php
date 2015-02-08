@@ -130,7 +130,7 @@ class Merger
      * @throws Exception If no PDFs were added
      * @throws Exception If a specified page does not exist
      */
-    public function merge()
+    public function merge($outputname='', $outputtyp='S')
     {
         if (empty($this->files)) {
             throw new Exception("Unable to merge, no PDFs added");
@@ -166,7 +166,7 @@ class Merger
 
             $this->files = array();
 
-            return $fpdi->Output('', 'S');
+            return $fpdi->Output($outputname, $outputtyp);
 
         } catch (RuntimeException $e) {
             throw new Exception("FPDI: '{$e->getMessage()}' in '$fname'", 0, $e);
