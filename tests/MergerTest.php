@@ -92,7 +92,7 @@ class MergerTest extends \PHPUnit_Framework_TestCase
     public function testMerge()
     {
         $fpdi = $this->getMock(
-            '\fpdi\FPDI',
+            '\FPDI',
             array(
                 'setSourceFile',
                 'importPage',
@@ -127,7 +127,7 @@ class MergerTest extends \PHPUnit_Framework_TestCase
     public function testInvalidPageError()
     {
         $fpdi = $this->getMock(
-            '\fpdi\FPDI',
+            '\FPDI',
             array('importPage', 'setSourceFile')
         );
 
@@ -147,7 +147,7 @@ class MergerTest extends \PHPUnit_Framework_TestCase
     public function testFpdiException()
     {
         $fpdi = $this->getMock(
-            '\fpdi\FPDI',
+            '\FPDI',
             array('setSourceFile')
         );
 
