@@ -2,9 +2,6 @@
 
 namespace iio\libmergepdf;
 
-use FPDI;
-use RuntimeException;
-use Traversable;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -23,7 +20,7 @@ class Merger
     private $files = array();
 
     /**
-     * @var FPDI Fpdi object
+     * @var \FPDI Fpdi object
      */
     private $fpdi;
 
@@ -35,11 +32,11 @@ class Merger
     /**
      * Constructor
      *
-     * @param FPDI $fpdi
+     * @param \FPDI $fpdi
      */
-    public function __construct(FPDI $fpdi = null)
+    public function __construct(\FPDI $fpdi = null)
     {
-        $this->fpdi = $fpdi ?: new FPDI;
+        $this->fpdi = $fpdi ?: new \FPDI;
     }
 
     /**
@@ -95,13 +92,13 @@ class Merger
     /**
      * Add files using iterator
      *
-     * @param  array|Traversable $iterator
+     * @param  array|\Traversable $iterator
      * @return void
      * @throws Exception If $iterator is not valid
      */
     public function addIterator($iterator)
     {
-        if (!is_array($iterator) && !$iterator instanceof Traversable) {
+        if (!is_array($iterator) && !$iterator instanceof \Traversable) {
             throw new Exception("\$iterator must be traversable");
         }
 
@@ -149,7 +146,7 @@ class Merger
                 if (empty($pages)) {
                     $pages = range(1, $iPageCount);
                 }
-                
+
                 // Add specified pages
                 foreach ($pages as $page) {
                     $template = $fpdi->importPage($page);
@@ -168,7 +165,7 @@ class Merger
 
             return $fpdi->Output('', 'S');
 
-        } catch (RuntimeException $e) {
+        } catch (\Exception $e) {
             throw new Exception("FPDI: '{$e->getMessage()}' in '$fname'", 0, $e);
         }
     }

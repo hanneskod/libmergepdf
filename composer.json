@@ -18,11 +18,11 @@
     },
     "require": {
         "php": ">=5.3.0",
-        "setasign/fpdi": "^1.6",
-        "setasign/fpdf": "^1.8"
+        "setasign/fpdi-fpdf": "^1.6"
     },
     "require-dev": {
-        "symfony/finder": "2.*"
+        "symfony/finder": "2.*",
+        "hanneskod/readme-tester": "dev-master"
     },
     "suggest": {
         "symfony/finder": "Bulk add files using finder."

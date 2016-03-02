@@ -133,7 +133,7 @@ class MergerTest extends \PHPUnit_Framework_TestCase
 
         $fpdi->expects($this->once())
             ->method('importPage')
-            ->will($this->throwException(new \RuntimeException));
+            ->will($this->throwException(new \Exception));
 
         $m = new Merger($fpdi);
         $m->addRaw('', new Pages('2'));
@@ -153,7 +153,7 @@ class MergerTest extends \PHPUnit_Framework_TestCase
 
         $fpdi->expects($this->once())
             ->method('setSourceFile')
-            ->will($this->throwException(new \RuntimeException('message')));
+            ->will($this->throwException(new \Exception('message')));
 
         $m = new Merger($fpdi);
         $m->addRaw('');

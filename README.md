@@ -5,7 +5,7 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/hanneskod/libmergepdf.svg?style=flat-square)](https://scrutinizer-ci.com/g/hanneskod/libmergepdf)
 [![Dependency Status](https://img.shields.io/gemnasium/hanneskod/libmergepdf.svg?style=flat-square)](https://gemnasium.com/hanneskod/libmergepdf)
 
-PHP library for merging multiple PDFs using [fpdi/FPDI](https://github.com/hanneskod/fpdi)
+PHP library for merging multiple PDFs using [FPDI](https://github.com/Setasign/FPDI)
 
 Installation
 ------------
@@ -13,7 +13,7 @@ Install using [composer](http://getcomposer.org/). Exists as
 [iio/libmergepdf](https://packagist.org/packages/iio/libmergepdf)
 in the [packagist](https://packagist.org/) repository.
 
-    composer require iio/libmergepdf
+    composer require iio/libmergepdf:~3.0
 
 Usage
 -----
@@ -63,6 +63,7 @@ Unit tests requires dependencies to be installed using composer:
 
 Changelog
 ---------
+* 3.0 Now using the official FPDI package
 * 2.4.0 Added `setTempDir()` to Merger.
 * 2.3.1 Added `addFinder()` to Merger.
 * 2.3.0 Injecting FPDI is now optional. Added `addIterator()` to Merger.
