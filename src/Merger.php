@@ -155,15 +155,18 @@ class Merger
                     $fpdi->AddPage($orientation, array($size['w'], $size['h']));
                     $fpdi->useTemplate($template);
                 }
-
-                if ($cleanup) {
-                    unlink($fname);
-                }
             }
 
+            $output = $fpdi->Output('', 'S');
+
+            $fpdi->cleanUp();
+            foreach ($this->files as $fileData) {
+                list($fname, $pages, $cleanup) = $fileData;
+                if ($cleanup) unlink($fname);
+            }
             $this->files = array();
 
-            return $fpdi->Output('', 'S');
+            return $output;
 
         } catch (\Exception $e) {
             throw new Exception("FPDI: '{$e->getMessage()}' in '$fname'", 0, $e);
