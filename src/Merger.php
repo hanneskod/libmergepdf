@@ -162,7 +162,9 @@ class Merger
             $fpdi->cleanUp();
             foreach ($this->files as $fileData) {
                 list($fname, $pages, $cleanup) = $fileData;
-                if ($cleanup) unlink($fname);
+                if ($cleanup) {
+                    unlink($fname);
+                }
             }
             $this->files = array();
 
