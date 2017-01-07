@@ -9,6 +9,7 @@ class ReadmeIntegration extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('Readme-tester is not available.');
         }
 
-        (new \hanneskod\readmetester\PHPUnit\AssertReadme($this))->assertReadme('README.md');
+        $asserter = new \hanneskod\readmetester\PHPUnit\AssertReadme($this);
+        $asserter->assertReadme('README.md');
     }
 }
