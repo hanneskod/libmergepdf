@@ -9,10 +9,9 @@ class MergerTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnableToCreateTempFileError()
     {
-        $m = $this->getMock(
-            '\iio\libmergepdf\Merger',
-            array('getTempFname')
-        );
+        $m = $this->getMockBuilder('\iio\libmergepdf\Merger')
+            ->setMethods(array('getTempFname'))
+            ->getMock();
 
         $m->expects($this->once())
             ->method('getTempFname')
@@ -54,10 +53,9 @@ class MergerTest extends \PHPUnit_Framework_TestCase
 
     public function testAddIterator()
     {
-        $m = $this->getMock(
-            '\iio\libmergepdf\Merger',
-            array('addFromFile')
-        );
+        $m = $this->getMockBuilder('\iio\libmergepdf\Merger')
+            ->setMethods(array('addFromFile'))
+            ->getMock();
 
         $m->expects($this->exactly(2))
             ->method('addFromFile');
@@ -67,10 +65,9 @@ class MergerTest extends \PHPUnit_Framework_TestCase
 
     public function testAddFinder()
     {
-        $m = $this->getMock(
-            '\iio\libmergepdf\Merger',
-            array('addFromFile')
-        );
+        $m = $this->getMockBuilder('\iio\libmergepdf\Merger')
+            ->setMethods(array('addFromFile'))
+            ->getMock();
 
         $m->expects($this->exactly(2))
             ->method('addFromFile')
@@ -91,17 +88,16 @@ class MergerTest extends \PHPUnit_Framework_TestCase
 
     public function testMerge()
     {
-        $fpdi = $this->getMock(
-            '\FPDI',
-            array(
+        $fpdi = $this->getMockBuilder('\FPDI')
+            ->setMethods(array(
                 'setSourceFile',
                 'importPage',
                 'getTemplateSize',
                 'AddPage',
                 'useTemplate',
                 'Output'
-            )
-        );
+            ))
+            ->getMock();
 
         $fpdi->expects($this->at(2))
             ->method('importPage')
@@ -126,14 +122,13 @@ class MergerTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidPageError()
     {
-        $fpdi = $this->getMock(
-            '\FPDI',
-            array('importPage', 'setSourceFile')
-        );
+        $fpdi = $this->getMockBuilder('\FPDI')
+            ->setMethods(array('importPage', 'setSourceFile'))
+            ->getMock();
 
         $fpdi->expects($this->once())
             ->method('importPage')
-            ->will($this->throwException(new \Exception));
+            ->will($this->throwException(new \RuntimeException));
 
         $m = new Merger($fpdi);
         $m->addRaw('', new Pages('2'));
@@ -146,14 +141,13 @@ class MergerTest extends \PHPUnit_Framework_TestCase
      */
     public function testFpdiException()
     {
-        $fpdi = $this->getMock(
-            '\FPDI',
-            array('setSourceFile')
-        );
+        $fpdi = $this->getMockBuilder('\FPDI')
+            ->setMethods(array('setSourceFile'))
+            ->getMock();
 
         $fpdi->expects($this->once())
             ->method('setSourceFile')
-            ->will($this->throwException(new \Exception('message')));
+            ->will($this->throwException(new \RuntimeException('message')));
 
         $m = new Merger($fpdi);
         $m->addRaw('');
