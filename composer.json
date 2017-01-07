@@ -21,8 +21,7 @@
         "setasign/fpdi-fpdf": "^1.6"
     },
     "require-dev": {
-        "symfony/finder": "2.*",
-        "hanneskod/readme-tester": "dev-master"
+        "symfony/finder": "2.*"
     },
     "suggest": {
         "symfony/finder": "Bulk add files using finder."
