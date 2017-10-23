@@ -68,16 +68,6 @@ composer
 vendor/bin/phpunit
 ```
 
-Changelog
----------
-* 3.0 Now using the official FPDI package
-* 2.4.0 Added `setTempDir()` to Merger.
-* 2.3.1 Added `addFinder()` to Merger.
-* 2.3.0 Injecting FPDI is now optional. Added `addIterator()` to Merger.
-* 2.2.0 Pages now support `addPage()` and `addRange()`.
-* 2.1.1 Now allows merging of Landscape and Portrait pages (thanks to @willoller).
-* 2.0 As of version 2.0 FPDI must be injected when creating a new libmergepdf instance.
-
 Credits
 -------
 libmergepdf is covered under the [WTFPL](http://www.wtfpl.net/).
