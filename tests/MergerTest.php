@@ -3,6 +3,7 @@
 namespace iio\libmergepdf;
 
 use setasign\Fpdi\Fpdi;
+use Symfony\Component\Finder\Finder;
 
 class MergerTest extends \PHPUnit_Framework_TestCase
 {
@@ -11,7 +12,7 @@ class MergerTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnableToCreateTempFileError()
     {
-        $m = $this->getMockBuilder('\iio\libmergepdf\Merger')
+        $m = $this->getMockBuilder(Merger::class)
             ->setMethods(array('getTempFname'))
             ->getMock();
 
@@ -55,7 +56,7 @@ class MergerTest extends \PHPUnit_Framework_TestCase
 
     public function testAddIterator()
     {
-        $m = $this->getMockBuilder('\iio\libmergepdf\Merger')
+        $m = $this->getMockBuilder(Merger::class)
             ->setMethods(array('addFromFile'))
             ->getMock();
 
@@ -67,7 +68,7 @@ class MergerTest extends \PHPUnit_Framework_TestCase
 
     public function testAddFinder()
     {
-        $m = $this->getMockBuilder('\iio\libmergepdf\Merger')
+        $m = $this->getMockBuilder(Merger::class)
             ->setMethods(array('addFromFile'))
             ->getMock();
 
@@ -75,7 +76,7 @@ class MergerTest extends \PHPUnit_Framework_TestCase
             ->method('addFromFile')
             ->with(__FILE__);
 
-        $finder = $this->getMockBuilder('\Symfony\Component\Finder\Finder')
+        $finder = $this->getMockBuilder(Finder::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -86,6 +87,31 @@ class MergerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(new \ArrayIterator(array($file, $file))));
 
         $m->addFinder($finder);
+    }
+
+    public function testAddFinderWithPagesArgument()
+    {
+        $pages = $this->getMockBuilder(Pages::class)->getMock();
+
+        $m = $this->getMockBuilder(Merger::class)
+            ->setMethods(array('addFromFile'))
+            ->getMock();
+
+        $m->expects($this->exactly(2))
+            ->method('addFromFile')
+            ->with(__FILE__, $pages);
+
+        $finder = $this->getMockBuilder(Finder::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $file = new \SplFileInfo(__FILE__);
+
+        $finder->expects($this->once())
+            ->method('getIterator')
+            ->will($this->returnValue(new \ArrayIterator(array($file, $file))));
+
+        $m->addFinder($finder, $pages);
     }
 
     public function testMerge()

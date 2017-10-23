@@ -4,6 +4,9 @@ After some early deviations this project now adheres to [Semantic Versioning](ht
 
 ## [Unreleased]
 
+### Added
+ - Pages argument to `Merger::addFinder()`.
+
 ### Changed
 - Using `setasign/fpdi:2.0`.
 

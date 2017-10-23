@@ -112,12 +112,13 @@ class Merger
      * Add files using symfony finder
      *
      * @param  Finder $finder
+     * @param  Pages  $pages  Optional pages constraint used for every added pdf
      * @return void
      */
-    public function addFinder(Finder $finder)
+    public function addFinder(Finder $finder, Pages $pages = null)
     {
         foreach ($finder as $fileInfo) {
-            $this->addFromFile($fileInfo->getRealpath());
+            $this->addFromFile($fileInfo->getRealpath(), $pages);
         }
     }
 
