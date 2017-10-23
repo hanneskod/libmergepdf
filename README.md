@@ -9,11 +9,11 @@ PHP library for merging multiple PDFs using [FPDI](https://github.com/Setasign/F
 
 Installation
 ------------
-Install using [composer](http://getcomposer.org/). Exists as
-[iio/libmergepdf](https://packagist.org/packages/iio/libmergepdf)
-in the [packagist](https://packagist.org/) repository.
+Install using [composer](http://getcomposer.org/).
 
-    composer require iio/libmergepdf:~3.0
+```shell
+composer require iio/libmergepdf:^3.0
+```
 
 Usage
 -----
@@ -63,9 +63,10 @@ Testing
 -------
 Unit tests requires dependencies to be installed using composer:
 
-    $ curl -sS https://getcomposer.org/installer | php
-    $ php composer.phar install
-    $ phpunit
+```shell
+composer
+vendor/bin/phpunit
+```
 
 Changelog
 ---------
