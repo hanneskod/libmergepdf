@@ -2,6 +2,7 @@
 
 namespace iio\libmergepdf;
 
+use setasign\Fpdi\Fpdi;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -20,7 +21,7 @@ class Merger
     private $files = array();
 
     /**
-     * @var \FPDI Fpdi object
+     * @var Fpdi Fpdi object
      */
     private $fpdi;
 
@@ -32,11 +33,11 @@ class Merger
     /**
      * Constructor
      *
-     * @param \FPDI $fpdi
+     * @param Fpdi $fpdi
      */
-    public function __construct(\FPDI $fpdi = null)
+    public function __construct(Fpdi $fpdi = null)
     {
-        $this->fpdi = $fpdi ?: new \FPDI;
+        $this->fpdi = $fpdi ?: new Fpdi;
     }
 
     /**
@@ -151,27 +152,27 @@ class Merger
                 foreach ($pages as $page) {
                     $template = $fpdi->importPage($page);
                     $size = $fpdi->getTemplateSize($template);
-                    $orientation = ($size['w'] > $size['h']) ? 'L' : 'P';
-                    $fpdi->AddPage($orientation, array($size['w'], $size['h']));
+                    $orientation = ($size['width'] > $size['height']) ? 'L' : 'P';
+                    $fpdi->AddPage($orientation, array($size['width'], $size['height']));
                     $fpdi->useTemplate($template);
                 }
             }
 
             $output = $fpdi->Output('', 'S');
 
-            $fpdi->cleanUp();
             foreach ($this->files as $fileData) {
                 list($fname, $pages, $cleanup) = $fileData;
                 if ($cleanup) {
                     unlink($fname);
                 }
             }
+
             $this->files = array();
 
             return $output;
 
         } catch (\Exception $e) {
-            throw new Exception("FPDI: '{$e->getMessage()}' in '$fname'", 0, $e);
+            throw new Exception("Fpdi: '{$e->getMessage()}' in '$fname'", 0, $e);
         }
     }
 

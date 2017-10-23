@@ -4,7 +4,8 @@ After some early deviations this project now adheres to [Semantic Versioning](ht
 
 ## [Unreleased]
 
-- Nothing yet...
+### Changed
+- Using `setasign/fpdi:2.0`.
 
 ## [3.0] - 2016-03-02
 

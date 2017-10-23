@@ -18,10 +18,10 @@
     },
     "require": {
         "php": ">=5.5",
-        "setasign/fpdi-fpdf": "^1.6"
+        "setasign/fpdi-fpdf": "^2.0"
     },
     "require-dev": {
-        "symfony/finder": "2.*",
+        "symfony/finder": "^2.0",
         "phpunit/phpunit": ">=4, <6",
         "hanneskod/readme-tester": "1.0-beta.1"
     },

@@ -2,6 +2,8 @@
 
 namespace iio\libmergepdf;
 
+use setasign\Fpdi\Fpdi;
+
 class MergerTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -88,7 +90,7 @@ class MergerTest extends \PHPUnit_Framework_TestCase
 
     public function testMerge()
     {
-        $fpdi = $this->getMockBuilder('\FPDI')
+        $fpdi = $this->getMockBuilder(Fpdi::class)
             ->setMethods(array(
                 'setSourceFile',
                 'importPage',
@@ -122,7 +124,7 @@ class MergerTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidPageError()
     {
-        $fpdi = $this->getMockBuilder('\FPDI')
+        $fpdi = $this->getMockBuilder(Fpdi::class)
             ->setMethods(array('importPage', 'setSourceFile'))
             ->getMock();
 
@@ -137,11 +139,11 @@ class MergerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException        iio\libmergepdf\Exception
-     * @expectedExceptionMessage FPDI: 'message' in '
+     * @expectedExceptionMessage Fpdi: 'message' in '
      */
     public function testFpdiException()
     {
-        $fpdi = $this->getMockBuilder('\FPDI')
+        $fpdi = $this->getMockBuilder(Fpdi::class)
             ->setMethods(array('setSourceFile'))
             ->getMock();
 
