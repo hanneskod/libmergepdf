@@ -53,6 +53,12 @@ $m->addFinder($finder);
 file_put_contents('finder.pdf', $m->merge());
 ```
 
+Known issues
+------------
+* Links and other content outside a page content stream is removed at merge.
+  This is due to limitations in FPDI and not possible to resolve with the
+  current strategy. For more information see [FPDI](https://www.setasign.com/support/faq/fpdi/after-importing-a-page-all-links-are-gone/#question-84).
+
 Testing
 -------
 Unit tests requires dependencies to be installed using composer:
