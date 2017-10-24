@@ -46,6 +46,21 @@ class MergerTest extends \PHPUnit_Framework_TestCase
         $m->addIterator(['A', 'B']);
     }
 
+    public function testAddIteratorWithPagesArgument()
+    {
+        $m = $this->getMockBuilder(Merger::class)
+            ->setMethods(['addFromFile'])
+            ->getMock();
+
+        $pages = $this->getMockBuilder(Pages::class)->getMock();
+
+        $m->expects($this->exactly(1))
+            ->method('addFromFile')
+            ->with('foo', $pages);
+
+        $m->addIterator(['foo'], $pages);
+    }
+
     public function testAddFinder()
     {
         $m = $this->getMockBuilder(Merger::class)

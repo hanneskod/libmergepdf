@@ -82,17 +82,18 @@ class Merger
      * Add files using iterator
      *
      * @param  iterable  $iterator Iterator or array with names of files to merge
+     * @param  Pages     $pages    Optional pages constraint used for every added pdf
      * @return void
      * @throws Exception If $iterator is not valid
      */
-    public function addIterator($iterator)
+    public function addIterator($iterator, Pages $pages = null)
     {
         if (!is_array($iterator) && !$iterator instanceof \Traversable) {
             throw new Exception("\$iterator must be traversable");
         }
 
         foreach ($iterator as $fname) {
-            $this->addFromFile($fname);
+            $this->addFromFile($fname, $pages);
         }
     }
 

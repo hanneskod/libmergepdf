@@ -6,6 +6,7 @@ After some early deviations this project now adheres to [Semantic Versioning](ht
 
 ### Added
 - `Pages` argument to `Merger::addFinder()`.
+- `Pages` argument to `Merger::addIterator()`.
 
 ### Changed
 - Using `setasign/fpdi:2.0`.
