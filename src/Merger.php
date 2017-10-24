@@ -4,6 +4,7 @@ namespace iio\libmergepdf;
 
 use setasign\Fpdi\Fpdi;
 use Symfony\Component\Finder\Finder;
+use setasign\Fpdi\PdfParser\StreamReader;
 
 /**
  * Merge existing pdfs into one
@@ -13,12 +14,9 @@ class Merger
     /**
      * Array of files to be merged.
      *
-     * Values for each files are filename, Pages object and a boolean value
-     * indicating if the file should be deleted after merging is complete.
-     *
-     * @var array
+     * Values for each files are file contents and Pages object.
      */
-    private $files = array();
+    private $files = [];
 
     /**
      * @var Fpdi Fpdi object
@@ -45,22 +43,16 @@ class Merger
      *
      * Note that your PDFs are merged in the order that you add them
      *
-     * @param  string    $pdf
-     * @param  Pages     $pages
+     * @param  string $content Raw pdf content
+     * @param  Pages  $pages   Specification of the pages to add
      * @return void
-     * @throws Exception if unable to create temporary file
      */
-    public function addRaw($pdf, Pages $pages = null)
+    public function addRaw($content, Pages $pages = null)
     {
-        assert('is_string($pdf)');
-
-        // Create temporary file
-        $fname = $this->getTempFname();
-        if (@file_put_contents($fname, $pdf) === false) {
-            throw new Exception("Unable to create temporary file");
-        }
-
-        $this->addFromFile($fname, $pages, true);
+        $this->files[] = [
+            (string)$content,
+            $pages ?: new Pages
+        ];
     }
 
     /**
@@ -70,30 +62,26 @@ class Merger
      *
      * @param  string    $fname   Name of file to add
      * @param  Pages     $pages   Pages to add from file
-     * @param  bool      $cleanup Flag if file should be deleted after merging
      * @return void
      * @throws Exception If $fname is not a valid file
      */
-    public function addFromFile($fname, Pages $pages = null, $cleanup = false)
+    public function addFromFile($fname, Pages $pages = null, $cleanup = null)
     {
-        assert('is_string($fname)');
-        assert('is_bool($cleanup)');
+        if (!is_null($cleanup)) {
+            trigger_error('Use of $cleanup argument is deprecated', E_USER_DEPRECATED);
+        }
 
         if (!is_file($fname) || !is_readable($fname)) {
             throw new Exception("'$fname' is not a valid file");
         }
 
-        if (!$pages) {
-            $pages = new Pages();
-        }
-
-        $this->files[] = array($fname, $pages, $cleanup);
+        $this->addRaw(file_get_contents($fname), $pages);
     }
 
     /**
      * Add files using iterator
      *
-     * @param  array|\Traversable $iterator
+     * @param  iterable  $iterator Iterator or array with names of files to merge
      * @return void
      * @throws Exception If $iterator is not valid
      */
@@ -109,7 +97,7 @@ class Merger
     }
 
     /**
-     * Add files using symfony finder
+     * Add files using a symfony finder
      *
      * @param  Finder $finder
      * @param  Pages  $pages  Optional pages constraint used for every added pdf
@@ -135,14 +123,14 @@ class Merger
             throw new Exception("Unable to merge, no PDFs added");
         }
 
-        $fname = '';
         try {
             $fpdi = clone $this->fpdi;
 
             foreach ($this->files as $fileData) {
-                list($fname, $pages, $cleanup) = $fileData;
+                list($contents, $pages) = $fileData;
                 $pages = $pages->getPages();
-                $iPageCount = $fpdi->setSourceFile($fname);
+
+                $iPageCount = $fpdi->setSourceFile(StreamReader::createByString($contents));
 
                 // If no pages are specified, add all pages
                 if (empty($pages)) {
@@ -159,54 +147,57 @@ class Merger
                 }
             }
 
-            $output = $fpdi->Output('', 'S');
+            $this->files = [];
 
-            foreach ($this->files as $fileData) {
-                list($fname, $pages, $cleanup) = $fileData;
-                if ($cleanup) {
-                    unlink($fname);
-                }
-            }
-
-            $this->files = array();
-
-            return $output;
+            return $fpdi->Output('', 'S');
 
         } catch (\Exception $e) {
-            throw new Exception("Fpdi: '{$e->getMessage()}' in '$fname'", 0, $e);
+            throw new Exception("Fpdi: '{$e->getMessage()}'", 0, $e);
         }
     }
 
     /**
      * Create temporary file and return name
      *
-     * @return string
+     * @deprecated Since version 3.1
      */
     public function getTempFname()
     {
+        trigger_error(
+            'Use of getTempFname() is deprecated as temporare files are no longer created',
+            E_USER_DEPRECATED
+        );
+
         return tempnam($this->getTempDir(), "libmergepdf");
     }
 
     /**
      * Get directory path for temporary files
      *
-     * Set path using setTempDir(), defaults to sys_get_temp_dir().
-     *
-     * @return string
+     * @deprecated Since version 3.1
      */
     public function getTempDir()
     {
+        trigger_error(
+            'Use of getTempDir() is deprecated as temporare files are no longer created',
+            E_USER_DEPRECATED
+        );
+
         return $this->tempDir ?: sys_get_temp_dir();
     }
 
     /**
      * Set directory path for temporary files
      *
-     * @param  string $dirname
-     * @return void
+     * @deprecated Since version 3.1
      */
     public function setTempDir($dirname)
     {
+        trigger_error(
+            'Use of setTempDir() is deprecated as temporare files are no longer created',
+            E_USER_DEPRECATED
+        );
+
         $this->tempDir = $dirname;
     }
 }

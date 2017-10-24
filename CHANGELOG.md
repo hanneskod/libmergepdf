@@ -5,10 +5,12 @@ After some early deviations this project now adheres to [Semantic Versioning](ht
 ## [Unreleased]
 
 ### Added
- - Pages argument to `Merger::addFinder()`.
+- `Pages` argument to `Merger::addFinder()`.
 
 ### Changed
 - Using `setasign/fpdi:2.0`.
+- No longer stores added content in temporary file on disk. Deprecated methods
+  handling temporary files in Merger.
 
 ## [3.0] - 2016-03-02
 

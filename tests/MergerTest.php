@@ -10,26 +10,6 @@ class MergerTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException iio\libmergepdf\Exception
      */
-    public function testUnableToCreateTempFileError()
-    {
-        $m = $this->getMockBuilder(Merger::class)
-            ->setMethods(array('getTempFname'))
-            ->getMock();
-
-        $m->expects($this->once())
-            ->method('getTempFname')
-            ->will(
-                $this->returnValue(
-                    __DIR__ . 'nonexisting' . DIRECTORY_SEPARATOR . 'filename'
-                )
-            );
-
-        $m->addRaw('');
-    }
-
-    /**
-     * @expectedException iio\libmergepdf\Exception
-     */
     public function testUnvalidFileNameError()
     {
         $m = new Merger();
@@ -57,19 +37,19 @@ class MergerTest extends \PHPUnit_Framework_TestCase
     public function testAddIterator()
     {
         $m = $this->getMockBuilder(Merger::class)
-            ->setMethods(array('addFromFile'))
+            ->setMethods(['addFromFile'])
             ->getMock();
 
         $m->expects($this->exactly(2))
             ->method('addFromFile');
 
-        $m->addIterator(array('A', 'B'));
+        $m->addIterator(['A', 'B']);
     }
 
     public function testAddFinder()
     {
         $m = $this->getMockBuilder(Merger::class)
-            ->setMethods(array('addFromFile'))
+            ->setMethods(['addFromFile'])
             ->getMock();
 
         $m->expects($this->exactly(2))
@@ -84,7 +64,7 @@ class MergerTest extends \PHPUnit_Framework_TestCase
 
         $finder->expects($this->once())
             ->method('getIterator')
-            ->will($this->returnValue(new \ArrayIterator(array($file, $file))));
+            ->will($this->returnValue(new \ArrayIterator([$file, $file])));
 
         $m->addFinder($finder);
     }
@@ -94,7 +74,7 @@ class MergerTest extends \PHPUnit_Framework_TestCase
         $pages = $this->getMockBuilder(Pages::class)->getMock();
 
         $m = $this->getMockBuilder(Merger::class)
-            ->setMethods(array('addFromFile'))
+            ->setMethods(['addFromFile'])
             ->getMock();
 
         $m->expects($this->exactly(2))
@@ -109,7 +89,7 @@ class MergerTest extends \PHPUnit_Framework_TestCase
 
         $finder->expects($this->once())
             ->method('getIterator')
-            ->will($this->returnValue(new \ArrayIterator(array($file, $file))));
+            ->will($this->returnValue(new \ArrayIterator([$file, $file])));
 
         $m->addFinder($finder, $pages);
     }
@@ -117,14 +97,14 @@ class MergerTest extends \PHPUnit_Framework_TestCase
     public function testMerge()
     {
         $fpdi = $this->getMockBuilder(Fpdi::class)
-            ->setMethods(array(
+            ->setMethods([
                 'setSourceFile',
                 'importPage',
                 'getTemplateSize',
                 'AddPage',
                 'useTemplate',
                 'Output'
-            ))
+            ])
             ->getMock();
 
         $fpdi->expects($this->at(2))
@@ -133,7 +113,7 @@ class MergerTest extends \PHPUnit_Framework_TestCase
 
         $fpdi->expects($this->at(4))
             ->method('getTemplateSize')
-            ->will($this->returnValue(array(10,20)));
+            ->will($this->returnValue([10, 20]));
 
         $fpdi->expects($this->once())
             ->method('Output')
@@ -151,7 +131,7 @@ class MergerTest extends \PHPUnit_Framework_TestCase
     public function testInvalidPageError()
     {
         $fpdi = $this->getMockBuilder(Fpdi::class)
-            ->setMethods(array('importPage', 'setSourceFile'))
+            ->setMethods(['importPage', 'setSourceFile'])
             ->getMock();
 
         $fpdi->expects($this->once())
@@ -165,12 +145,12 @@ class MergerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException        iio\libmergepdf\Exception
-     * @expectedExceptionMessage Fpdi: 'message' in '
+     * @expectedExceptionMessage Fpdi: 'message'
      */
     public function testFpdiException()
     {
         $fpdi = $this->getMockBuilder(Fpdi::class)
-            ->setMethods(array('setSourceFile'))
+            ->setMethods(['setSourceFile'])
             ->getMock();
 
         $fpdi->expects($this->once())
@@ -180,23 +160,5 @@ class MergerTest extends \PHPUnit_Framework_TestCase
         $m = new Merger($fpdi);
         $m->addRaw('');
         $m->merge();
-    }
-
-    public function testSetGetTempDir()
-    {
-        $m = new Merger;
-
-        $this->assertSame(
-            sys_get_temp_dir(),
-            $m->getTempDir()
-        );
-
-        $newTempDir = "foobar";
-        $m->setTempDir($newTempDir);
-
-        $this->assertSame(
-            $newTempDir,
-            $m->getTempDir()
-        );
     }
 }
