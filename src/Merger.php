@@ -128,22 +128,22 @@ class Merger
             $fpdi = clone $this->fpdi;
 
             foreach ($this->files as $fileData) {
-                list($contents, $pages) = $fileData;
-                $pages = $pages->getPages();
-
-                $iPageCount = $fpdi->setSourceFile(StreamReader::createByString($contents));
+                list($contents, $pagesToMerge) = $fileData;
+                $nrOfPagesInPdf = $fpdi->setSourceFile(StreamReader::createByString($contents));
 
                 // If no pages are specified, add all pages
-                if (empty($pages)) {
-                    $pages = range(1, $iPageCount);
+                if (!$pagesToMerge->hasPages()) {
+                    $pagesToMerge = range(1, $nrOfPagesInPdf);
                 }
 
                 // Add specified pages
-                foreach ($pages as $page) {
-                    $template = $fpdi->importPage($page);
+                foreach ($pagesToMerge as $pageNr) {
+                    $template = $fpdi->importPage($pageNr);
                     $size = $fpdi->getTemplateSize($template);
-                    $orientation = ($size['width'] > $size['height']) ? 'L' : 'P';
-                    $fpdi->AddPage($orientation, array($size['width'], $size['height']));
+                    $fpdi->AddPage(
+                        $size['width'] > $size['height'] ? 'L' : 'P',
+                        [$size['width'], $size['height']]
+                    );
                     $fpdi->useTemplate($template);
                 }
             }
