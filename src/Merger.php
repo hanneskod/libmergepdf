@@ -117,6 +117,8 @@ class Merger
      * @return string
      * @throws Exception If no PDFs were added
      * @throws Exception If a specified page does not exist
+     *
+     * @TODO Should $files be emptied after a merge? Why not implement a clear() method instead?
      */
     public function merge()
     {
