@@ -11,7 +11,7 @@ class PagesTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame(
             $expected,
-            (new Pages($expressionString))->getPages()
+            iterator_to_array(new Pages($expressionString))
         );
     }
 

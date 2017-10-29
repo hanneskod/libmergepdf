@@ -75,9 +75,16 @@ class Pages implements \IteratorAggregate
      * Get array of integer page numbers
      *
      * @return integer[]
+     *
+     * @deprecated Since version 3.1
      */
     public function getPages()
     {
+        trigger_error(
+            'Use of getPages() is deprecated as of version 3.1, see getIterator()',
+            E_USER_DEPRECATED
+        );
+
         return $this->pages;
     }
 
@@ -86,7 +93,7 @@ class Pages implements \IteratorAggregate
      */
     public function getIterator()
     {
-        return new \ArrayIterator($this->getPages());
+        return new \ArrayIterator($this->pages);
     }
 
     /**
@@ -96,6 +103,6 @@ class Pages implements \IteratorAggregate
      */
     public function hasPages()
     {
-        return !empty($this->getPages());
+        return !empty($this->pages);
     }
 }
