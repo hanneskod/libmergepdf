@@ -122,6 +122,10 @@ class MergerTest extends \PHPUnit_Framework_TestCase
             ])
             ->getMock();
 
+        $fpdi->expects($this->any())
+            ->method('setSourceFile')
+            ->will($this->returnValue(1));
+
         $fpdi->expects($this->at(2))
             ->method('importPage')
             ->will($this->returnValue(2));
@@ -158,10 +162,6 @@ class MergerTest extends \PHPUnit_Framework_TestCase
         $m->merge();
     }
 
-    /**
-     * @expectedException        iio\libmergepdf\Exception
-     * @expectedExceptionMessage Fpdi: 'message'
-     */
     public function testFpdiException()
     {
         $fpdi = $this->getMockBuilder(Fpdi::class)
@@ -172,8 +172,11 @@ class MergerTest extends \PHPUnit_Framework_TestCase
             ->method('setSourceFile')
             ->will($this->throwException(new \RuntimeException('message')));
 
+        $this->expectException(Exception::CLASS);
+        $this->expectExceptionMessage("'message' in '" . __FILE__ . "'");
+
         $m = new Merger($fpdi);
-        $m->addRaw('');
+        $m->addFromFile(__FILE__);
         $m->merge();
     }
 }

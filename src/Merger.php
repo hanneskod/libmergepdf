@@ -12,11 +12,11 @@ use setasign\Fpdi\PdfParser\StreamReader;
 class Merger
 {
     /**
-     * Array of files to be merged.
+     * List of pdf sources to merge
      *
-     * Values for each files are file contents and Pages object.
+     * @var SourceInterface[]
      */
-    private $files = [];
+    private $sources = [];
 
     /**
      * @var Fpdi Fpdi object
@@ -49,10 +49,10 @@ class Merger
      */
     public function addRaw($content, Pages $pages = null)
     {
-        $this->files[] = [
+        $this->sources[] = new RawSource(
             (string)$content,
             $pages ?: new Pages
-        ];
+        );
     }
 
     /**
@@ -75,7 +75,10 @@ class Merger
             throw new Exception("'$fname' is not a valid file");
         }
 
-        $this->addRaw(file_get_contents($fname), $pages);
+        $this->sources[] = new FileSource(
+            $fname,
+            $pages ?: new Pages
+        );
     }
 
     /**
@@ -118,25 +121,28 @@ class Merger
      * @throws Exception If no PDFs were added
      * @throws Exception If a specified page does not exist
      *
-     * @TODO Should $files be emptied after a merge? Why not implement a clear() method instead?
+     * @TODO Should $sources be emptied after a merge? Why not implement a clear() method instead?
      */
     public function merge()
     {
-        if (empty($this->files)) {
+        if (empty($this->sources)) {
             throw new Exception("Unable to merge, no PDFs added");
         }
+
+        /** @var string Name of source being processed */
+        $name = '';
 
         try {
             $fpdi = clone $this->fpdi;
 
-            foreach ($this->files as $fileData) {
-                list($contents, $pagesToMerge) = $fileData;
-                $nrOfPagesInPdf = $fpdi->setSourceFile(StreamReader::createByString($contents));
+            foreach ($this->sources as $source) {
+                $name = $source->getName();
 
-                // If no pages are specified, add all pages
-                if (!$pagesToMerge->hasPages()) {
-                    $pagesToMerge = range(1, $nrOfPagesInPdf);
-                }
+                /** @var int Total number of pages in pdf */
+                $nrOfPagesInPdf = $fpdi->setSourceFile($source->getStreamReader());
+
+                /** @var Pages The set of pages to merge, defaults to all pages */
+                $pagesToMerge = $source->getPages()->hasPages() ? $source->getPages() : new Pages("1-$nrOfPagesInPdf");
 
                 // Add specified pages
                 foreach ($pagesToMerge as $pageNr) {
@@ -150,12 +156,12 @@ class Merger
                 }
             }
 
-            $this->files = [];
+            $this->sources = [];
 
             return $fpdi->Output('', 'S');
 
         } catch (\Exception $e) {
-            throw new Exception("Fpdi: '{$e->getMessage()}'", 0, $e);
+            throw new Exception("'{$e->getMessage()}' in '{$name}'", 0, $e);
         }
     }
 
