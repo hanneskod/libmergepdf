@@ -12,7 +12,7 @@ Installation
 Install using [composer](http://getcomposer.org/).
 
 ```shell
-composer require iio/libmergepdf:^3.0
+composer require iio/libmergepdf:^3.1
 ```
 
 Usage
@@ -23,19 +23,19 @@ Append the first ten pages of *bar.pdf* to *foo.pdf*:
 use iio\libmergepdf\Merger;
 use iio\libmergepdf\Pages;
 
-$m = new Merger();
-$m->addFromFile('foo.pdf');
-$m->addFromFile('bar.pdf', new Pages('1-10'));
-file_put_contents('foobar.pdf', $m->merge());
+$merger = new Merger;
+$merger->addFile('foo.pdf');
+$merger->addFile('bar.pdf', new Pages('1-10'));
+file_put_contents('foobar.pdf', $merger->merge());
 ```
 
 Bulk add files from an iterator:
 
 ```php
 use iio\libmergepdf\Merger;
-$m = new Merger();
-$m->addIterator(array('A.pdf', 'B.pdf'));
-file_put_contents('AB.pdf', $m->merge());
+$merger = new Merger;
+$merger->addIterator(['A.pdf', 'B.pdf']);
+file_put_contents('AB.pdf', $merger->merge());
 ```
 
 Bulk add files using [symfony finder](http://symfony.com/doc/current/components/finder.html):
@@ -44,13 +44,13 @@ Bulk add files using [symfony finder](http://symfony.com/doc/current/components/
 use iio\libmergepdf\Merger;
 use Symfony\Component\Finder\Finder;
 
-$finder = new Finder();
+$finder = new Finder;
 $finder->files()->in(__DIR__)->name('*.pdf')->sortByName();
 
-$m = new Merger();
-$m->addFinder($finder);
+$merger = new Merger;
+$merger->addFinder($finder);
 
-file_put_contents('finder.pdf', $m->merge());
+file_put_contents('finder.pdf', $merger->merge());
 ```
 
 Known issues
@@ -64,7 +64,7 @@ Testing
 Unit tests requires dependencies to be installed using composer:
 
 ```shell
-composer
+composer install
 vendor/bin/phpunit
 ```
 

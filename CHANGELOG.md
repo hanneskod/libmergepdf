@@ -7,13 +7,15 @@ After some early deviations this project now adheres to [Semantic Versioning](ht
 ### Added
 - `Pages` argument to `Merger::addFinder()`.
 - `Pages` argument to `Merger::addIterator()`.
+- `Merger::addFile()` to replace `addFromFile()`.
 
 ### Changed
-- Bumped `setasign/fpdi` to `2.0`.
-- No longer stores added content in temporary file on disk.
+- Bumped `setasign/fpdi` dependecy version to `2.0`.
+- No longer stores added content in temporary files on disk.
 
 ### Deprecated
 - Methods handling temporary files in `Merger`.
+- `Merger::addFromFile()`. Use `addFile()` instead.
 - `Pages::getPages()`. Iterate your pages object instead.
 
 ## [3.0] - 2016-03-02

@@ -10,8 +10,8 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
         @unlink($target);
 
         $m = new Merger();
-        $m->addFromFile(__DIR__ . '/A.pdf');
-        $m->addFromFile(__DIR__ . '/A.pdf', new Pages('1'));
+        $m->addFile(__DIR__ . '/A.pdf');
+        $m->addFile(__DIR__ . '/A.pdf', new Pages('1'));
         file_put_contents($target, $m->merge());
 
         $this->assertTrue(file_exists($target), "$target should be created");

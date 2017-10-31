@@ -13,7 +13,7 @@ class MergerTest extends \PHPUnit_Framework_TestCase
     public function testUnvalidFileNameError()
     {
         $m = new Merger();
-        $m->addFromFile(__DIR__ . '/nonexistingfile');
+        $m->addFile(__DIR__ . '/nonexistingfile');
     }
 
     /**
@@ -37,11 +37,11 @@ class MergerTest extends \PHPUnit_Framework_TestCase
     public function testAddIterator()
     {
         $m = $this->getMockBuilder(Merger::class)
-            ->setMethods(['addFromFile'])
+            ->setMethods(['addFile'])
             ->getMock();
 
         $m->expects($this->exactly(2))
-            ->method('addFromFile');
+            ->method('addFile');
 
         $m->addIterator(['A', 'B']);
     }
@@ -49,13 +49,13 @@ class MergerTest extends \PHPUnit_Framework_TestCase
     public function testAddIteratorWithPagesArgument()
     {
         $m = $this->getMockBuilder(Merger::class)
-            ->setMethods(['addFromFile'])
+            ->setMethods(['addFile'])
             ->getMock();
 
         $pages = $this->getMockBuilder(Pages::class)->getMock();
 
         $m->expects($this->exactly(1))
-            ->method('addFromFile')
+            ->method('addFile')
             ->with('foo', $pages);
 
         $m->addIterator(['foo'], $pages);
@@ -64,11 +64,11 @@ class MergerTest extends \PHPUnit_Framework_TestCase
     public function testAddFinder()
     {
         $m = $this->getMockBuilder(Merger::class)
-            ->setMethods(['addFromFile'])
+            ->setMethods(['addFile'])
             ->getMock();
 
         $m->expects($this->exactly(2))
-            ->method('addFromFile')
+            ->method('addFile')
             ->with(__FILE__);
 
         $finder = $this->getMockBuilder(Finder::class)
@@ -89,11 +89,11 @@ class MergerTest extends \PHPUnit_Framework_TestCase
         $pages = $this->getMockBuilder(Pages::class)->getMock();
 
         $m = $this->getMockBuilder(Merger::class)
-            ->setMethods(['addFromFile'])
+            ->setMethods(['addFile'])
             ->getMock();
 
         $m->expects($this->exactly(2))
-            ->method('addFromFile')
+            ->method('addFile')
             ->with(__FILE__, $pages);
 
         $finder = $this->getMockBuilder(Finder::class)
@@ -176,7 +176,7 @@ class MergerTest extends \PHPUnit_Framework_TestCase
         $this->expectExceptionMessage("'message' in '" . __FILE__ . "'");
 
         $m = new Merger($fpdi);
-        $m->addFromFile(__FILE__);
+        $m->addFile(__FILE__);
         $m->merge();
     }
 }

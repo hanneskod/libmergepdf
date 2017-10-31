@@ -4,7 +4,6 @@ namespace iio\libmergepdf;
 
 use setasign\Fpdi\Fpdi;
 use Symfony\Component\Finder\Finder;
-use setasign\Fpdi\PdfParser\StreamReader;
 
 /**
  * Merge existing pdfs into one
@@ -49,36 +48,38 @@ class Merger
      */
     public function addRaw($content, Pages $pages = null)
     {
-        $this->sources[] = new RawSource(
-            (string)$content,
-            $pages ?: new Pages
-        );
+        $this->sources[] = new RawSource($content, $pages ?: new Pages);
     }
 
     /**
-     * Add PDF from filesystem path
+     * Add PDF from file
      *
      * Note that your PDFs are merged in the order that you add them
      *
-     * @param  string    $fname   Name of file to add
-     * @param  Pages     $pages   Pages to add from file
+     * @param  string    $filename Name of file to add
+     * @param  Pages     $pages    Pages to add from file
      * @return void
-     * @throws Exception If $fname is not a valid file
+     * @throws Exception If $filename is not a valid file
+     */
+    public function addFile($filename, Pages $pages = null)
+    {
+        // TODO vad h'nder egentligen annars...
+        if (!is_file($filename) || !is_readable($filename)) {
+            throw new Exception("'$filename' is not a valid file");
+        }
+
+        $this->sources[] = new FileSource($filename, $pages ?: new Pages);
+    }
+
+    /**
+     * Add PDF from file
+     *
+     * @deprecated Since version 3.1
      */
     public function addFromFile($fname, Pages $pages = null, $cleanup = null)
     {
-        if (!is_null($cleanup)) {
-            trigger_error('Use of $cleanup argument is deprecated', E_USER_DEPRECATED);
-        }
-
-        if (!is_file($fname) || !is_readable($fname)) {
-            throw new Exception("'$fname' is not a valid file");
-        }
-
-        $this->sources[] = new FileSource(
-            $fname,
-            $pages ?: new Pages
-        );
+        trigger_error('addFromFile() is deprecated, use addFile() instead', E_USER_DEPRECATED);
+        $this->addFile($fname, $pages);
     }
 
     /**
@@ -95,8 +96,8 @@ class Merger
             throw new Exception("\$iterator must be traversable");
         }
 
-        foreach ($iterator as $fname) {
-            $this->addFromFile($fname, $pages);
+        foreach ($iterator as $filename) {
+            $this->addFile($filename, $pages);
         }
     }
 
@@ -110,7 +111,7 @@ class Merger
     public function addFinder(Finder $finder, Pages $pages = null)
     {
         foreach ($finder as $fileInfo) {
-            $this->addFromFile($fileInfo->getRealpath(), $pages);
+            $this->addFile($fileInfo->getRealpath(), $pages);
         }
     }
 
