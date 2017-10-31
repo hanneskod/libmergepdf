@@ -4,70 +4,58 @@ namespace iio\libmergepdf;
 
 use setasign\Fpdi\Fpdi;
 use Symfony\Component\Finder\Finder;
+use Prophecy\Argument;
 
 class MergerTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @expectedException iio\libmergepdf\Exception
-     */
-    public function testUnvalidFileNameError()
+    public function testExceptionOnInvalidFile()
     {
-        $m = new Merger();
-        $m->addFile(__DIR__ . '/nonexistingfile');
+        $this->expectException(Exception::CLASS);
+        $merger = new Merger;
+        $merger->addFile(__DIR__ . '/nonexistingfile');
+        $merger->merge();
     }
 
-    /**
-     * @expectedException iio\libmergepdf\Exception
-     */
-    public function testNoPdfsAddedError()
+    public function testExceptionOnInvalidIterator()
     {
-        $m = new Merger();
-        $m->merge();
-    }
-
-    /**
-     * @expectedException iio\libmergepdf\Exception
-     */
-    public function testAddInvalidIterator()
-    {
-        $m = new Merger();
-        $m->addIterator(null);
+        $this->expectException(Exception::CLASS);
+        (new Merger)->addIterator(null);
     }
 
     public function testAddIterator()
     {
-        $m = $this->getMockBuilder(Merger::class)
+        $merger = $this->getMockBuilder(Merger::class)
             ->setMethods(['addFile'])
             ->getMock();
 
-        $m->expects($this->exactly(2))
+        $merger->expects($this->exactly(2))
             ->method('addFile');
 
-        $m->addIterator(['A', 'B']);
+        $merger->addIterator(['A', 'B']);
     }
 
     public function testAddIteratorWithPagesArgument()
     {
-        $m = $this->getMockBuilder(Merger::class)
+        $merger = $this->getMockBuilder(Merger::class)
             ->setMethods(['addFile'])
             ->getMock();
 
         $pages = $this->getMockBuilder(Pages::class)->getMock();
 
-        $m->expects($this->exactly(1))
+        $merger->expects($this->exactly(1))
             ->method('addFile')
             ->with('foo', $pages);
 
-        $m->addIterator(['foo'], $pages);
+        $merger->addIterator(['foo'], $pages);
     }
 
     public function testAddFinder()
     {
-        $m = $this->getMockBuilder(Merger::class)
+        $merger = $this->getMockBuilder(Merger::class)
             ->setMethods(['addFile'])
             ->getMock();
 
-        $m->expects($this->exactly(2))
+        $merger->expects($this->exactly(2))
             ->method('addFile')
             ->with(__FILE__);
 
@@ -81,18 +69,18 @@ class MergerTest extends \PHPUnit_Framework_TestCase
             ->method('getIterator')
             ->will($this->returnValue(new \ArrayIterator([$file, $file])));
 
-        $m->addFinder($finder);
+        $merger->addFinder($finder);
     }
 
     public function testAddFinderWithPagesArgument()
     {
         $pages = $this->getMockBuilder(Pages::class)->getMock();
 
-        $m = $this->getMockBuilder(Merger::class)
+        $merger = $this->getMockBuilder(Merger::class)
             ->setMethods(['addFile'])
             ->getMock();
 
-        $m->expects($this->exactly(2))
+        $merger->expects($this->exactly(2))
             ->method('addFile')
             ->with(__FILE__, $pages);
 
@@ -106,77 +94,56 @@ class MergerTest extends \PHPUnit_Framework_TestCase
             ->method('getIterator')
             ->will($this->returnValue(new \ArrayIterator([$file, $file])));
 
-        $m->addFinder($finder, $pages);
+        $merger->addFinder($finder, $pages);
     }
 
     public function testMerge()
     {
-        $fpdi = $this->getMockBuilder(Fpdi::class)
-            ->setMethods([
-                'setSourceFile',
-                'importPage',
-                'getTemplateSize',
-                'AddPage',
-                'useTemplate',
-                'Output'
-            ])
-            ->getMock();
+        $fpdi = $this->prophesize(Fpdi::CLASS);
 
-        $fpdi->expects($this->any())
-            ->method('setSourceFile')
-            ->will($this->returnValue(1));
+        $fpdi->setSourceFile(Argument::any())->willReturn(2);
 
-        $fpdi->expects($this->at(2))
-            ->method('importPage')
-            ->will($this->returnValue(2));
+        $fpdi->importPage(1)->willReturn('page_1');
+        $fpdi->getTemplateSize('page_1')->willReturn(['width' => 1, 'height' => 2]);
+        $fpdi->AddPage('P', [1, 2])->shouldBeCalled();
+        $fpdi->useTemplate('page_1')->shouldBeCalled();
 
-        $fpdi->expects($this->at(4))
-            ->method('getTemplateSize')
-            ->will($this->returnValue([10, 20]));
+        $fpdi->importPage(2)->willReturn('page_2');
+        $fpdi->getTemplateSize('page_2')->willReturn(['width' => 2, 'height' => 1]);
+        $fpdi->AddPage('L', [2, 1])->shouldBeCalled();
+        $fpdi->useTemplate('page_2')->shouldBeCalled();
 
-        $fpdi->expects($this->once())
-            ->method('Output')
-            ->will($this->returnValue('merged'));
+        $fpdi->Output('', 'S')->willReturn('created-pdf');
 
-        $m = new Merger($fpdi);
-        $m->addRaw('');
-        $m->addRaw('');
-        $this->assertEquals('merged', $m->merge());
+        $merger = new Merger($fpdi->reveal());
+        $merger->addFile(__FILE__, new Pages('1, 2'));
+        $this->assertSame('created-pdf', $merger->merge());
     }
 
-    /**
-     * @expectedException iio\libmergepdf\Exception
-     */
-    public function testInvalidPageError()
+    public function testExceptionOnFailure()
     {
-        $fpdi = $this->getMockBuilder(Fpdi::class)
-            ->setMethods(['importPage', 'setSourceFile'])
-            ->getMock();
+        $fpdi = $this->prophesize(Fpdi::CLASS);
+        $fpdi->setSourceFile(Argument::any())->willThrow(new \Exception('message'));
 
-        $fpdi->expects($this->once())
-            ->method('importPage')
-            ->will($this->throwException(new \RuntimeException));
-
-        $m = new Merger($fpdi);
-        $m->addRaw('', new Pages('2'));
-        $m->merge();
-    }
-
-    public function testFpdiException()
-    {
-        $fpdi = $this->getMockBuilder(Fpdi::class)
-            ->setMethods(['setSourceFile'])
-            ->getMock();
-
-        $fpdi->expects($this->once())
-            ->method('setSourceFile')
-            ->will($this->throwException(new \RuntimeException('message')));
+        $merger = new Merger($fpdi->reveal());
 
         $this->expectException(Exception::CLASS);
         $this->expectExceptionMessage("'message' in '" . __FILE__ . "'");
 
-        $m = new Merger($fpdi);
-        $m->addFile(__FILE__);
-        $m->merge();
+        $merger->addFile(__FILE__);
+        $merger->merge();
+    }
+
+    public function testReset()
+    {
+        $fpdi = $this->prophesize(Fpdi::CLASS);
+        $fpdi->Output('', 'S')->willReturn('');
+
+        $fpdi->setSourceFile(Argument::any())->shouldNotBeCalled();
+
+        $merger = new Merger($fpdi->reveal());
+        $merger->addFile(__FILE__);
+        $merger->reset();
+        $merger->merge();
     }
 }

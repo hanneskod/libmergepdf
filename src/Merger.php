@@ -59,15 +59,9 @@ class Merger
      * @param  string    $filename Name of file to add
      * @param  Pages     $pages    Pages to add from file
      * @return void
-     * @throws Exception If $filename is not a valid file
      */
     public function addFile($filename, Pages $pages = null)
     {
-        // TODO vad h'nder egentligen annars...
-        if (!is_file($filename) || !is_readable($filename)) {
-            throw new Exception("'$filename' is not a valid file");
-        }
-
         $this->sources[] = new FileSource($filename, $pages ?: new Pages);
     }
 
@@ -118,18 +112,17 @@ class Merger
     /**
      * Merges your provided PDFs and get raw string
      *
-     * @return string
-     * @throws Exception If no PDFs were added
-     * @throws Exception If a specified page does not exist
+     * A note on the $resetAfterMerge flag. Prior to version 3.1 the internal
+     * state was always reset after merge. This behaviour is deprecated. In
+     * version 4 the internal state will never be automatically reset. the
+     * $resetAfterMerge flag can be used to mimic the comming behaviour
      *
-     * @TODO Should $sources be emptied after a merge? Why not implement a clear() method instead?
+     * @param  boolean   $resetAfterMerge Flag if internal state should reset after merge
+     * @return string
+     * @throws Exception On failure
      */
-    public function merge()
+    public function merge($resetAfterMerge = true)
     {
-        if (empty($this->sources)) {
-            throw new Exception("Unable to merge, no PDFs added");
-        }
-
         /** @var string Name of source being processed */
         $name = '';
 
@@ -157,13 +150,25 @@ class Merger
                 }
             }
 
-            $this->sources = [];
+            if ($resetAfterMerge) {
+                $this->reset();
+            }
 
             return $fpdi->Output('', 'S');
 
         } catch (\Exception $e) {
             throw new Exception("'{$e->getMessage()}' in '{$name}'", 0, $e);
         }
+    }
+
+    /**
+     * Reset internal state
+     *
+     * @return void
+     */
+    public function reset()
+    {
+        $this->sources = [];
     }
 
     /**

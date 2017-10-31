@@ -8,6 +8,7 @@ After some early deviations this project now adheres to [Semantic Versioning](ht
 - `Pages` argument to `Merger::addFinder()`.
 - `Pages` argument to `Merger::addIterator()`.
 - `Merger::addFile()` to replace `addFromFile()`.
+- `Merger::reset()` to clear added pdfs.
 
 ### Changed
 - Bumped `setasign/fpdi` dependecy version to `2.0`.

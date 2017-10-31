@@ -26,7 +26,7 @@ use iio\libmergepdf\Pages;
 $merger = new Merger;
 $merger->addFile('foo.pdf');
 $merger->addFile('bar.pdf', new Pages('1-10'));
-file_put_contents('foobar.pdf', $merger->merge());
+$createdPdf = $merger->merge();
 ```
 
 Bulk add files from an iterator:
@@ -35,7 +35,7 @@ Bulk add files from an iterator:
 use iio\libmergepdf\Merger;
 $merger = new Merger;
 $merger->addIterator(['A.pdf', 'B.pdf']);
-file_put_contents('AB.pdf', $merger->merge());
+$createdPdf = $merger->merge();
 ```
 
 Bulk add files using [symfony finder](http://symfony.com/doc/current/components/finder.html):
@@ -50,7 +50,7 @@ $finder->files()->in(__DIR__)->name('*.pdf')->sortByName();
 $merger = new Merger;
 $merger->addFinder($finder);
 
-file_put_contents('finder.pdf', $merger->merge());
+$createdPdf = $merger->merge();
 ```
 
 Known issues
