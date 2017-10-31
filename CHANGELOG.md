@@ -4,6 +4,10 @@ After some early deviations this project now adheres to [Semantic Versioning](ht
 
 ## [Unreleased]
 
+- Nothing...
+
+## [3.1] - 2017-10-31
+
 ### Added
 - `Pages` argument to `Merger::addFinder()`.
 - `Pages` argument to `Merger::addIterator()`.
