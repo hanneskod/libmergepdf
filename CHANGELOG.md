@@ -1,10 +1,16 @@
 # Change Log
 All notable changes to this project will be documented in this file.
+
 After some early deviations this project now adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
 - Nothing...
+
+## [3.1.1] - 2017-12-11
+
+### Fixed
+- Support for php 7.2 (removed assertions with string argument)
 
 ## [3.1] - 2017-10-31
 

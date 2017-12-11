@@ -53,7 +53,7 @@ class Pages implements \IteratorAggregate
      */
     public function addPage($page)
     {
-        assert('is_numeric($page)');
+        assert(is_numeric($page));
         $this->pages[] = intval($page);
     }
 
@@ -66,8 +66,8 @@ class Pages implements \IteratorAggregate
      */
     public function addRange($start, $end)
     {
-        assert('is_numeric($start)');
-        assert('is_numeric($end)');
+        assert(is_numeric($start));
+        assert(is_numeric($end));
         $this->pages = array_merge($this->pages, range($start, $end));
     }
 
