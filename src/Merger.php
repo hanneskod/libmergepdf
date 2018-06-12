@@ -179,7 +179,7 @@ class Merger
     public function getTempFname()
     {
         trigger_error(
-            'Use of getTempFname() is deprecated as temporare files are no longer created',
+            'Use of getTempFname() is deprecated as temporary files are no longer created',
             E_USER_DEPRECATED
         );
 
@@ -194,7 +194,7 @@ class Merger
     public function getTempDir()
     {
         trigger_error(
-            'Use of getTempDir() is deprecated as temporare files are no longer created',
+            'Use of getTempDir() is deprecated as temporary files are no longer created',
             E_USER_DEPRECATED
         );
 
@@ -209,7 +209,7 @@ class Merger
     public function setTempDir($dirname)
     {
         trigger_error(
-            'Use of setTempDir() is deprecated as temporare files are no longer created',
+            'Use of setTempDir() is deprecated as temporary files are no longer created',
             E_USER_DEPRECATED
         );
 
