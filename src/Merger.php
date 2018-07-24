@@ -118,10 +118,12 @@ class Merger
      * $resetAfterMerge flag can be used to mimic the comming behaviour
      *
      * @param  boolean   $resetAfterMerge Flag if internal state should reset after merge
+     * @param string $filename Output file path after merge.
+     * @param string $dest Output destination after merge. By default outputs to string.
      * @return string
      * @throws Exception On failure
      */
-    public function merge($resetAfterMerge = true)
+    public function merge($resetAfterMerge = true, $filename = '', $dest = 'S')
     {
         /** @var string Name of source being processed */
         $name = '';
@@ -154,7 +156,7 @@ class Merger
                 $this->reset();
             }
 
-            return $fpdi->Output('', 'S');
+            return $fpdi->Output($filename, $dest);
 
         } catch (\Exception $e) {
             throw new Exception("'{$e->getMessage()}' in '{$name}'", 0, $e);
