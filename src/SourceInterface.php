@@ -1,30 +1,23 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace iio\libmergepdf;
 
-/**
- * Interface defining a source pdf to merge
- */
 interface SourceInterface
 {
     /**
      * Get name of file or source
-     *
-     * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Get pdf content
-     *
-     * @return string
      */
-    public function getContents();
+    public function getContents(): string;
 
     /**
      * Get pages to fetch from source
-     *
-     * @return Pages
      */
-    public function getPages();
+    public function getPages(): Pages;
 }

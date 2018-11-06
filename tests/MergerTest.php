@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace iio\libmergepdf;
 
 use Symfony\Component\Finder\Finder;
@@ -13,12 +15,6 @@ class MergerTest extends \PHPUnit\Framework\TestCase
         $merger = new Merger;
         $merger->addFile(__DIR__ . '/nonexistingfile');
         $merger->merge();
-    }
-
-    public function testExceptionOnInvalidIterator()
-    {
-        $this->expectException(Exception::CLASS);
-        (new Merger)->addIterator(null);
     }
 
     public function testAddIterator()

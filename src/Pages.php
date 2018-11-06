@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace iio\libmergepdf;
 
 /**
@@ -8,21 +10,18 @@ namespace iio\libmergepdf;
 class Pages implements \IteratorAggregate
 {
     /**
-     * @var integer[] Added integer page numbers
+     * @var int[] Added integer page numbers
      */
     private $pages = [];
 
     /**
-     * Constructor
+     * Parse page numbers from expression string
      *
      * Pages should be formatted as 1,3,6 or 12-16 or combined. Note that pages
      * are merged in the order that you provide them. If you put pages 12-14
      * before 1-5 then 12-14 will be placed first.
-     *
-     * @param  string    $expressionString
-     * @throws Exception If unable to parse page numbers
      */
-    public function __construct($expressionString = '')
+    public function __construct(string $expressionString = '')
     {
         $expressions = explode(
             ',',
@@ -34,11 +33,11 @@ class Pages implements \IteratorAggregate
                 continue;
             }
             if (ctype_digit($expr)) {
-                $this->addPage($expr);
+                $this->addPage((int)$expr);
                 continue;
             }
             if (preg_match("/^(\d+)-(\d+)/", $expr, $matches)) {
-                $this->addRange($matches[1], $matches[2]);
+                $this->addRange((int)$matches[1], (int)$matches[2]);
                 continue;
             }
             throw new Exception("Invalid page number(s) for expression '$expr'");
@@ -46,45 +45,33 @@ class Pages implements \IteratorAggregate
     }
 
     /**
-     * Add page to collection
-     *
-     * @param  int|string $page
-     * @return void
+     * Add a single page
      */
-    public function addPage($page)
+    public function addPage(int $page): void
     {
-        assert(is_numeric($page));
-        $this->pages[] = intval($page);
+        $this->pages[] = $page;
     }
 
     /**
-     * Add range of pages
-     *
-     * @param  int|string $start
-     * @param  int|string $end
-     * @return void
+     * Add a range of pages
      */
-    public function addRange($start, $end)
+    public function addRange(int $start, int $end): void
     {
-        assert(is_numeric($start));
-        assert(is_numeric($end));
         $this->pages = array_merge($this->pages, range($start, $end));
     }
 
     /**
      * Get iterator of page numbers
      */
-    public function getIterator()
+    public function getIterator(): iterable
     {
         return new \ArrayIterator($this->pages);
     }
 
     /**
-     * Check if pages has been sprcified
-     *
-     * @return boolean
+     * Check if pages has been specified
      */
-    public function hasPages()
+    public function hasPages(): bool
     {
         return !empty($this->pages);
     }

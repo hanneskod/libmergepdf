@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace iio\libmergepdf;
 
 use setasign\Fpdi\PdfParser\StreamReader;

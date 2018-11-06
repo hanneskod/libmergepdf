@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace iio\libmergepdf;
 
 /**
@@ -17,27 +19,23 @@ class RawSource implements SourceInterface
      */
     private $pages;
 
-    /**
-     * @param string $contents
-     * @param Pages  $pages
-     */
-    public function __construct($contents, Pages $pages = null)
+    public function __construct(string $contents, Pages $pages = null)
     {
         $this->contents = $contents;
         $this->pages = $pages ?: new Pages;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return "raw-content";
     }
 
-    public function getContents()
+    public function getContents(): string
     {
         return $this->contents;
     }
 
-    public function getPages()
+    public function getPages(): Pages
     {
         return $this->pages;
     }

@@ -5,8 +5,10 @@ After some early deviations this project now adheres to [Semantic Versioning](ht
 
 ## [Unreleased]
 
-- Support merging PDFs of version > 1.4.
-- Depend on TCPDI instead of FPDI.
+- Support merging PDFs of version > 1.4
+- Depend on TCPDI instead of FPDI
+- Dropped deprecated symbols
+- Require php >= 7.1
 
 ## [3.1.1] - 2017-12-11
 

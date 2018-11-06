@@ -1,18 +1,20 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace iio\libmergepdf;
 
 use Symfony\Component\Finder\Finder;
 
 /**
  * Merge existing pdfs into one
+ *
+ * Note that your PDFs are merged in the order that you add them
  */
 class Merger
 {
     /**
-     * List of pdf sources to merge
-     *
-     * @var SourceInterface[]
+     * @var SourceInterface[] List of pdf sources to merge
      */
     private $sources = [];
 
@@ -21,11 +23,6 @@ class Merger
      */
     private $tcpdi;
 
-    /**
-     * @var string Directory path used for temporary files
-     */
-    private $tempDir;
-
     public function __construct(\TCPDI $tcpdi = null)
     {
         $this->tcpdi = $tcpdi ?: new \TCPDI;
@@ -33,28 +30,16 @@ class Merger
 
     /**
      * Add raw PDF from string
-     *
-     * Note that your PDFs are merged in the order that you add them
-     *
-     * @param  string $content Raw pdf content
-     * @param  Pages  $pages   Specification of the pages to add
-     * @return void
      */
-    public function addRaw($content, Pages $pages = null)
+    public function addRaw(string $content, Pages $pages = null): void
     {
         $this->sources[] = new RawSource($content, $pages);
     }
 
     /**
      * Add PDF from file
-     *
-     * Note that your PDFs are merged in the order that you add them
-     *
-     * @param  string $filename Name of file to add
-     * @param  Pages  $pages    Pages to add from file
-     * @return void
      */
-    public function addFile($filename, Pages $pages = null)
+    public function addFile(string $filename, Pages $pages = null): void
     {
         $this->sources[] = new FileSource($filename, $pages);
     }
@@ -62,17 +47,10 @@ class Merger
     /**
      * Add files using iterator
      *
-     * @param  iterable  $iterator Iterator or array with names of files to merge
-     * @param  Pages     $pages    Optional pages constraint used for every added pdf
-     * @return void
-     * @throws Exception If $iterator is not valid
+     * Note that optional pages constraint is used for every added pdf
      */
-    public function addIterator($iterator, Pages $pages = null)
+    public function addIterator(iterable $iterator, Pages $pages = null): void
     {
-        if (!is_array($iterator) && !$iterator instanceof \Traversable) {
-            throw new Exception("\$iterator must be traversable");
-        }
-
         foreach ($iterator as $filename) {
             $this->addFile($filename, $pages);
         }
@@ -81,11 +59,9 @@ class Merger
     /**
      * Add files using a symfony finder
      *
-     * @param  Finder $finder
-     * @param  Pages  $pages  Optional pages constraint used for every added pdf
-     * @return void
+     * Note that optional pages constraint is used for every added pdf
      */
-    public function addFinder(Finder $finder, Pages $pages = null)
+    public function addFinder(Finder $finder, Pages $pages = null): void
     {
         foreach ($finder as $fileInfo) {
             $this->addFile($fileInfo->getRealpath(), $pages);
@@ -99,12 +75,8 @@ class Merger
      * state was always reset after merge. This behaviour is deprecated. In
      * version 4 the internal state will never be automatically reset. the
      * $resetAfterMerge flag can be used to mimic the comming behaviour
-     *
-     * @param  boolean   $resetAfterMerge Flag if internal state should reset after merge
-     * @return string
-     * @throws Exception On failure
      */
-    public function merge($resetAfterMerge = true)
+    public function merge(bool $resetAfterMerge = true): string
     {
         /** @var string Name of source being processed */
         $name = '';
@@ -146,10 +118,8 @@ class Merger
 
     /**
      * Reset internal state
-     *
-     * @return void
      */
-    public function reset()
+    public function reset(): void
     {
         $this->sources = [];
     }

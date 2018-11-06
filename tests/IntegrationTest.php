@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace iio\libmergepdf;
 
 class IntegrationTest extends \PHPUnit\Framework\TestCase
