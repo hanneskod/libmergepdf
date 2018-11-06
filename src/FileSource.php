@@ -2,8 +2,6 @@
 
 namespace iio\libmergepdf;
 
-use setasign\Fpdi\PdfParser\StreamReader;
-
 /**
  * Pdf source from file
  */
@@ -37,11 +35,6 @@ class FileSource implements SourceInterface
     public function getContents()
     {
         return file_get_contents($this->filename);
-    }
-
-    public function getStreamReader()
-    {
-        return StreamReader::createByFile($this->filename);
     }
 
     public function getPages()

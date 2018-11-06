@@ -2,8 +2,6 @@
 
 namespace iio\libmergepdf;
 
-use setasign\Fpdi\PdfParser\StreamReader;
-
 /**
  * Pdf source from raw string
  */
@@ -37,11 +35,6 @@ class RawSource implements SourceInterface
     public function getContents()
     {
         return $this->contents;
-    }
-
-    public function getStreamReader()
-    {
-        return StreamReader::createByString($this->contents);
     }
 
     public function getPages()

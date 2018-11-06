@@ -60,17 +60,6 @@ class Merger
     }
 
     /**
-     * Add PDF from file
-     *
-     * @deprecated Since version 3.1
-     */
-    public function addFromFile($fname, Pages $pages = null, $cleanup = null)
-    {
-        trigger_error('addFromFile() is deprecated, use addFile() instead', E_USER_DEPRECATED);
-        $this->addFile($fname, $pages);
-    }
-
-    /**
      * Add files using iterator
      *
      * @param  iterable  $iterator Iterator or array with names of files to merge
@@ -106,7 +95,7 @@ class Merger
     /**
      * Merges your provided PDFs and get raw string
      *
-     * A note on the $resetAfterMerge flag. Prior to version 3.1 the internal
+     * @todo A note on the $resetAfterMerge flag. Prior to 3.1 the internal
      * state was always reset after merge. This behaviour is deprecated. In
      * version 4 the internal state will never be automatically reset. the
      * $resetAfterMerge flag can be used to mimic the comming behaviour
@@ -163,50 +152,5 @@ class Merger
     public function reset()
     {
         $this->sources = [];
-    }
-
-    /**
-     * Create temporary file and return name
-     *
-     * @deprecated Since version 3.1
-     */
-    public function getTempFname()
-    {
-        trigger_error(
-            'Use of getTempFname() is deprecated as temporary files are no longer created',
-            E_USER_DEPRECATED
-        );
-
-        return tempnam($this->getTempDir(), "libmergepdf");
-    }
-
-    /**
-     * Get directory path for temporary files
-     *
-     * @deprecated Since version 3.1
-     */
-    public function getTempDir()
-    {
-        trigger_error(
-            'Use of getTempDir() is deprecated as temporary files are no longer created',
-            E_USER_DEPRECATED
-        );
-
-        return $this->tempDir ?: sys_get_temp_dir();
-    }
-
-    /**
-     * Set directory path for temporary files
-     *
-     * @deprecated Since version 3.1
-     */
-    public function setTempDir($dirname)
-    {
-        trigger_error(
-            'Use of setTempDir() is deprecated as temporary files are no longer created',
-            E_USER_DEPRECATED
-        );
-
-        $this->tempDir = $dirname;
     }
 }
