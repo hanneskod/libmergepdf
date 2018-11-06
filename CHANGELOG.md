@@ -10,6 +10,7 @@ After some early deviations this project now adheres to [Semantic Versioning](ht
 - Dropped deprecated symbols
 - Require php >= 7.1
 - Drop symfony finder support
+- Added drivers
 
 ## [3.1.1] - 2017-12-11
 
