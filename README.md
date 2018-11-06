@@ -37,21 +37,6 @@ $merger->addIterator(['A.pdf', 'B.pdf']);
 $createdPdf = $merger->merge();
 ```
 
-Bulk add files using [symfony finder](http://symfony.com/doc/current/components/finder.html):
-
-```php
-use iio\libmergepdf\Merger;
-use Symfony\Component\Finder\Finder;
-
-$finder = new Finder;
-$finder->files()->in(__DIR__)->name('*.pdf')->sortByName();
-
-$merger = new Merger;
-$merger->addFinder($finder);
-
-$createdPdf = $merger->merge();
-```
-
 Known issues
 ------------
 * Links and other content outside a page content stream is removed at merge.
@@ -64,7 +49,7 @@ Unit tests requires dependencies to be installed using composer:
 
 ```shell
 composer install
-vendor/bin/phpunit
+phpunit
 ```
 
 Credits

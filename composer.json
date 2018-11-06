@@ -21,10 +21,6 @@
         "rafikhaceb/tcpdi": "^1"
     },
     "require-dev": {
-        "symfony/finder": "^2.0",
         "hanneskod/readme-tester": "1.0-beta.1"
-    },
-    "suggest": {
-        "symfony/finder": "Bulk add files using finder."
     }
 }

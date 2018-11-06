@@ -7,7 +7,6 @@ namespace iio\libmergepdf;
 use iio\libmergepdf\Source\SourceInterface;
 use iio\libmergepdf\Source\FileSource;
 use iio\libmergepdf\Source\RawSource;
-use Symfony\Component\Finder\Finder;
 
 /**
  * Merge existing pdfs into one
@@ -56,18 +55,6 @@ class Merger
     {
         foreach ($iterator as $filename) {
             $this->addFile($filename, $pages);
-        }
-    }
-
-    /**
-     * Add files using a symfony finder
-     *
-     * Note that optional pages constraint is used for every added pdf
-     */
-    public function addFinder(Finder $finder, PagesInterface $pages = null): void
-    {
-        foreach ($finder as $fileInfo) {
-            $this->addFile($fileInfo->getRealpath(), $pages);
         }
     }
 

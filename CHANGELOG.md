@@ -9,6 +9,7 @@ After some early deviations this project now adheres to [Semantic Versioning](ht
 - Depend on TCPDI instead of FPDI
 - Dropped deprecated symbols
 - Require php >= 7.1
+- Drop symfony finder support
 
 ## [3.1.1] - 2017-12-11
 

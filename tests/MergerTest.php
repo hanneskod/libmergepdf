@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace iio\libmergepdf;
 
-use Symfony\Component\Finder\Finder;
 use Prophecy\Argument;
 
 class MergerTest extends \PHPUnit\Framework\TestCase
@@ -42,54 +41,6 @@ class MergerTest extends \PHPUnit\Framework\TestCase
             ->with('foo', $pages);
 
         $merger->addIterator(['foo'], $pages);
-    }
-
-    public function testAddFinder()
-    {
-        $merger = $this->getMockBuilder(Merger::class)
-            ->setMethods(['addFile'])
-            ->getMock();
-
-        $merger->expects($this->exactly(2))
-            ->method('addFile')
-            ->with(__FILE__);
-
-        $finder = $this->getMockBuilder(Finder::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $file = new \SplFileInfo(__FILE__);
-
-        $finder->expects($this->once())
-            ->method('getIterator')
-            ->will($this->returnValue(new \ArrayIterator([$file, $file])));
-
-        $merger->addFinder($finder);
-    }
-
-    public function testAddFinderWithPagesArgument()
-    {
-        $pages = $this->getMockBuilder(PagesInterface::class)->getMock();
-
-        $merger = $this->getMockBuilder(Merger::class)
-            ->setMethods(['addFile'])
-            ->getMock();
-
-        $merger->expects($this->exactly(2))
-            ->method('addFile')
-            ->with(__FILE__, $pages);
-
-        $finder = $this->getMockBuilder(Finder::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $file = new \SplFileInfo(__FILE__);
-
-        $finder->expects($this->once())
-            ->method('getIterator')
-            ->will($this->returnValue(new \ArrayIterator([$file, $file])));
-
-        $merger->addFinder($finder, $pages);
     }
 
     public function testMerge()
