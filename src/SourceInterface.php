@@ -17,9 +17,17 @@ interface SourceInterface
     public function getName();
 
     /**
-     * Get strom pf pdf content
+     * Get pdf content
+     *
+     * @return string
+     */
+    public function getContents();
+
+    /**
+     * Get stream of pdf content
      *
      * @return StreamReader
+     * @deprecated Will be removed in version 4. Use getContents() instead..
      */
     public function getStreamReader();
 

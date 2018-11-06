@@ -2,7 +2,6 @@
 
 namespace iio\libmergepdf;
 
-use setasign\Fpdi\Fpdi;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -18,23 +17,18 @@ class Merger
     private $sources = [];
 
     /**
-     * @var Fpdi Fpdi object
+     * @var \TCPDI
      */
-    private $fpdi;
+    private $tcpdi;
 
     /**
      * @var string Directory path used for temporary files
      */
     private $tempDir;
 
-    /**
-     * Constructor
-     *
-     * @param Fpdi $fpdi
-     */
-    public function __construct(Fpdi $fpdi = null)
+    public function __construct(\TCPDI $tcpdi = null)
     {
-        $this->fpdi = $fpdi ?: new Fpdi;
+        $this->tcpdi = $tcpdi ?: new \TCPDI;
     }
 
     /**
@@ -48,7 +42,7 @@ class Merger
      */
     public function addRaw($content, Pages $pages = null)
     {
-        $this->sources[] = new RawSource($content, $pages ?: new Pages);
+        $this->sources[] = new RawSource($content, $pages);
     }
 
     /**
@@ -56,13 +50,13 @@ class Merger
      *
      * Note that your PDFs are merged in the order that you add them
      *
-     * @param  string    $filename Name of file to add
-     * @param  Pages     $pages    Pages to add from file
+     * @param  string $filename Name of file to add
+     * @param  Pages  $pages    Pages to add from file
      * @return void
      */
     public function addFile($filename, Pages $pages = null)
     {
-        $this->sources[] = new FileSource($filename, $pages ?: new Pages);
+        $this->sources[] = new FileSource($filename, $pages);
     }
 
     /**
@@ -127,26 +121,26 @@ class Merger
         $name = '';
 
         try {
-            $fpdi = clone $this->fpdi;
+            $tcpdi = clone $this->tcpdi;
 
             foreach ($this->sources as $source) {
                 $name = $source->getName();
 
                 /** @var int Total number of pages in pdf */
-                $nrOfPagesInPdf = $fpdi->setSourceFile($source->getStreamReader());
+                $nrOfPagesInPdf = $tcpdi->setSourceData($source->getContents());
 
                 /** @var Pages The set of pages to merge, defaults to all pages */
                 $pagesToMerge = $source->getPages()->hasPages() ? $source->getPages() : new Pages("1-$nrOfPagesInPdf");
 
                 // Add specified pages
                 foreach ($pagesToMerge as $pageNr) {
-                    $template = $fpdi->importPage($pageNr);
-                    $size = $fpdi->getTemplateSize($template);
-                    $fpdi->AddPage(
-                        $size['width'] > $size['height'] ? 'L' : 'P',
-                        [$size['width'], $size['height']]
+                    $template = $tcpdi->importPage($pageNr);
+                    $size = $tcpdi->getTemplateSize($template);
+                    $tcpdi->AddPage(
+                        $size['w'] > $size['h'] ? 'L' : 'P',
+                        [$size['w'], $size['h']]
                     );
-                    $fpdi->useTemplate($template);
+                    $tcpdi->useTemplate($template);
                 }
             }
 
@@ -154,7 +148,7 @@ class Merger
                 $this->reset();
             }
 
-            return $fpdi->Output('', 'S');
+            return $tcpdi->Output('', 'S');
 
         } catch (\Exception $e) {
             throw new Exception("'{$e->getMessage()}' in '{$name}'", 0, $e);

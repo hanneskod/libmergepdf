@@ -34,6 +34,11 @@ class FileSource implements SourceInterface
         return $this->filename;
     }
 
+    public function getContents()
+    {
+        return file_get_contents($this->filename);
+    }
+
     public function getStreamReader()
     {
         return StreamReader::createByFile($this->filename);

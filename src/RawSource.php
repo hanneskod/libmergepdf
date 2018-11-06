@@ -34,6 +34,11 @@ class RawSource implements SourceInterface
         return "raw-content";
     }
 
+    public function getContents()
+    {
+        return $this->contents;
+    }
+
     public function getStreamReader()
     {
         return StreamReader::createByString($this->contents);

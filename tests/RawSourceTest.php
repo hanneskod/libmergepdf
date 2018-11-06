@@ -9,25 +9,25 @@ class RawSourceTest extends \PHPUnit_Framework_TestCase
     public function testGetName()
     {
         $this->assertSame(
-            (new RawSource(''))->getName(),
-            'raw-content'
+            'raw-content',
+            (new RawSource(''))->getName()
         );
     }
 
-    public function testGetStreamReader()
+    public function testgetContents()
     {
-        $streamReader = (new RawSource('foobar'))->getStreamReader();
-        $this->assertEquals(
-            $streamReader->readBytes($streamReader->getTotalLength(), 0),
-            'foobar'
+        $this->assertSame(
+            'foobar',
+            (new RawSource('foobar'))->getContents()
         );
     }
 
     public function testGetPages()
     {
+        $pages = new Pages;
         $this->assertSame(
-            (new RawSource('', $pages = new Pages))->getPages(),
-            $pages
+            $pages,
+            (new RawSource('', $pages))->getPages()
         );
     }
 }

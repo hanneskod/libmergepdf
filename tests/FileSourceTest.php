@@ -2,32 +2,30 @@
 
 namespace iio\libmergepdf;
 
-use setasign\Fpdi\PdfParser\StreamReader;
-
 class FileSourceTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetName()
     {
         $this->assertSame(
-            (new FileSource('foobar'))->getName(),
-            'foobar'
+            'foobar',
+            (new FileSource('foobar'))->getName()
         );
     }
 
-    public function testGetStreamReader()
+    public function testgetContents()
     {
-        $streamReader = (new FileSource(__FILE__))->getStreamReader();
-        $this->assertEquals(
-            $streamReader->readBytes($streamReader->getTotalLength(), 0),
-            file_get_contents(__FILE__)
+        $this->assertSame(
+            file_get_contents(__FILE__),
+            (new FileSource(__FILE__))->getContents()
         );
     }
 
     public function testGetPages()
     {
+        $pages = new Pages;
         $this->assertSame(
-            (new FileSource('', $pages = new Pages))->getPages(),
-            $pages
+            $pages,
+            (new FileSource('', $pages))->getPages()
         );
     }
 }

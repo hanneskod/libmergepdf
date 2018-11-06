@@ -2,7 +2,6 @@
 
 namespace iio\libmergepdf;
 
-use setasign\Fpdi\Fpdi;
 use Symfony\Component\Finder\Finder;
 use Prophecy\Argument;
 
@@ -99,33 +98,33 @@ class MergerTest extends \PHPUnit_Framework_TestCase
 
     public function testMerge()
     {
-        $fpdi = $this->prophesize(Fpdi::CLASS);
+        $tcpdi = $this->prophesize(\TCPDI::CLASS);
 
-        $fpdi->setSourceFile(Argument::any())->willReturn(2);
+        $tcpdi->setSourceData(Argument::any())->willReturn(2);
 
-        $fpdi->importPage(1)->willReturn('page_1');
-        $fpdi->getTemplateSize('page_1')->willReturn(['width' => 1, 'height' => 2]);
-        $fpdi->AddPage('P', [1, 2])->shouldBeCalled();
-        $fpdi->useTemplate('page_1')->shouldBeCalled();
+        $tcpdi->importPage(1)->willReturn('page_1');
+        $tcpdi->getTemplateSize('page_1')->willReturn(['w' => 1, 'h' => 2]);
+        $tcpdi->AddPage('P', [1, 2])->shouldBeCalled();
+        $tcpdi->useTemplate('page_1')->shouldBeCalled();
 
-        $fpdi->importPage(2)->willReturn('page_2');
-        $fpdi->getTemplateSize('page_2')->willReturn(['width' => 2, 'height' => 1]);
-        $fpdi->AddPage('L', [2, 1])->shouldBeCalled();
-        $fpdi->useTemplate('page_2')->shouldBeCalled();
+        $tcpdi->importPage(2)->willReturn('page_2');
+        $tcpdi->getTemplateSize('page_2')->willReturn(['w' => 2, 'h' => 1]);
+        $tcpdi->AddPage('L', [2, 1])->shouldBeCalled();
+        $tcpdi->useTemplate('page_2')->shouldBeCalled();
 
-        $fpdi->Output('', 'S')->willReturn('created-pdf');
+        $tcpdi->Output('', 'S')->willReturn('created-pdf');
 
-        $merger = new Merger($fpdi->reveal());
+        $merger = new Merger($tcpdi->reveal());
         $merger->addFile(__FILE__, new Pages('1, 2'));
         $this->assertSame('created-pdf', $merger->merge());
     }
 
     public function testExceptionOnFailure()
     {
-        $fpdi = $this->prophesize(Fpdi::CLASS);
-        $fpdi->setSourceFile(Argument::any())->willThrow(new \Exception('message'));
+        $tcpdi = $this->prophesize(\TCPDI::CLASS);
+        $tcpdi->setSourceData(Argument::any())->willThrow(new \Exception('message'));
 
-        $merger = new Merger($fpdi->reveal());
+        $merger = new Merger($tcpdi->reveal());
 
         $this->expectException(Exception::CLASS);
         $this->expectExceptionMessage("'message' in '" . __FILE__ . "'");
@@ -136,12 +135,12 @@ class MergerTest extends \PHPUnit_Framework_TestCase
 
     public function testReset()
     {
-        $fpdi = $this->prophesize(Fpdi::CLASS);
-        $fpdi->Output('', 'S')->willReturn('');
+        $tcpdi = $this->prophesize(\TCPDI::CLASS);
+        $tcpdi->Output('', 'S')->willReturn('');
 
-        $fpdi->setSourceFile(Argument::any())->shouldNotBeCalled();
+        $tcpdi->setSourceData(Argument::any())->shouldNotBeCalled();
 
-        $merger = new Merger($fpdi->reveal());
+        $merger = new Merger($tcpdi->reveal());
         $merger->addFile(__FILE__);
         $merger->reset();
         $merger->merge();
