@@ -7,7 +7,10 @@ php:
     - 7.1
 
 install:
-    - composer install
+  - composer install
+  - composer global require chh/bob:^1@alpha
+  - export PATH=$PATH:$HOME/.composer/vendor/bin/
+  - bob install_dev_tools
 
 script:
-    - phpunit
+  - bob

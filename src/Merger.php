@@ -100,7 +100,6 @@ class Merger
             }
 
             return $tcpdi->Output('', 'S');
-
         } catch (\Exception $e) {
             throw new Exception("'{$e->getMessage()}' in '{$name}'", 0, $e);
         }

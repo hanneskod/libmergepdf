@@ -1,7 +1,7 @@
 {
     "name": "iio/libmergepdf",
     "description": "Library for merging multiple PDFs",
-    "keywords": ["pdf", "merge", "concatenate"],
+    "keywords": ["pdf", "merge"],
     "homepage": "https://github.com/hanneskod/libmergepdf",
     "type": "library",
     "license": "WTFPL",
@@ -19,8 +19,5 @@
     "require": {
         "php": "^7.1",
         "rafikhaceb/tcpdi": "^1"
-    },
-    "require-dev": {
-        "hanneskod/readme-tester": "1.0-beta.1"
     }
 }
