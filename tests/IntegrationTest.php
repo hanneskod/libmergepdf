@@ -2,7 +2,7 @@
 
 namespace iio\libmergepdf;
 
-class IntegrationTest extends \PHPUnit_Framework_TestCase
+class IntegrationTest extends \PHPUnit\Framework\TestCase
 {
     public function testMerge()
     {

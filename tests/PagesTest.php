@@ -2,7 +2,7 @@
 
 namespace iio\libmergepdf;
 
-class PagesTest extends \PHPUnit_Framework_TestCase
+class PagesTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider pageNumbersProvider

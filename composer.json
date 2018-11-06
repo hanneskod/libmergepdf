@@ -22,7 +22,6 @@
     },
     "require-dev": {
         "symfony/finder": "^2.0",
-        "phpunit/phpunit": "^5.0",
         "hanneskod/readme-tester": "1.0-beta.1"
     },
     "suggest": {

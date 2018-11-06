@@ -5,7 +5,7 @@ namespace iio\libmergepdf;
 use Symfony\Component\Finder\Finder;
 use Prophecy\Argument;
 
-class MergerTest extends \PHPUnit_Framework_TestCase
+class MergerTest extends \PHPUnit\Framework\TestCase
 {
     public function testExceptionOnInvalidFile()
     {

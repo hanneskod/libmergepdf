@@ -4,7 +4,7 @@ namespace iio\libmergepdf;
 
 use setasign\Fpdi\PdfParser\StreamReader;
 
-class RawSourceTest extends \PHPUnit_Framework_TestCase
+class RawSourceTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetName()
     {

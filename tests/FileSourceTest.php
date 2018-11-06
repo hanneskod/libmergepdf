@@ -2,7 +2,7 @@
 
 namespace iio\libmergepdf;
 
-class FileSourceTest extends \PHPUnit_Framework_TestCase
+class FileSourceTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetName()
     {
