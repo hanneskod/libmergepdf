@@ -2,9 +2,6 @@
 
 namespace iio\libmergepdf;
 
-/**
- * Base exception
- */
-class Exception extends \Exception
+final class Exception extends \Exception
 {
 }

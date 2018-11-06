@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace iio\libmergepdf;
 
+use iio\libmergepdf\Source\SourceInterface;
+use iio\libmergepdf\Source\FileSource;
+use iio\libmergepdf\Source\RawSource;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -31,7 +34,7 @@ class Merger
     /**
      * Add raw PDF from string
      */
-    public function addRaw(string $content, Pages $pages = null): void
+    public function addRaw(string $content, PagesInterface $pages = null): void
     {
         $this->sources[] = new RawSource($content, $pages);
     }
@@ -39,7 +42,7 @@ class Merger
     /**
      * Add PDF from file
      */
-    public function addFile(string $filename, Pages $pages = null): void
+    public function addFile(string $filename, PagesInterface $pages = null): void
     {
         $this->sources[] = new FileSource($filename, $pages);
     }
@@ -49,7 +52,7 @@ class Merger
      *
      * Note that optional pages constraint is used for every added pdf
      */
-    public function addIterator(iterable $iterator, Pages $pages = null): void
+    public function addIterator(iterable $iterator, PagesInterface $pages = null): void
     {
         foreach ($iterator as $filename) {
             $this->addFile($filename, $pages);
@@ -61,7 +64,7 @@ class Merger
      *
      * Note that optional pages constraint is used for every added pdf
      */
-    public function addFinder(Finder $finder, Pages $pages = null): void
+    public function addFinder(Finder $finder, PagesInterface $pages = null): void
     {
         foreach ($finder as $fileInfo) {
             $this->addFile($fileInfo->getRealpath(), $pages);
@@ -90,8 +93,8 @@ class Merger
                 /** @var int Total number of pages in pdf */
                 $nrOfPagesInPdf = $tcpdi->setSourceData($source->getContents());
 
-                /** @var Pages The set of pages to merge, defaults to all pages */
-                $pagesToMerge = $source->getPages()->hasPages() ? $source->getPages() : new Pages("1-$nrOfPagesInPdf");
+                /** @var PagesInterface The set of pages to merge, defaults to all pages */
+                $pagesToMerge = $source->getPages()->isEmpty() ? $source->getPages() : new Pages("1-$nrOfPagesInPdf");
 
                 // Add specified pages
                 foreach ($pagesToMerge as $pageNr) {

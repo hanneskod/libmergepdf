@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace iio\libmergepdf;
+namespace iio\libmergepdf\Source;
 
-use setasign\Fpdi\PdfParser\StreamReader;
+use iio\libmergepdf\PagesInterface;
 
 class RawSourceTest extends \PHPUnit\Framework\TestCase
 {
@@ -26,7 +26,7 @@ class RawSourceTest extends \PHPUnit\Framework\TestCase
 
     public function testGetPages()
     {
-        $pages = new Pages;
+        $pages = $this->createMock(PagesInterface::CLASS);
         $this->assertSame(
             $pages,
             (new RawSource('', $pages))->getPages()

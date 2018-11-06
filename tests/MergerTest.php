@@ -35,7 +35,7 @@ class MergerTest extends \PHPUnit\Framework\TestCase
             ->setMethods(['addFile'])
             ->getMock();
 
-        $pages = $this->getMockBuilder(Pages::class)->getMock();
+        $pages = $this->getMockBuilder(PagesInterface::class)->getMock();
 
         $merger->expects($this->exactly(1))
             ->method('addFile')
@@ -69,7 +69,7 @@ class MergerTest extends \PHPUnit\Framework\TestCase
 
     public function testAddFinderWithPagesArgument()
     {
-        $pages = $this->getMockBuilder(Pages::class)->getMock();
+        $pages = $this->getMockBuilder(PagesInterface::class)->getMock();
 
         $merger = $this->getMockBuilder(Merger::class)
             ->setMethods(['addFile'])

@@ -2,15 +2,24 @@
 
 declare(strict_types = 1);
 
-namespace iio\libmergepdf;
+namespace iio\libmergepdf\Source;
+
+use iio\libmergepdf\PagesInterface;
+use iio\libmergepdf\Exception;
 
 class FileSourceTest extends \PHPUnit\Framework\TestCase
 {
+    public function testExceptionOnInvalidName()
+    {
+        $this->expectException(Exception::CLASS);
+        new FileSource('this-file-does-not-exist');
+    }
+
     public function testGetName()
     {
         $this->assertSame(
-            'foobar',
-            (new FileSource('foobar'))->getName()
+            __FILE__,
+            (new FileSource(__FILE__))->getName()
         );
     }
 
@@ -24,10 +33,10 @@ class FileSourceTest extends \PHPUnit\Framework\TestCase
 
     public function testGetPages()
     {
-        $pages = new Pages;
+        $pages = $this->createMock(PagesInterface::CLASS);
         $this->assertSame(
             $pages,
-            (new FileSource('', $pages))->getPages()
+            (new FileSource(__FILE__, $pages))->getPages()
         );
     }
 }

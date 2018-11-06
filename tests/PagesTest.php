@@ -46,9 +46,9 @@ class PagesTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testHasPages()
+    public function testIsEmpty()
     {
-        $this->assertFalse((new Pages)->hasPages());
-        $this->assertTrue((new Pages('1'))->hasPages());
+        $this->assertFalse((new Pages)->isEmpty());
+        $this->assertTrue((new Pages('1'))->isEmpty());
     }
 }

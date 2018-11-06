@@ -2,7 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace iio\libmergepdf;
+namespace iio\libmergepdf\Source;
+
+use iio\libmergepdf\PagesInterface;
 
 interface SourceInterface
 {
@@ -19,5 +21,5 @@ interface SourceInterface
     /**
      * Get pages to fetch from source
      */
-    public function getPages(): Pages;
+    public function getPages(): PagesInterface;
 }

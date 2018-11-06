@@ -2,12 +2,15 @@
 
 declare(strict_types = 1);
 
-namespace iio\libmergepdf;
+namespace iio\libmergepdf\Source;
+
+use iio\libmergepdf\PagesInterface;
+use iio\libmergepdf\Pages;
 
 /**
  * Pdf source from raw string
  */
-class RawSource implements SourceInterface
+final class RawSource implements SourceInterface
 {
     /**
      * @var string
@@ -15,11 +18,11 @@ class RawSource implements SourceInterface
     private $contents;
 
     /**
-     * @var Pages
+     * @var PagesInterface
      */
     private $pages;
 
-    public function __construct(string $contents, Pages $pages = null)
+    public function __construct(string $contents, PagesInterface $pages = null)
     {
         $this->contents = $contents;
         $this->pages = $pages ?: new Pages;
@@ -35,7 +38,7 @@ class RawSource implements SourceInterface
         return $this->contents;
     }
 
-    public function getPages(): Pages
+    public function getPages(): PagesInterface
     {
         return $this->pages;
     }

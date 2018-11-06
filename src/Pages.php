@@ -7,7 +7,7 @@ namespace iio\libmergepdf;
 /**
  * Parse page numbers from string
  */
-class Pages implements \IteratorAggregate
+final class Pages implements PagesInterface
 {
     /**
      * @var int[] Added integer page numbers
@@ -71,7 +71,7 @@ class Pages implements \IteratorAggregate
     /**
      * Check if pages has been specified
      */
-    public function hasPages(): bool
+    public function isEmpty(): bool
     {
         return !empty($this->pages);
     }
