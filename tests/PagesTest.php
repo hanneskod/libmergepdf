@@ -13,7 +13,7 @@ class PagesTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertSame(
             $expected,
-            iterator_to_array(new Pages($expressionString))
+            (new Pages($expressionString))->getPageNumbers()
         );
     }
 
@@ -30,25 +30,9 @@ class PagesTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     * @expectedException iio\libmergepdf\Exception
-     */
     public function testInvalidString()
     {
+        $this->expectException(Exception::CLASS);
         new Pages('12,*');
-    }
-
-    public function testIsIterabla()
-    {
-        $this->assertSame(
-            [1, 2],
-            iterator_to_array(new Pages('1, 2'))
-        );
-    }
-
-    public function testIsEmpty()
-    {
-        $this->assertFalse((new Pages)->isEmpty());
-        $this->assertTrue((new Pages('1'))->isEmpty());
     }
 }

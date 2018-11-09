@@ -60,19 +60,8 @@ final class Pages implements PagesInterface
         $this->pages = array_merge($this->pages, range($start, $end));
     }
 
-    /**
-     * Get iterator of page numbers
-     */
-    public function getIterator(): iterable
+    public function getPageNumbers(): array
     {
-        return new \ArrayIterator($this->pages);
-    }
-
-    /**
-     * Check if pages has been specified
-     */
-    public function isEmpty(): bool
-    {
-        return !empty($this->pages);
+        return $this->pages;
     }
 }

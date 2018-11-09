@@ -11,6 +11,7 @@ After some early deviations this project now adheres to [Semantic Versioning](ht
 - Require php >= 7.1
 - Drop symfony finder support
 - Added drivers
+- Develop the `PagesInterface`
 
 ## [3.1.1] - 2017-12-11
 

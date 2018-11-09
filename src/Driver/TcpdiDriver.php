@@ -31,10 +31,10 @@ class TcpdiDriver implements DriverInterface
             foreach ($sources as $source) {
                 $name = $source->getName();
                 $pageCount = $tcpdi->setSourceData($source->getContents());
-                $pages = $source->getPages()->isEmpty() ? $source->getPages() : new Pages("1-$pageCount");
+                $pageNumbers = $source->getPages()->getPageNumbers() ?: range(1, $pageCount);
 
-                foreach ($pages as $page) {
-                    $template = $tcpdi->importPage($page);
+                foreach ($pageNumbers as $pageNr) {
+                    $template = $tcpdi->importPage($pageNr);
                     $size = $tcpdi->getTemplateSize($template);
                     $tcpdi->AddPage(
                         $size['w'] > $size['h'] ? 'L' : 'P',
