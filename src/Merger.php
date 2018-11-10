@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace iio\libmergepdf;
 
 use iio\libmergepdf\Driver\DriverInterface;
-use iio\libmergepdf\Driver\TcpdiDriver;
+use iio\libmergepdf\Driver\DefaultDriver;
 use iio\libmergepdf\Source\SourceInterface;
 use iio\libmergepdf\Source\FileSource;
 use iio\libmergepdf\Source\RawSource;
@@ -29,7 +29,7 @@ final class Merger
 
     public function __construct(DriverInterface $driver = null)
     {
-        $this->driver = $driver ?: new TcpdiDriver;
+        $this->driver = $driver ?: new DefaultDriver;
     }
 
     /**
