@@ -4,11 +4,10 @@ declare(strict_types = 1);
 
 namespace iio\libmergepdf\Driver;
 
-use iio\libmergepdf\Source\SourceInterface;
-use iio\libmergepdf\Pages;
 use iio\libmergepdf\Exception;
+use iio\libmergepdf\Source\SourceInterface;
 
-class TcpdiDriver implements DriverInterface
+final class TcpdiDriver implements DriverInterface
 {
     /**
      * @var \TCPDI
@@ -22,14 +21,13 @@ class TcpdiDriver implements DriverInterface
 
     public function merge(SourceInterface ...$sources): string
     {
-        /** @var string Name of source being processed */
-        $name = '';
+        $sourceName = '';
 
         try {
             $tcpdi = clone $this->tcpdi;
 
             foreach ($sources as $source) {
-                $name = $source->getName();
+                $sourceName = $source->getName();
                 $pageCount = $tcpdi->setSourceData($source->getContents());
                 $pageNumbers = $source->getPages()->getPageNumbers() ?: range(1, $pageCount);
 
@@ -46,7 +44,7 @@ class TcpdiDriver implements DriverInterface
 
             return $tcpdi->Output('', 'S');
         } catch (\Exception $e) {
-            throw new Exception("'{$e->getMessage()}' in '{$name}'", 0, $e);
+            throw new Exception("'{$e->getMessage()}' in '$sourceName'", 0, $e);
         }
     }
 }

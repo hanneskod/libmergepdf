@@ -16,10 +16,11 @@ class TcpdiDriverTest extends \PHPUnit\Framework\TestCase
         $tcpdi->setSourceData('foobar')->willThrow(new \Exception('message'));
 
         $source = $this->prophesize(SourceInterface::CLASS);
-        $source->getName()->willReturn('');
+        $source->getName()->willReturn('file');
         $source->getContents()->willReturn('foobar');
 
         $this->expectException(Exception::CLASS);
+        $this->expectExceptionMessage("'message' in 'file'");
 
         (new TcpdiDriver($tcpdi->reveal()))->merge($source->reveal());
     }

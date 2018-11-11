@@ -15,7 +15,7 @@ final class DefaultDriver implements DriverInterface
 
     public function __construct(DriverInterface $wrapped = null)
     {
-        $this->wrapped = $wrapped ?: new TcpdiDriver;
+        $this->wrapped = $wrapped ?: new Fpdi2Driver;
     }
 
     public function merge(SourceInterface ...$sources): string

@@ -18,6 +18,7 @@
     },
     "require": {
         "php": "^7.1",
+        "setasign/fpdi-tcpdf": "^2.0",
         "rafikhaceb/tcpdi": "^1"
     }
 }
