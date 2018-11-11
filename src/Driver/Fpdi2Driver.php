@@ -24,8 +24,8 @@ final class Fpdi2Driver implements DriverInterface
     {
         $this->fpdi = $fpdi ?: new FpdiTcpdf;
 
-        if (!$this->fpdi instanceof FpdiFpdf && !$this->fpdi instanceof FpdiTcpdf) {
-            throw new \InvalidArgumentException('Constructor argument must be an FPDI instance.s');
+        if (!($this->fpdi instanceof FpdiFpdf) && !($this->fpdi instanceof FpdiTcpdf)) {
+            throw new \InvalidArgumentException('Constructor argument must be an FPDI instance.');
         }
     }
 

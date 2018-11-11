@@ -12,6 +12,12 @@ use Prophecy\Argument;
 
 class Fpdi2DriverTest extends \PHPUnit\Framework\TestCase
 {
+    public function testExceptionOnInvalidFpdi()
+    {
+        $this->expectException(\InvalidArgumentException::CLASS);
+        new Fpdi2Driver('string-this-is-not-fpdi');
+    }
+
     public function testExceptionOnFailure()
     {
         $fpdi = $this->prophesize(Fpdi::CLASS);
