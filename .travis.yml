@@ -13,6 +13,5 @@ install:
   - bob install_dev_tools
 
 script:
-
-TODO:
   - phpunit
+  - behat

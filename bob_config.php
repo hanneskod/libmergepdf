@@ -15,9 +15,8 @@ task('phpunit', function() {
 
 desc('Run behat feature tests');
 task('behat', function() {
-    println('SKIPPED Behat feature tests!!');
-    #shell('behat --stop-on-failure');
-    #println('Behat feature tests passed');
+    shell('behat --stop-on-failure');
+    println('Behat feature tests passed');
 });
 
 desc('Run statical analysis using phpstan');

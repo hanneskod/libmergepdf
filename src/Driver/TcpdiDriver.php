@@ -16,6 +16,9 @@ final class TcpdiDriver implements DriverInterface
 
     public function __construct(\TCPDI $tcpdi = null)
     {
+        // TODO A stupid hack to hide deprecation notice
+        @each($arr = []);
+
         $this->tcpdi = $tcpdi ?: new \TCPDI;
     }
 
