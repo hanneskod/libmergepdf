@@ -50,6 +50,23 @@ use iio\libmergepdf\Driver\TcpdiDriver;
 $merger = new Merger(new TcpdiDriver);
 ```
 
+### Using an immutable merger
+
+Immutability may be achieved by using a `driver` directly.
+
+```php
+use iio\libmergepdf\Driver\Fpdi2Driver;
+use iio\libmergepdf\Source\FileSource;
+use iio\libmergepdf\Pages;
+
+$merger = new Fpdi2Driver;
+
+$createdPdf = $merger->merge(
+    new FileSource('foo.pdf'),
+    new FileSource('bar.pdf', new Pages('1-10'))
+);
+```
+
 ## Known issues
 
 * Links and other content outside a page content stream is removed at merge.
