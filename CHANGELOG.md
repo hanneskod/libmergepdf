@@ -20,6 +20,7 @@ After some early deviations this project now adheres to [Semantic Versioning](ht
 ### Changed
 - Require php `>= 7.1`.
 - Changed the signature of `Merger::__construct()` to consume a `driver`.
+- Merger no longer resets state after merge, explicit call to `reset()` needed.
 - Classes now generally marked as `final`.
 - Moved `Source` to its own namespace.
 
