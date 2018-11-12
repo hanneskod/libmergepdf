@@ -1,14 +1,14 @@
 {
     "name": "iio/libmergepdf",
     "description": "Library for merging multiple PDFs",
-    "keywords": ["pdf", "merge", "concatenate"],
+    "keywords": ["pdf", "merge"],
     "homepage": "https://github.com/hanneskod/libmergepdf",
     "type": "library",
     "license": "WTFPL",
     "authors": [
         {
             "name": "Hannes Forsgård",
-            "email": "hannes.forsgard@gmail.com"
+            "email": "hannes.forsgard@fripost.org"
         }
     ],
     "autoload": {
@@ -17,15 +17,8 @@
         }
     },
     "require": {
-        "php": ">=5.6",
+        "php": "^7.1",
+        "setasign/fpdi-tcpdf": "^2.0",
         "rafikhaceb/tcpdi": "^1"
-    },
-    "require-dev": {
-        "symfony/finder": "^2.0",
-        "phpunit/phpunit": "^5.0",
-        "hanneskod/readme-tester": "1.0-beta.1"
-    },
-    "suggest": {
-        "symfony/finder": "Bulk add files using finder."
     }
 }

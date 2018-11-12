@@ -1,212 +1,78 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace iio\libmergepdf;
 
-use Symfony\Component\Finder\Finder;
+use iio\libmergepdf\Driver\DriverInterface;
+use iio\libmergepdf\Driver\DefaultDriver;
+use iio\libmergepdf\Source\SourceInterface;
+use iio\libmergepdf\Source\FileSource;
+use iio\libmergepdf\Source\RawSource;
 
 /**
  * Merge existing pdfs into one
+ *
+ * Note that your PDFs are merged in the order that you add them
  */
-class Merger
+final class Merger
 {
     /**
-     * List of pdf sources to merge
-     *
-     * @var SourceInterface[]
+     * @var SourceInterface[] List of pdf sources to merge
      */
     private $sources = [];
 
     /**
-     * @var \TCPDI
+     * @var DriverInterface
      */
-    private $tcpdi;
+    private $driver;
 
-    /**
-     * @var string Directory path used for temporary files
-     */
-    private $tempDir;
-
-    public function __construct(\TCPDI $tcpdi = null)
+    public function __construct(DriverInterface $driver = null)
     {
-        $this->tcpdi = $tcpdi ?: new \TCPDI;
+        $this->driver = $driver ?: new DefaultDriver;
     }
 
     /**
      * Add raw PDF from string
-     *
-     * Note that your PDFs are merged in the order that you add them
-     *
-     * @param  string $content Raw pdf content
-     * @param  Pages  $pages   Specification of the pages to add
-     * @return void
      */
-    public function addRaw($content, Pages $pages = null)
+    public function addRaw(string $content, PagesInterface $pages = null): void
     {
         $this->sources[] = new RawSource($content, $pages);
     }
 
     /**
      * Add PDF from file
-     *
-     * Note that your PDFs are merged in the order that you add them
-     *
-     * @param  string $filename Name of file to add
-     * @param  Pages  $pages    Pages to add from file
-     * @return void
      */
-    public function addFile($filename, Pages $pages = null)
+    public function addFile(string $filename, PagesInterface $pages = null): void
     {
         $this->sources[] = new FileSource($filename, $pages);
     }
 
     /**
-     * Add PDF from file
-     *
-     * @deprecated Since version 3.1
-     */
-    public function addFromFile($fname, Pages $pages = null, $cleanup = null)
-    {
-        trigger_error('addFromFile() is deprecated, use addFile() instead', E_USER_DEPRECATED);
-        $this->addFile($fname, $pages);
-    }
-
-    /**
      * Add files using iterator
      *
-     * @param  iterable  $iterator Iterator or array with names of files to merge
-     * @param  Pages     $pages    Optional pages constraint used for every added pdf
-     * @return void
-     * @throws Exception If $iterator is not valid
+     * Note that optional pages constraint is used for every added pdf
      */
-    public function addIterator($iterator, Pages $pages = null)
+    public function addIterator(iterable $iterator, PagesInterface $pages = null): void
     {
-        if (!is_array($iterator) && !$iterator instanceof \Traversable) {
-            throw new Exception("\$iterator must be traversable");
-        }
-
         foreach ($iterator as $filename) {
             $this->addFile($filename, $pages);
         }
     }
 
     /**
-     * Add files using a symfony finder
-     *
-     * @param  Finder $finder
-     * @param  Pages  $pages  Optional pages constraint used for every added pdf
-     * @return void
+     * Merges loaded PDFs
      */
-    public function addFinder(Finder $finder, Pages $pages = null)
+    public function merge(): string
     {
-        foreach ($finder as $fileInfo) {
-            $this->addFile($fileInfo->getRealpath(), $pages);
-        }
-    }
-
-    /**
-     * Merges your provided PDFs and get raw string
-     *
-     * A note on the $resetAfterMerge flag. Prior to version 3.1 the internal
-     * state was always reset after merge. This behaviour is deprecated. In
-     * version 4 the internal state will never be automatically reset. the
-     * $resetAfterMerge flag can be used to mimic the comming behaviour
-     *
-     * @param  boolean   $resetAfterMerge Flag if internal state should reset after merge
-     * @return string
-     * @throws Exception On failure
-     */
-    public function merge($resetAfterMerge = true)
-    {
-        /** @var string Name of source being processed */
-        $name = '';
-
-        try {
-            $tcpdi = clone $this->tcpdi;
-
-            foreach ($this->sources as $source) {
-                $name = $source->getName();
-
-                /** @var int Total number of pages in pdf */
-                $nrOfPagesInPdf = $tcpdi->setSourceData($source->getContents());
-
-                /** @var Pages The set of pages to merge, defaults to all pages */
-                $pagesToMerge = $source->getPages()->hasPages() ? $source->getPages() : new Pages("1-$nrOfPagesInPdf");
-
-                // Add specified pages
-                foreach ($pagesToMerge as $pageNr) {
-                    $template = $tcpdi->importPage($pageNr);
-                    $size = $tcpdi->getTemplateSize($template);
-                    $tcpdi->AddPage(
-                        $size['w'] > $size['h'] ? 'L' : 'P',
-                        [$size['w'], $size['h']]
-                    );
-                    $tcpdi->useTemplate($template);
-                }
-            }
-
-            if ($resetAfterMerge) {
-                $this->reset();
-            }
-
-            return $tcpdi->Output('', 'S');
-
-        } catch (\Exception $e) {
-            throw new Exception("'{$e->getMessage()}' in '{$name}'", 0, $e);
-        }
+        return $this->driver->merge(...$this->sources);
     }
 
     /**
      * Reset internal state
-     *
-     * @return void
      */
-    public function reset()
+    public function reset(): void
     {
         $this->sources = [];
-    }
-
-    /**
-     * Create temporary file and return name
-     *
-     * @deprecated Since version 3.1
-     */
-    public function getTempFname()
-    {
-        trigger_error(
-            'Use of getTempFname() is deprecated as temporary files are no longer created',
-            E_USER_DEPRECATED
-        );
-
-        return tempnam($this->getTempDir(), "libmergepdf");
-    }
-
-    /**
-     * Get directory path for temporary files
-     *
-     * @deprecated Since version 3.1
-     */
-    public function getTempDir()
-    {
-        trigger_error(
-            'Use of getTempDir() is deprecated as temporary files are no longer created',
-            E_USER_DEPRECATED
-        );
-
-        return $this->tempDir ?: sys_get_temp_dir();
-    }
-
-    /**
-     * Set directory path for temporary files
-     *
-     * @deprecated Since version 3.1
-     */
-    public function setTempDir($dirname)
-    {
-        trigger_error(
-            'Use of setTempDir() is deprecated as temporary files are no longer created',
-            E_USER_DEPRECATED
-        );
-
-        $this->tempDir = $dirname;
     }
 }

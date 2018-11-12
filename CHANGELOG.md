@@ -3,10 +3,25 @@ All notable changes to this project will be documented in this file.
 
 After some early deviations this project now adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [4.0.0-beta1] - 2018-11-12
 
-- Support merging PDFs of version > 1.4.
-- Depend on TCPDI instead of FPDI.
+### Added
+- Added `PagesInterface`.
+- Added `Driver` namespace.
+- `TCPDI` backend as a complement to `FPDI`.
+
+### Removed
+- Removed deprecated symbols.
+- Removed symfony finder support.
+
+### Fixed
+- Support merging PDFs of version `> 1.4` using the `TCPDI` driver.
+
+### Changed
+- Require php `>= 7.1`.
+- Changed the signature of `Merger::__construct()` to consume a `driver`.
+- Classes now generally marked as `final`.
+- Moved `Source` to its own namespace.
 
 ## [3.1.1] - 2017-12-11
 

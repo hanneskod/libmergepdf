@@ -3,14 +3,16 @@ sudo: false
 language: php
 
 php:
+    - 7.3
     - 7.2
     - 7.1
-    - 7.0
-    - 5.6
-    - hhvm
 
 install:
-    - composer install
+  - composer install
+  - composer global require chh/bob:^1@alpha
+  - export PATH=$PATH:$HOME/.composer/vendor/bin/
+  - bob install_dev_tools
 
 script:
-    - vendor/bin/phpunit
+  - phpunit
+  - behat

@@ -1,5 +1,3 @@
-/build*
 /vendor
 /composer.phar
 /composer.lock
-*.tmp.pdf
