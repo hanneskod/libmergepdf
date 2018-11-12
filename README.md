@@ -37,10 +37,10 @@ $merger->addIterator(['A.pdf', 'B.pdf']);
 $createdPdf = $merger->merge();
 ```
 
-## Merging pdfs of version 1.5 and later
+### Merging pdfs of version 1.5 and later
 
 The default `FPDI` driver is not able handle compressed pdfs of version 1.5 or later.
-Circumvent this limitation by using th slightly more experimental `TCPDI` driver.
+Circumvent this limitation by using the slightly more experimental `TCPDI` driver.
 
 ```php
 use iio\libmergepdf\Merger;
