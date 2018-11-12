@@ -32,6 +32,7 @@ Bulk add files from an iterator:
 
 ```php
 use iio\libmergepdf\Merger;
+
 $merger = new Merger;
 $merger->addIterator(['A.pdf', 'B.pdf']);
 $createdPdf = $merger->merge();
