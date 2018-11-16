@@ -37,6 +37,8 @@ final class TcpdiDriver implements DriverInterface
                 foreach ($pageNumbers as $pageNr) {
                     $template = $tcpdi->importPage($pageNr);
                     $size = $tcpdi->getTemplateSize($template);
+                    $tcpdi->SetPrintHeader(false);
+                    $tcpdi->SetPrintFooter(false);
                     $tcpdi->AddPage(
                         $size['w'] > $size['h'] ? 'L' : 'P',
                         [$size['w'], $size['h']]

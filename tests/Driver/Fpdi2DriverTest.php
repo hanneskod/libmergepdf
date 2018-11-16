@@ -39,6 +39,9 @@ class Fpdi2DriverTest extends \PHPUnit\Framework\TestCase
 
         $fpdi->setSourceFile(Argument::any())->willReturn(2);
 
+        $fpdi->setPrintHeader(false)->shouldBeCalled();
+        $fpdi->setPrintFooter(false)->shouldBeCalled();
+
         $fpdi->importPage(1)->willReturn('page_1');
         $fpdi->getTemplateSize('page_1')->willReturn(['width' => 1, 'height' => 2]);
         $fpdi->AddPage('P', [1, 2])->shouldBeCalled();

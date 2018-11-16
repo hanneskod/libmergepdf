@@ -44,6 +44,8 @@ final class Fpdi2Driver implements DriverInterface
                 foreach ($pageNumbers as $pageNr) {
                     $template = $fpdi->importPage($pageNr);
                     $size = $fpdi->getTemplateSize($template);
+                    $fpdi->SetPrintHeader(false);
+                    $fpdi->SetPrintFooter(false);
                     $fpdi->AddPage(
                         $size['width'] > $size['height'] ? 'L' : 'P',
                         [$size['width'], $size['height']]

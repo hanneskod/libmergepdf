@@ -31,6 +31,9 @@ class TcpdiDriverTest extends \PHPUnit\Framework\TestCase
 
         $tcpdi->setSourceData('data')->willReturn(2);
 
+        $tcpdi->setPrintHeader(false)->shouldBeCalled();
+        $tcpdi->setPrintFooter(false)->shouldBeCalled();
+
         $tcpdi->importPage(1)->willReturn('page_1');
         $tcpdi->getTemplateSize('page_1')->willReturn(['w' => 1, 'h' => 2]);
         $tcpdi->AddPage('P', [1, 2])->shouldBeCalled();

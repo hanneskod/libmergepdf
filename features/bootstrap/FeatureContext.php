@@ -8,8 +8,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Tester\Exception\PendingException;
 use iio\libmergepdf\Merger;
 use iio\libmergepdf\Pages;
-use setasign\Fpdi\Tcpdf\Fpdi;
-use setasign\Fpdi\PdfParser\StreamReader;
+use Smalot\PdfParser\Parser as PdfParser;
 
 final class FeatureContext implements Context
 {
@@ -22,16 +21,6 @@ final class FeatureContext implements Context
      * @var string
      */
     private $generatedPdf;
-
-    /**
-     * @var Fpdi
-     */
-    private $fpdi;
-
-    public function __construct()
-    {
-        $this->fpdi = new Fpdi;
-    }
 
     /**
      * @Given the :driver driver
@@ -75,6 +64,22 @@ final class FeatureContext implements Context
     }
 
     /**
+     * @Given a pdf with a header including text HEADER
+     */
+    public function aPdfWithAHeaderIncludingTextHeader()
+    {
+        $this->merger->addFile(__DIR__ . "/../files/header.pdf");
+    }
+
+    /**
+     * @Given a blank pdf
+     */
+    public function aBlankPdf()
+    {
+        $this->merger->addFile(__DIR__ . "/../files/blank.pdf");
+    }
+
+    /**
      * @When I merge
      */
     public function iMerge()
@@ -87,7 +92,7 @@ final class FeatureContext implements Context
      */
     public function aPdfIsGenerated()
     {
-        $this->fpdi->setSourceFile(StreamReader::createByString($this->generatedPdf));
+        (new PdfParser)->parseContent($this->generatedPdf);
     }
 
     /**
@@ -95,9 +100,38 @@ final class FeatureContext implements Context
      */
     public function aPdfWithPagesIsGenerated(string $expectedCount)
     {
-        $pageCount = $this->fpdi->setSourceFile(StreamReader::createByString($this->generatedPdf));
+        $pageCount = count((new PdfParser)->parseContent($this->generatedPdf)->getPages());
+
         if ($pageCount != $expectedCount) {
             throw new Exception("A pdf with $pageCount pages was created, expected $expectedCount pages.");
+        }
+    }
+
+    /**
+     * @Then a pdf including text :expectedText is generated
+     */
+    public function aPdfIncludingTextIsGenerated(string $expectedText)
+    {
+        $text = (new PdfParser)->parseContent($this->generatedPdf)->getText();
+
+        $regexp = preg_quote($expectedText, '/');
+
+        if (!preg_match("/$regexp/", $text)) {
+            throw new Exception("A pdf with text '$text' was created, expected '$expectedText'.");
+        }
+    }
+
+    /**
+     * @Then a pdf not including text :unexpectedText is generated
+     */
+    public function aPdfNotIncludingTextIsGenerated(string $unexpectedText)
+    {
+        $text = (new PdfParser)->parseContent($this->generatedPdf)->getText();
+
+        $regexp = preg_quote($unexpectedText, '/');
+
+        if (preg_match("/$regexp/", $text)) {
+            throw new Exception("A pdf with unexpected text '$unexpectedText' was created.");
         }
     }
 }
