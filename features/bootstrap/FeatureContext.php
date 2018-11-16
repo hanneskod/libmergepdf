@@ -100,7 +100,7 @@ final class FeatureContext implements Context
      */
     public function aPdfWithPagesIsGenerated(string $expectedCount)
     {
-        $pageCount = count((new PdfParser)->parseContent($this->generatedPdf)->getPages());
+        $pageCount = @count((new PdfParser)->parseContent($this->generatedPdf)->getPages());
 
         if ($pageCount != $expectedCount) {
             throw new Exception("A pdf with $pageCount pages was created, expected $expectedCount pages.");
@@ -112,7 +112,7 @@ final class FeatureContext implements Context
      */
     public function aPdfIncludingTextIsGenerated(string $expectedText)
     {
-        $text = (new PdfParser)->parseContent($this->generatedPdf)->getText();
+        $text = @(new PdfParser)->parseContent($this->generatedPdf)->getText();
 
         $regexp = preg_quote($expectedText, '/');
 
@@ -126,7 +126,7 @@ final class FeatureContext implements Context
      */
     public function aPdfNotIncludingTextIsGenerated(string $unexpectedText)
     {
-        $text = (new PdfParser)->parseContent($this->generatedPdf)->getText();
+        $text = @(new PdfParser)->parseContent($this->generatedPdf)->getText();
 
         $regexp = preg_quote($unexpectedText, '/');
 
