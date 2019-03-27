@@ -3,7 +3,13 @@ All notable changes to this project will be documented in this file.
 
 After some early deviations this project now adheres to [Semantic Versioning](http://semver.org/).
 
-## [4.0.0-beta1] - 2018-11-12
+## [4.0.1] - 2019-03-27
+
+### Added
+- Added additional version constraint in composer.json to protect against
+  [CVE-2018-17057](https://polict.net/blog/CVE-2018-17057).
+
+## [4.0.0] - 2018-11-16
 
 ### Added
 - Added `PagesInterface`.
