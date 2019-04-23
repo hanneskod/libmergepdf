@@ -22,6 +22,9 @@
         "setasign/fpdi-tcpdf": "^2.0",
         "rafikhaceb/tcpdi": "^1"
     },
+    "conflict": {
+        "setasign/fpdf": "*"
+    },
     "require-dev": {
         "smalot/pdfparser": "~0.13"
     }

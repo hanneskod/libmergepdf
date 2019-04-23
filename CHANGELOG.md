@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 After some early deviations this project now adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.2] - 2019-04-23
+
+### Added
+- Added explicit conflict in composer.json with `setasign/fpdf` as `rafikhaceb/tcpdi`
+  defines `FPDF`.
+
 ## [4.0.1] - 2019-03-27
 
 ### Added
