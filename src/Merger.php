@@ -51,7 +51,8 @@ final class Merger
     /**
      * Add files using iterator
      *
-     * Note that optional pages constraint is used for every added pdf
+     * @param iterable<string> $iterator Set of filenames to add
+     * @param PagesInterface $pages Optional pages constraint used for every added pdf
      */
     public function addIterator(iterable $iterator, PagesInterface $pages = null): void
     {
