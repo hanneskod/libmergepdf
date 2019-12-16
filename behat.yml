@@ -1,0 +1,14 @@
+default:
+    suites:
+        fpdi2:
+            contexts:
+                - FeatureContext:
+                    driverName: Fpdi2Driver
+            filters:
+                tags: fpdi2, all
+        tcpdi:
+            contexts:
+                - FeatureContext:
+                    driverName: TcpdiDriver
+            filters:
+                tags: tcpdi, all

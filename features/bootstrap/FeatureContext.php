@@ -12,15 +12,24 @@ use Smalot\PdfParser\Parser as PdfParser;
 
 final class FeatureContext implements Context
 {
-    /**
-     * @var Merger
-     */
+    /** @var Merger */
     private $merger;
 
-    /**
-     * @var string
-     */
-    private $generatedPdf;
+    /** @var string */
+    private $generatedPdf = '';
+
+    /** @var ?\Exception */
+    private $mergeException;
+
+    public function __construct(string $driverName)
+    {
+        $driverClass = "iio\libmergepdf\Driver\\$driverName";
+
+        /** @var \iio\libmergepdf\Driver\DriverInterface $driver */
+        $driver = new $driverClass;
+
+        $this->merger = new Merger($driver);
+    }
 
     /**
      * @Given the :driver driver
@@ -84,7 +93,32 @@ final class FeatureContext implements Context
      */
     public function iMerge()
     {
-        $this->generatedPdf = $this->merger->merge();
+        try {
+            $this->generatedPdf = $this->merger->merge();
+            $this->mergeException = null;
+        } catch (\Exception $e) {
+            $this->mergeException = $e;
+        }
+    }
+
+    /**
+     * @Then there is no error
+     */
+    public function thereIsNoError()
+    {
+        if ($this->mergeException) {
+            throw $this->mergeException;
+        }
+    }
+
+    /**
+     * @Then there is an error
+     */
+    public function thereIsAnError()
+    {
+        if (!$this->mergeException) {
+            throw new \Exception('Expecting error during merge');
+        }
     }
 
     /**
@@ -92,6 +126,7 @@ final class FeatureContext implements Context
      */
     public function aPdfIsGenerated()
     {
+        $this->thereIsNoError();
         (new PdfParser)->parseContent($this->generatedPdf);
     }
 
@@ -100,6 +135,8 @@ final class FeatureContext implements Context
      */
     public function aPdfWithPagesIsGenerated(string $expectedCount)
     {
+        $this->thereIsNoError();
+
         $pageCount = @count((new PdfParser)->parseContent($this->generatedPdf)->getPages());
 
         if ($pageCount != $expectedCount) {
@@ -112,6 +149,8 @@ final class FeatureContext implements Context
      */
     public function aPdfIncludingTextIsGenerated(string $expectedText)
     {
+        $this->thereIsNoError();
+
         $text = @(new PdfParser)->parseContent($this->generatedPdf)->getText();
 
         $regexp = preg_quote($expectedText, '/');
@@ -126,6 +165,8 @@ final class FeatureContext implements Context
      */
     public function aPdfNotIncludingTextIsGenerated(string $unexpectedText)
     {
+        $this->thereIsNoError();
+
         $text = @(new PdfParser)->parseContent($this->generatedPdf)->getText();
 
         $regexp = preg_quote($unexpectedText, '/');
