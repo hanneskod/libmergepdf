@@ -8,10 +8,8 @@ PHP library for merging multiple PDFs.
 
 ## Installation
 
-Install using [composer](http://getcomposer.org/).
-
 ```shell
-composer require iio/libmergepdf:^4.0
+composer require iio/libmergepdf
 ```
 
 ## Usage
