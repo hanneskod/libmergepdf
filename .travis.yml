@@ -9,10 +9,9 @@ php:
 
 install:
   - composer install
-  - composer global require chh/bob:^1@alpha
-  - export PATH=$PATH:$HOME/.config/composer/vendor/bin/:$HOME/.composer/vendor/bin/
-  - bob install_dev_tools
+  - composer global require behat/behat
+  - export PATH=$PATH:$HOME/.config/composer/vendor/bin/
 
 script:
-  - phpunit
+  - vendor/bin/phpunit
   - behat
