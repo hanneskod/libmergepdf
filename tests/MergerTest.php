@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace iio\libmergepdf;
+namespace kadudutra\libmergepdf;
 
-use iio\libmergepdf\Driver\DriverInterface;
-use iio\libmergepdf\Source\FileSource;
-use iio\libmergepdf\Source\RawSource;
+use kadudutra\libmergepdf\Driver\DriverInterface;
+use kadudutra\libmergepdf\Source\FileSource;
+use kadudutra\libmergepdf\Source\RawSource;
 
 class MergerTest extends \PHPUnit\Framework\TestCase
 {

@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace iio\libmergepdf\Driver;
+namespace kadudutra\libmergepdf\Driver;
 
-use iio\libmergepdf\Exception;
-use iio\libmergepdf\Source\SourceInterface;
+use kadudutra\libmergepdf\Exception;
+use kadudutra\libmergepdf\Source\SourceInterface;
 use kadudutra\Fpdi\Fpdi as FpdiFpdf;
 use kadudutra\Fpdi\Tcpdf\Fpdi as FpdiTcpdf;
 use kadudutra\Fpdi\PdfParser\StreamReader;

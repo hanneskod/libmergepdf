@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace iio\libmergepdf\Driver;
+namespace kadudutra\libmergepdf\Driver;
 
-use iio\libmergepdf\Source\SourceInterface;
+use kadudutra\libmergepdf\Source\SourceInterface;
 
 class DefaultDriverTest extends \PHPUnit\Framework\TestCase
 {

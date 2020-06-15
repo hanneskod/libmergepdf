@@ -1,8 +1,8 @@
 <?php
 
-namespace iio\libmergepdf\Driver;
+namespace kadudutra\libmergepdf\Driver;
 
-use iio\libmergepdf\Source\SourceInterface;
+use kadudutra\libmergepdf\Source\SourceInterface;
 
 interface DriverInterface
 {

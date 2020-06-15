@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace iio\libmergepdf\Source;
+namespace kadudutra\libmergepdf\Source;
 
-use iio\libmergepdf\PagesInterface;
-use iio\libmergepdf\Pages;
+use kadudutra\libmergepdf\PagesInterface;
+use kadudutra\libmergepdf\Pages;
 
 /**
  * Pdf source from raw string

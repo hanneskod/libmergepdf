@@ -1,6 +1,6 @@
 # libmergepdf
 
-[![Packagist Version](https://img.shields.io/packagist/v/iio/libmergepdf.svg?style=flat-square)](https://packagist.org/packages/iio/libmergepdf)
+[![Packagist Version](https://img.shields.io/packagist/v/kadudutra/libmergepdf.svg?style=flat-square)](https://packagist.org/packages/kadudutra/libmergepdf)
 [![Build Status](https://img.shields.io/travis/hanneskod/libmergepdf/master.svg?style=flat-square)](https://travis-ci.org/hanneskod/libmergepdf)
 [![Quality Score](https://img.shields.io/scrutinizer/g/hanneskod/libmergepdf.svg?style=flat-square)](https://scrutinizer-ci.com/g/hanneskod/libmergepdf)
 
@@ -9,7 +9,7 @@ PHP library for merging multiple PDFs.
 ## Installation
 
 ```shell
-composer require iio/libmergepdf
+composer require kadudutra/libmergepdf
 ```
 
 ## Usage
@@ -17,8 +17,8 @@ composer require iio/libmergepdf
 Append the first ten pages of **bar.pdf** to **foo.pdf**:
 
 ```php
-use iio\libmergepdf\Merger;
-use iio\libmergepdf\Pages;
+use kadudutra\libmergepdf\Merger;
+use kadudutra\libmergepdf\Pages;
 
 $merger = new Merger;
 $merger->addFile('foo.pdf');
@@ -29,7 +29,7 @@ $createdPdf = $merger->merge();
 Bulk add files from an iterator:
 
 ```php
-use iio\libmergepdf\Merger;
+use kadudutra\libmergepdf\Merger;
 
 $merger = new Merger;
 $merger->addIterator(['A.pdf', 'B.pdf']);
@@ -42,8 +42,8 @@ The default `FPDI` driver is not able handle compressed pdfs of version 1.5 or l
 Circumvent this limitation by using the slightly more experimental `TCPDI` driver.
 
 ```php
-use iio\libmergepdf\Merger;
-use iio\libmergepdf\Driver\TcpdiDriver;
+use kadudutra\libmergepdf\Merger;
+use kadudutra\libmergepdf\Driver\TcpdiDriver;
 
 $merger = new Merger(new TcpdiDriver);
 ```
@@ -53,9 +53,9 @@ $merger = new Merger(new TcpdiDriver);
 Immutability may be achieved by using a `driver` directly.
 
 ```php
-use iio\libmergepdf\Driver\Fpdi2Driver;
-use iio\libmergepdf\Source\FileSource;
-use iio\libmergepdf\Pages;
+use kadudutra\libmergepdf\Driver\Fpdi2Driver;
+use kadudutra\libmergepdf\Source\FileSource;
+use kadudutra\libmergepdf\Pages;
 
 $merger = new Fpdi2Driver;
 

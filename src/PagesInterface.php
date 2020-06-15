@@ -1,6 +1,6 @@
 <?php
 
-namespace iio\libmergepdf;
+namespace kadudutra\libmergepdf;
 
 interface PagesInterface
 {

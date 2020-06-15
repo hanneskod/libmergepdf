@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace iio\libmergepdf;
+namespace kadudutra\libmergepdf;
 
 class PagesTest extends \PHPUnit\Framework\TestCase
 {
