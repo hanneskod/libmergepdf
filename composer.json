@@ -1,5 +1,5 @@
 {
-    "name": "iio/libmergepdf",
+    "name": "kadudutra/libmergepdf",
     "description": "Library for merging multiple PDFs",
     "keywords": ["pdf", "merge"],
     "homepage": "https://github.com/hanneskod/libmergepdf",
@@ -13,7 +13,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "iio\\libmergepdf\\": "src/"
+            "kadudutra\\libmergepdf\\": "src/"
         },
         "classmap": [
             "tcpdi/"
@@ -22,7 +22,7 @@
     "require": {
         "php": "^7.1",
         "tecnickcom/tcpdf": "^6.2.22",
-        "setasign/fpdi": "^2"
+        "kadudutra/fpdi": "^2.3.5"
     },
     "conflict": {
         "setasign/fpdf": "*",

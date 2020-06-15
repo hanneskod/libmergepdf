@@ -7,7 +7,7 @@ namespace iio\libmergepdf\Driver;
 use iio\libmergepdf\Exception;
 use iio\libmergepdf\Pages;
 use iio\libmergepdf\Source\SourceInterface;
-use setasign\Fpdi\Tcpdf\Fpdi;
+use kadudutra\Fpdi\Tcpdf\Fpdi;
 use Prophecy\Argument;
 
 class Fpdi2DriverTest extends \PHPUnit\Framework\TestCase

@@ -6,9 +6,9 @@ namespace iio\libmergepdf\Driver;
 
 use iio\libmergepdf\Exception;
 use iio\libmergepdf\Source\SourceInterface;
-use setasign\Fpdi\Fpdi as FpdiFpdf;
-use setasign\Fpdi\Tcpdf\Fpdi as FpdiTcpdf;
-use setasign\Fpdi\PdfParser\StreamReader;
+use kadudutra\Fpdi\Fpdi as FpdiFpdf;
+use kadudutra\Fpdi\Tcpdf\Fpdi as FpdiTcpdf;
+use kadudutra\Fpdi\PdfParser\StreamReader;
 
 final class Fpdi2Driver implements DriverInterface
 {
