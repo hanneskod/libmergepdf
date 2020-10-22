@@ -71,8 +71,7 @@ $createdPdf = $merger->merge(
   This is due to limitations in FPDI and not possible to resolve with the
   current strategy. For more information see [FPDI](https://www.setasign.com/support/faq/fpdi/after-importing-a-page-all-links-are-gone/#question-84).
 * _TCPDI_ (as used in the _TcpdiDriver_ for merging pdfs with newer features)
-  does not seem to be maintained. This makes mergeing fragile fot certain kinds
+  does not seem to be maintained. This makes mergeing fragile for certain kinds
   of files, and error messages are often all but helpful. This package will not
-  be able to fix issues in _TCPDI_. The long term solution would be to switch
+  be able to fix issues in _TCPDI_. The long term solution is to switch
   to a different backend. Suggestions are very welcomed!
-  to this problem would be to switch to a different backend.
