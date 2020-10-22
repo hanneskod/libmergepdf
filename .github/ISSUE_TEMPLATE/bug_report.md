@@ -26,6 +26,12 @@ If applicable, add screenshots to help explain your problem.
 **Please complete the following information:**
  - PHP-version
  - Version of library [e.g. 22]
+ - Driver used
 
 **Additional context**
 Add any other context about the problem here.
+
+> Please note that this library is only a wrapper around other pdf editing tools.
+> As such we are only able to respond to problems regaring the actual
+> merging process. Issues concering deeper pdf parsing problems should
+> be directed elsewhere.
