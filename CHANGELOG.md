@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 After some early deviations this project now adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.4] - 2020-12-06
+
+### Fixed
+- PHP 8 support.
+
 ## [4.0.3] - 2019-12-16
 
 ### Fixed
