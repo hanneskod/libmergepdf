@@ -20,7 +20,10 @@ class Fpdi2DriverTest extends \PHPUnit\Framework\TestCase
 
     public function testExceptionOnFailure()
     {
-        $fpdi = $this->prophesize(Fpdi::CLASS);
+        // Tcpdf generates warnings due to argument ordering with php 8
+        // suppressing errors is a dirty hack until tcpdf is patched
+        $fpdi =  @$this->prophesize(Fpdi::CLASS);
+
         $fpdi->setSourceFile(Argument::any())->willThrow(new \Exception('message'));
 
         $source = $this->prophesize(SourceInterface::CLASS);

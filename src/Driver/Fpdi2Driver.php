@@ -22,7 +22,9 @@ final class Fpdi2Driver implements DriverInterface
      */
     public function __construct($fpdi = null)
     {
-        $this->fpdi = $fpdi ?: new FpdiTcpdf;
+        // Tcpdf generates warnings due to argument ordering with php 8
+        // suppressing errors is a dirty hack until tcpdf is patched
+        $this->fpdi = $fpdi ?: @new FpdiTcpdf;
 
         if (!($this->fpdi instanceof FpdiFpdf) && !($this->fpdi instanceof FpdiTcpdf)) {
             throw new \InvalidArgumentException('Constructor argument must be an FPDI instance.');
