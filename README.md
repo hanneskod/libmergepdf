@@ -24,6 +24,8 @@ $merger = new Merger;
 $merger->addFile('foo.pdf');
 $merger->addFile('bar.pdf', new Pages('1-10'));
 $createdPdf = $merger->merge();
+// line showing how to save the file below
+file_put_contents('myMerged.pdf', $createdPdf);
 ```
 
 Bulk add files from an iterator:
@@ -34,6 +36,8 @@ use iio\libmergepdf\Merger;
 $merger = new Merger;
 $merger->addIterator(['A.pdf', 'B.pdf']);
 $createdPdf = $merger->merge();
+// line showing how to save the file below
+file_put_contents('myMerged.pdf', $createdPdf);
 ```
 
 ### Merging pdfs of version 1.5 and later
