@@ -17,6 +17,8 @@ final class Fpdi2Driver implements DriverInterface
      */
     private $fpdi;
 
+    private $failed = [];
+
     /**
      * @param FpdiFpdf|FpdiTcpdf $fpdi
      */
@@ -34,11 +36,12 @@ final class Fpdi2Driver implements DriverInterface
     public function merge(SourceInterface ...$sources): string
     {
         $sourceName = '';
+        $this->failed = [];
 
-        try {
-            $fpdi = clone $this->fpdi;
+        $fpdi = clone $this->fpdi;
 
-            foreach ($sources as $source) {
+        foreach ($sources as $source) {
+            try {
                 $sourceName = $source->getName();
                 $pageCount = $fpdi->setSourceFile(StreamReader::createByString($source->getContents()));
                 $pageNumbers = $source->getPages()->getPageNumbers() ?: range(1, $pageCount);
@@ -54,11 +57,15 @@ final class Fpdi2Driver implements DriverInterface
                     );
                     $fpdi->useTemplate($template);
                 }
+            } catch (\Exception $e) {
+                $this->failed[] = $source;
             }
-
-            return $fpdi->Output('', 'S');
-        } catch (\Exception $e) {
-            throw new Exception("'{$e->getMessage()}' in '$sourceName'", 0, $e);
         }
+
+        return $fpdi->Output('', 'S');
+    }
+
+    public function getFailedSources(): array {
+        return $this->failed;
     }
 }

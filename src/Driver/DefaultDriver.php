@@ -22,4 +22,8 @@ final class DefaultDriver implements DriverInterface
     {
         return $this->wrapped->merge(...$sources);
     }
+
+    public function getFailedSources(): array {
+        return $this->wrapped->getFailedSources();
+    }
 }

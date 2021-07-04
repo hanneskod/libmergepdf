@@ -14,6 +14,8 @@ final class TcpdiDriver implements DriverInterface
      */
     private $tcpdi;
 
+    private $failed = [];
+
     public function __construct(\TCPDI $tcpdi = null)
     {
         $this->tcpdi = $tcpdi ?: new \TCPDI;
@@ -22,11 +24,12 @@ final class TcpdiDriver implements DriverInterface
     public function merge(SourceInterface ...$sources): string
     {
         $sourceName = '';
+        $this->failed = [];
 
-        try {
-            $tcpdi = clone $this->tcpdi;
+        $tcpdi = clone $this->tcpdi;
 
-            foreach ($sources as $source) {
+        foreach ($sources as $source) {
+            try {
                 $sourceName = $source->getName();
                 $pageCount = $tcpdi->setSourceData($source->getContents());
                 $pageNumbers = $source->getPages()->getPageNumbers() ?: range(1, $pageCount);
@@ -42,11 +45,15 @@ final class TcpdiDriver implements DriverInterface
                     );
                     $tcpdi->useTemplate($template);
                 }
+            } catch (\Exception $e) {
+                $this->failed[] = $source;
             }
-
-            return $tcpdi->Output('', 'S');
-        } catch (\Exception $e) {
-            throw new Exception("'{$e->getMessage()}' in '$sourceName'", 0, $e);
         }
+
+        return $tcpdi->Output('', 'S');
+    }
+
+    public function getFailedSources(): array {
+        return $this->failed;
     }
 }
