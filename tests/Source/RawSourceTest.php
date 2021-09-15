@@ -32,4 +32,12 @@ class RawSourceTest extends \PHPUnit\Framework\TestCase
             (new RawSource('', $pages))->getPages()
         );
     }
+
+    public function testGetDuplex()
+    {
+        $this->assertSame(
+            true,
+            (new RawSource(__FILE__, null, true))->getDuplex()
+        );
+    }
 }
