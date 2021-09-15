@@ -42,6 +42,10 @@ final class TcpdiDriver implements DriverInterface
                     );
                     $tcpdi->useTemplate($template);
                 }
+
+                if ($source->getDuplex() && $tcpdi->PageNo() % 2 !== 0) {
+                    $tcpdi->AddPage($size['w'] > $size['h'] ? 'L' : 'P', [$size['w'], $size['h']]);
+                }
             }
 
             return $tcpdi->Output('', 'S');

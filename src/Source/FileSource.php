@@ -23,7 +23,12 @@ final class FileSource implements SourceInterface
      */
     private $pages;
 
-    public function __construct(string $filename, PagesInterface $pages = null)
+    /**
+     * @var bool
+     */
+    private $duplex;
+
+    public function __construct(string $filename, PagesInterface $pages = null, bool $duplex = false)
     {
         if (!is_file($filename) || !is_readable($filename)) {
             throw new Exception("Invalid file '$filename'");
@@ -31,6 +36,7 @@ final class FileSource implements SourceInterface
 
         $this->filename = $filename;
         $this->pages = $pages ?: new Pages;
+        $this->duplex = $duplex;
     }
 
     public function getName(): string
@@ -46,5 +52,10 @@ final class FileSource implements SourceInterface
     public function getPages(): PagesInterface
     {
         return $this->pages;
+    }
+
+    public function getDuplex(): bool
+    {
+        return $this->duplex;
     }
 }

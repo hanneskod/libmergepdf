@@ -22,4 +22,9 @@ interface SourceInterface
      * Get pages to fetch from source
      */
     public function getPages(): PagesInterface;
+
+    /**
+     * Get duplex printing
+     */
+    public function getDuplex(): bool;
 }

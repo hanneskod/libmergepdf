@@ -54,6 +54,10 @@ final class Fpdi2Driver implements DriverInterface
                     );
                     $fpdi->useTemplate($template);
                 }
+
+                if ($source->getDuplex() && $fpdi->PageNo() % 2 !== 0) {
+                    $fpdi->AddPage($size['width'] > $size['height'] ? 'L' : 'P', [$size['width'], $size['height']]);
+                }
             }
 
             return $fpdi->Output('', 'S');

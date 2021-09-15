@@ -22,10 +22,16 @@ final class RawSource implements SourceInterface
      */
     private $pages;
 
-    public function __construct(string $contents, PagesInterface $pages = null)
+    /**
+     * @var bool
+     */
+    private $duplex;
+
+    public function __construct(string $contents, PagesInterface $pages = null, bool $duplex = false)
     {
         $this->contents = $contents;
         $this->pages = $pages ?: new Pages;
+        $this->duplex = $duplex;
     }
 
     public function getName(): string
@@ -41,5 +47,10 @@ final class RawSource implements SourceInterface
     public function getPages(): PagesInterface
     {
         return $this->pages;
+    }
+
+    public function getDuplex(): bool
+    {
+        return $this->duplex;
     }
 }

@@ -26,6 +26,18 @@ $merger->addFile('bar.pdf', new Pages('1-10'));
 $createdPdf = $merger->merge();
 ```
 
+Merge **foo.pdf** with **bar.pdf** and add a blank page to **foo.pdf** when it contains an uneven number of pages to support duplex printing:
+
+```php
+use iio\libmergepdf\Merger;
+use iio\libmergepdf\Pages;
+
+$merger = new Merger;
+$merger->addFile('foo.pdf', null, true);
+$merger->addFile('bar.pdf');
+$createdPdf = $merger->merge();
+```
+
 Bulk add files from an iterator:
 
 ```php
