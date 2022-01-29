@@ -7,9 +7,11 @@ namespace iio\libmergepdf\Driver;
 use iio\libmergepdf\Source\SourceInterface;
 use iio\libmergepdf\Exception;
 use iio\libmergepdf\Pages;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class TcpdiDriverTest extends \PHPUnit\Framework\TestCase
 {
+    use ProphecyTrait;
     public function testExceptionOnFailure()
     {
         $tcpdi = $this->prophesize(\TCPDI::CLASS);
