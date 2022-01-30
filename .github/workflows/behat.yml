@@ -1,4 +1,4 @@
-name: PHPUnit
+name: Behat
 
 on:
   pull_request:
@@ -10,8 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        coverage: ['xdebug']
-        xdebug_mode: ['debug']
         php-versions: ['7.3', '7.4', '8.0']
     name: php${{ matrix.php-versions }}
 
@@ -33,10 +31,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-php-
 
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress
+      - name: Set up PHP dependencies
+        run: composer i
 
-      - name: PHPUnit
-        env:
-          XDEBUG_MODE: ${{ matrix.xdebug_mode }}
-        run: ./vendor/phpunit/phpunit/phpunit -c phpunit.xml
+      - name: Behat
+        run: vendor/bin/behat
