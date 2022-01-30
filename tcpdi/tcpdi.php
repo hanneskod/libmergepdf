@@ -1,4 +1,7 @@
 <?php
+
+use LibreSign\TcpdiParser\tcpdi_parser;
+
 //
 //  TCPDI - Version 1.1
 //  Based on FPDI - Version 1.4.4
@@ -22,9 +25,6 @@
 class FPDF extends TCPDF {}
 
 require_once('fpdf_tpl.php');
-
-require_once('tcpdi_parser.php');
-
 
 class TCPDI extends FPDF_TPL {
     /**
