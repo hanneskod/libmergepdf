@@ -16,7 +16,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "iio\\libmergepdf\\": "src/"
+      "nabilanam\\libmergepdf\\": "src/"
     },
     "classmap": [
       "tcpdi/"
