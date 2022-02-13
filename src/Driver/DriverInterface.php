@@ -1,8 +1,8 @@
 <?php
 
-namespace iio\libmergepdf\Driver;
+namespace nabilanam\libmergepdf\Driver;
 
-use iio\libmergepdf\Source\SourceInterface;
+use nabilanam\libmergepdf\Source\SourceInterface;
 
 interface DriverInterface
 {

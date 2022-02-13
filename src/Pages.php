@@ -1,8 +1,8 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
-namespace iio\libmergepdf;
+namespace nabilanam\libmergepdf;
 
 /**
  * Parse page numbers from string

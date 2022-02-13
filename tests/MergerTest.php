@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
-namespace iio\libmergepdf;
+namespace nabilanam\libmergepdf;
 
-use iio\libmergepdf\Driver\DriverInterface;
-use iio\libmergepdf\Source\FileSource;
-use iio\libmergepdf\Source\RawSource;
+use nabilanam\libmergepdf\Driver\DriverInterface;
+use nabilanam\libmergepdf\Source\FileSource;
+use nabilanam\libmergepdf\Source\RawSource;
 
 class MergerTest extends \PHPUnit\Framework\TestCase
 {

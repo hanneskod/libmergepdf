@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
-namespace iio\libmergepdf\Source;
+namespace nabilanam\libmergepdf\Source;
 
-use iio\libmergepdf\PagesInterface;
-use iio\libmergepdf\Pages;
-use iio\libmergepdf\Exception;
+use nabilanam\libmergepdf\PagesInterface;
+use nabilanam\libmergepdf\Pages;
+use nabilanam\libmergepdf\Exception;
 
 /**
  * Pdf source from file

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace iio\libmergepdf\Driver;
+namespace nabilanam\libmergepdf\Driver;
 
-use iio\libmergepdf\Source\SourceInterface;
+use nabilanam\libmergepdf\Source\SourceInterface;
 
 final class DefaultDriver implements DriverInterface
 {

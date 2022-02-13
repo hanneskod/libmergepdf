@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
-namespace iio\libmergepdf\Driver;
+namespace nabilanam\libmergepdf\Driver;
 
-use iio\libmergepdf\Source\SourceInterface;
-use iio\libmergepdf\Exception;
-use iio\libmergepdf\Pages;
+use nabilanam\libmergepdf\Source\SourceInterface;
+use nabilanam\libmergepdf\Exception;
+use nabilanam\libmergepdf\Pages;
 
 class TcpdiDriverTest extends \PHPUnit\Framework\TestCase
 {

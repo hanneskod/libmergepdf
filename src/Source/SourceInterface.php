@@ -1,10 +1,10 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
-namespace iio\libmergepdf\Source;
+namespace nabilanam\libmergepdf\Source;
 
-use iio\libmergepdf\PagesInterface;
+use nabilanam\libmergepdf\PagesInterface;
 
 interface SourceInterface
 {

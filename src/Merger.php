@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace iio\libmergepdf;
+namespace nabilanam\libmergepdf;
 
-use iio\libmergepdf\Driver\DriverInterface;
-use iio\libmergepdf\Driver\DefaultDriver;
-use iio\libmergepdf\Source\SourceInterface;
-use iio\libmergepdf\Source\FileSource;
-use iio\libmergepdf\Source\RawSource;
+use nabilanam\libmergepdf\Driver\DriverInterface;
+use nabilanam\libmergepdf\Driver\DefaultDriver;
+use nabilanam\libmergepdf\Source\SourceInterface;
+use nabilanam\libmergepdf\Source\FileSource;
+use nabilanam\libmergepdf\Source\RawSource;
 
 /**
  * Merge existing pdfs into one

@@ -1,6 +1,6 @@
 <?php
 
-namespace iio\libmergepdf;
+namespace nabilanam\libmergepdf;
 
 interface PagesInterface
 {

@@ -1,13 +1,13 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Tester\Exception\PendingException;
-use iio\libmergepdf\Merger;
-use iio\libmergepdf\Pages;
+use nabilanam\libmergepdf\Merger;
+use nabilanam\libmergepdf\Pages;
 use Smalot\PdfParser\Parser as PdfParser;
 
 final class FeatureContext implements Context
@@ -23,9 +23,9 @@ final class FeatureContext implements Context
 
     public function __construct(string $driverName)
     {
-        $driverClass = "iio\libmergepdf\Driver\\$driverName";
+        $driverClass = "nabilanam\libmergepdf\Driver\\$driverName";
 
-        /** @var \iio\libmergepdf\Driver\DriverInterface $driver */
+        /** @var \nabilanam\libmergepdf\Driver\DriverInterface $driver */
         $driver = new $driverClass;
 
         $this->merger = new Merger($driver);
@@ -36,7 +36,7 @@ final class FeatureContext implements Context
      */
     public function theDriver(string $driver)
     {
-        $driverClass = "iio\libmergepdf\Driver\\$driver";
+        $driverClass = "nabilanam\libmergepdf\Driver\\$driver";
         $this->merger = new Merger(new $driverClass);
     }
 
