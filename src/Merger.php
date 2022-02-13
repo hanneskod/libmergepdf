@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace iio\libmergepdf;
 
@@ -75,5 +75,10 @@ final class Merger
     public function reset(): void
     {
         $this->sources = [];
+    }
+
+    public function getPageCounts()
+    {
+        return $this->driver->getPageCounts();
     }
 }

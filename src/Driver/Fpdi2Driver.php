@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace iio\libmergepdf\Driver;
 
@@ -16,6 +16,8 @@ final class Fpdi2Driver implements DriverInterface
      * @var FpdiFpdf|FpdiTcpdf
      */
     private $fpdi;
+
+    private $pageCounts = [];
 
     /**
      * @param FpdiFpdf|FpdiTcpdf $fpdi
@@ -42,6 +44,7 @@ final class Fpdi2Driver implements DriverInterface
                 $sourceName = $source->getName();
                 $pageCount = $fpdi->setSourceFile(StreamReader::createByString($source->getContents()));
                 $pageNumbers = $source->getPages()->getPageNumbers() ?: range(1, $pageCount);
+                $this->pageCounts[$sourceName] = count($pageNumbers);
 
                 foreach ($pageNumbers as $pageNr) {
                     $template = $fpdi->importPage($pageNr);
@@ -60,5 +63,10 @@ final class Fpdi2Driver implements DriverInterface
         } catch (\Exception $e) {
             throw new Exception("'{$e->getMessage()}' in '$sourceName'", 0, $e);
         }
+    }
+
+    public function getPageCounts(): array
+    {
+        return $this->pageCounts;
     }
 }

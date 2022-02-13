@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace iio\libmergepdf\Driver;
 
@@ -8,9 +8,6 @@ use iio\libmergepdf\Source\SourceInterface;
 
 final class DefaultDriver implements DriverInterface
 {
-    /**
-     * @var DriverInterface
-     */
     private $wrapped;
 
     public function __construct(DriverInterface $wrapped = null)
@@ -21,5 +18,10 @@ final class DefaultDriver implements DriverInterface
     public function merge(SourceInterface ...$sources): string
     {
         return $this->wrapped->merge(...$sources);
+    }
+
+    public function getPageCounts(): array
+    {
+        return $this->wrapped->getPageCounts();
     }
 }

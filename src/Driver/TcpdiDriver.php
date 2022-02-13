@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace iio\libmergepdf\Driver;
 
@@ -13,6 +13,8 @@ final class TcpdiDriver implements DriverInterface
      * @var \TCPDI
      */
     private $tcpdi;
+
+    private $pageCounts = [];
 
     public function __construct(\TCPDI $tcpdi = null)
     {
@@ -30,6 +32,7 @@ final class TcpdiDriver implements DriverInterface
                 $sourceName = $source->getName();
                 $pageCount = $tcpdi->setSourceData($source->getContents());
                 $pageNumbers = $source->getPages()->getPageNumbers() ?: range(1, $pageCount);
+                $this->pageCounts[$sourceName] = count($pageNumbers);
 
                 foreach ($pageNumbers as $pageNr) {
                     $template = $tcpdi->importPage($pageNr);
@@ -48,5 +51,10 @@ final class TcpdiDriver implements DriverInterface
         } catch (\Exception $e) {
             throw new Exception("'{$e->getMessage()}' in '$sourceName'", 0, $e);
         }
+    }
+
+    public function getPageCounts(): array
+    {
+        return $this->pageCounts;
     }
 }

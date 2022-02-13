@@ -10,4 +10,7 @@ interface DriverInterface
      * Merge multiple sources
      */
     public function merge(SourceInterface ...$sources): string;
+
+
+    public function getPageCounts(): array;
 }
