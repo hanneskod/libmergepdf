@@ -23,6 +23,6 @@ class PageNumber extends Fpdi
     public function Footer()
     {
         $this->SetY(-15);
-        $this->Cell(0, 0, 'Page ' . $this->PageNo() . "of {$this->totalPage}", 0, 0, 'C');
+        $this->Cell(0, 0, 'Page ' . $this->PageNo() . " of {$this->totalPage}", 0, 0, 'C');
     }
 }
