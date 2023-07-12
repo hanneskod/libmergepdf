@@ -22,7 +22,7 @@
     "require": {
         "php": "^7.1||^8.0",
         "tecnickcom/tcpdf": "^6.2.22",
-        "setasign/fpdi": "^2"
+        "setasign/fpdi": "^2.3"
     },
     "conflict": {
         "setasign/fpdf": "*",
