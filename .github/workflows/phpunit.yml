@@ -1,0 +1,42 @@
+name: PHPUnit
+
+on:
+  pull_request:
+  push:
+    branches: [ master ]
+
+jobs:
+  phpunit:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        coverage: ['xdebug']
+        xdebug_mode: ['debug']
+        php-versions: ['7.3', '7.4', '8.0', '8.1']
+    name: php${{ matrix.php-versions }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up php ${{ matrix.php-versions }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          coverage: ${{ matrix.coverage }}
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: PHPUnit
+        env:
+          XDEBUG_MODE: ${{ matrix.xdebug_mode }}
+        run: ./vendor/phpunit/phpunit/phpunit -c phpunit.xml

@@ -7,9 +7,11 @@ namespace iio\libmergepdf;
 use iio\libmergepdf\Driver\DriverInterface;
 use iio\libmergepdf\Source\FileSource;
 use iio\libmergepdf\Source\RawSource;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class MergerTest extends \PHPUnit\Framework\TestCase
 {
+    use ProphecyTrait;
     public function testAddRaw()
     {
         $pages = $this->createMock(PagesInterface::CLASS);

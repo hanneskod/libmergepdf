@@ -9,9 +9,11 @@ use iio\libmergepdf\Pages;
 use iio\libmergepdf\Source\SourceInterface;
 use setasign\Fpdi\Tcpdf\Fpdi;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class Fpdi2DriverTest extends \PHPUnit\Framework\TestCase
 {
+    use ProphecyTrait;
     public function testExceptionOnInvalidFpdi()
     {
         $this->expectException(\InvalidArgumentException::CLASS);
