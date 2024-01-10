@@ -39,4 +39,12 @@ class FileSourceTest extends \PHPUnit\Framework\TestCase
             (new FileSource(__FILE__, $pages))->getPages()
         );
     }
+
+    public function testGetDuplex()
+    {
+        $this->assertSame(
+            true,
+            (new FileSource(__FILE__, null, true))->getDuplex()
+        );
+    }
 }

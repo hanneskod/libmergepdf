@@ -50,6 +50,7 @@ class TcpdiDriverTest extends \PHPUnit\Framework\TestCase
         $source->getName()->willReturn('');
         $source->getContents()->willReturn('data');
         $source->getPages()->willReturn(new Pages('1, 2'));
+        $source->getDuplex()->willReturn(false);
 
         $this->assertSame(
             'created-pdf',

@@ -31,6 +31,10 @@ final class TcpdiDriver implements DriverInterface
                 $pageCount = $tcpdi->setSourceData($source->getContents());
                 $pageNumbers = $source->getPages()->getPageNumbers() ?: range(1, $pageCount);
 
+                if (isset($size) && $source->getDuplex() && $tcpdi->PageNo() % 2 !== 0) {
+                    $tcpdi->AddPage($size['w'] > $size['h'] ? 'L' : 'P', [$size['w'], $size['h']]);
+                }
+
                 foreach ($pageNumbers as $pageNr) {
                     $template = $tcpdi->importPage($pageNr);
                     $size = $tcpdi->getTemplateSize($template);

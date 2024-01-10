@@ -43,6 +43,10 @@ final class Fpdi2Driver implements DriverInterface
                 $pageCount = $fpdi->setSourceFile(StreamReader::createByString($source->getContents()));
                 $pageNumbers = $source->getPages()->getPageNumbers() ?: range(1, $pageCount);
 
+                if (isset($size) && $source->getDuplex() && $fpdi->PageNo() % 2 !== 0) {
+                    $fpdi->AddPage($size['width'] > $size['height'] ? 'L' : 'P', [$size['width'], $size['height']]);
+                }
+
                 foreach ($pageNumbers as $pageNr) {
                     $template = $fpdi->importPage($pageNr);
                     $size = $fpdi->getTemplateSize($template);
