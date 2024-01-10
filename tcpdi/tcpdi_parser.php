@@ -720,8 +720,7 @@ class tcpdi_parser {
                 $next = strcspn($data, "\r\n", $offset);
                 if ($next > 0) {
                     $offset += $next;
-                    list($obj, $unused) = $this->getRawObject($offset, $data);
-                    return $obj;
+                    return $this->getRawObject($offset, $data);
                 }
                 break;
             }
