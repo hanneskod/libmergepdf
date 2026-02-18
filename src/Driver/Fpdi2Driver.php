@@ -44,7 +44,7 @@ final class Fpdi2Driver implements DriverInterface
                 $pageNumbers = $source->getPages()->getPageNumbers() ?: range(1, $pageCount);
 
                 foreach ($pageNumbers as $pageNr) {
-                    $template = $fpdi->importPage($pageNr);
+                    $template = $fpdi->importPage($pageNr, importExternalLinks: true);
                     $size = $fpdi->getTemplateSize($template);
                     $fpdi->SetPrintHeader(false);
                     $fpdi->SetPrintFooter(false);
